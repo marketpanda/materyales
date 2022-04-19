@@ -2,7 +2,7 @@
   "name": "materyales",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/marketpanda/materyales",
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
