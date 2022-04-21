@@ -33,7 +33,7 @@ body {
 
 
 .widget {
-  width: 500px;
+  max-width: 450px;
   justify-content: space-between;
   border: 1px solid;
   margin: 0 auto;
