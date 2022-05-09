@@ -1,35 +1,55 @@
- 
 import './App.css';
-import {useState} from 'react'; 
- 
- 
+import React, {useState} from 'react'; 
+import Modal from './Modal';
+  
 function App() {
 
   let initialPlaceHolder = 'Select component to estimate';
   
-
   const [estimate, setEstimate] = useState(initialPlaceHolder);
   const [category, setCategory] = useState();
   const [disabled, setDisabled] = useState(true)
-   
 
-  const printIt = (e) => {
-    console.log(e)
-    setCategory(e)
-    setEstimate('Type a new number for ' + e)
-    setDisabled(false);   
+  //input field dimensions
+  const [dimensionsOn, setDimensionsOn] = useState(false)
+   
+  const [isOpen, setIsOpen] =   useState(false);
+  const [activeDisclaimer, setActiveDisclaimer] = useState(false);
+
+  const makeLength = e => {
+    setDisabled(true);  
   }
 
+  const computeByArea = e => {
+    setDimensionsOn(true) 
+  }
 
+  const printIt = (e) => {
+    setCategory(e)
+    setEstimate('Type a new number for ' + e)
+    setDisabled(false);
+    setDimensionsOn(false);   
+    clearInputField();
+  }
+
+  const clearInputField = e => {
+    let getInput = document.getElementById('inputF');
+    let theLength = document.getElementById('lengthInput');
+    let theWidth = document.getElementById('widthInput');
+    getInput.value = '';
+    theLength.value = '';
+    theWidth.value = '';
+  }
+ 
   const mathSusSlab = e => {
+    
     let theSide = Math.sqrt(e);
     let t = 0;
     let s = Math.ceil(((theSide/.1) + 1)* theSide * 2 / 6);
 
     // overlapping connection of 600mm if exceeds commercially available 6 meters, computed in both ways
     if (theSide / 6 >= 1) {
-        t = Math.floor(theSide / 6) * .6 * theSide / .1 * 2;
-         
+        t = Math.floor(theSide / 6) * .6 * theSide / .1 * 2;  
     }
  
     return (
@@ -61,10 +81,49 @@ function App() {
     return s
   }
 
+  const getLengthAndWidth = e => {
+    let dimensions = [];
+    let getLength = document.getElementById('lengthInput').value;
+    let getWidth = document.getElementById('widthInput').value;
+    //getLength = parseFloat(getLength);
+    //getWidth = parseFloat(getWidth);
+
+    dimensions.push([getLength, getWidth])
+    
+    return dimensions
+  }
+
   const compute = e => {
     e.preventDefault();
     
-    let getNum = e.target.value;
+    let getDimension = getLengthAndWidth();
+    // if ((getDimension.length < 2) && disabled) {
+    //   return
+    // } 
+ 
+    // let getNum = '';
+
+    // if (getDimension.length === 2) {
+    //   getNum = getDimension[0] * getDimension[1];
+    // } else {
+    //   getNum = e.target.value;
+    // }
+ 
+
+    let getNum = '';
+
+    if ((getDimension[0].length === 2) && disabled) {
+      getNum = getDimension[0][0] * getDimension[0][1];
+      console.log(getNum);
+    } 
+    
+    if (!disabled) {
+      getNum = document.getElementById('inputF').value;
+      console.log(getNum);
+
+    }
+    
+      
     let num = parseFloat(getNum);
     let side = Math.sqrt(num);
     let formula = '';
@@ -127,8 +186,8 @@ function App() {
             
 
           </>
-      );
-      break;
+        );
+        break;
          
       case 'paint': 
         formula = (
@@ -190,6 +249,9 @@ function App() {
      
   }
 
+  //about us
+
+   
   return (
     <div className='widget'>
       <div><h1>Materyales</h1></div>
@@ -209,29 +271,36 @@ function App() {
            
         </ul>
         
-        {/* <p>Per Dimension</p>
-        <input type='number' className='inputArea2'  placeholder='Length' disabled={disabled} onChange={compute}/>
-        <input type='number' className='inputArea2'  placeholder='Width' disabled={disabled} onChange={compute}/> 
-        <div style={{float:'right'}}>
-          <input type='radio' name='unit1' value='meters' disabled={disabled}/>Meters
-          <input type='radio' name='unit1' value='feet' disabled={disabled}/>Feet
-        </div> */}
-        
-
         <br /><br />
         <p>Per Area</p>
-        <input name='inputNum' type='number' className='inputArea' placeholder={estimate} onChange={compute} disabled={disabled} />
-        {/* <div style={{float:'right'}}>
-          <input type='radio' name='unit2' value='meters' disabled={disabled}/>Meters
-          <input type='radio' name='unit2' value='feet' disabled={disabled}/>Feet
-        </div> */}
+        <input onFocus={() => computeByArea()}  id='inputF' name='inputNum' type='number' className='inputArea' placeholder={estimate} onChange={compute} disabled={disabled} />
          
+        <p>Per Dimensions</p>
+        <input className='inputArea'  disabled={dimensionsOn} id='lengthInput' type='number' placeholder='length' onFocus={() => makeLength()} onChange={compute} />
+        
+        <input className='inputArea'  disabled={dimensionsOn} id='widthInput' type='number' placeholder='width' onFocus={() => makeLength()} onChange={compute} />
       </div>
+      <div>Product</div>
 
       <div style={{'padding': '5px'}}>
-        <p><h5>Category: {category}</h5></p><br />
+        <p><h5>{category}</h5></p><br />
         <p>{estimate}</p>
         
+      </div>
+      <br />
+      <br />
+      
+      <div>
+        <button onClick={() => setIsOpen(true)}>About Us</button>
+        <button onClick={() => setActiveDisclaimer(true)}>Disclaimer</button>
+        <br />
+        <div style={{clear:'both'}}></div>
+        
+        <Modal open={isOpen} onClose={() => setIsOpen(false)}>Created by architect.</Modal>
+        <Modal open={activeDisclaimer} onClose={() => setActiveDisclaimer(false)}>
+          The draft shown here is for estimate purposes only. This does not replace the service of
+          architect, engineer or any professional affiliated into.
+        </Modal>
       </div>
     </div>
   );
