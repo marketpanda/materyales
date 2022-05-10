@@ -31,7 +31,7 @@ function Modal({open, children, onClose}) {
             
             <div style={MODAL_STYLES}>
             {children}
-            <div style={{clear:'both'}}></div>
+             
             <br></br>
                 <button onClick={onClose}>Close</button>
                   
