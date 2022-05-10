@@ -13,6 +13,7 @@ function App() {
   //input field dimensions
   const [dimensionsOn, setDimensionsOn] = useState(false)
    
+  //portal
   const [isOpen, setIsOpen] =   useState(false);
   const [activeDisclaimer, setActiveDisclaimer] = useState(false);
 
@@ -109,7 +110,6 @@ function App() {
     //   getNum = e.target.value;
     // }
  
-
     let getNum = '';
 
     if ((getDimension[0].length === 2) && disabled) {
@@ -267,7 +267,7 @@ function App() {
           <li><button onClick={() => printIt('waterproofing')}>Waterproofing Area</button></li>
           <li><button onClick={() => printIt('tiles')}>Tiles</button></li>
           <li><button onClick={() => printIt('roof')}>Roof</button></li>
-          <div style={{clear:'both'}}></div>
+          
            
         </ul>
         
@@ -276,9 +276,9 @@ function App() {
         <input onFocus={() => computeByArea()}  id='inputF' name='inputNum' type='number' className='inputArea' placeholder={estimate} onChange={compute} disabled={disabled} />
          
         <p>Per Dimensions</p>
-        <input className='inputArea'  disabled={dimensionsOn} id='lengthInput' type='number' placeholder='length' onFocus={() => makeLength()} onChange={compute} />
+        <input className='inputArea' disabled={dimensionsOn} id='lengthInput' type='number' placeholder='length' onFocus={() => makeLength()} onChange={compute} />
         
-        <input className='inputArea'  disabled={dimensionsOn} id='widthInput' type='number' placeholder='width' onFocus={() => makeLength()} onChange={compute} />
+        <input className='inputArea' disabled={dimensionsOn} id='widthInput' type='number' placeholder='width' onFocus={() => makeLength()} onChange={compute} />
       </div>
       <div>Product</div>
 
@@ -293,9 +293,7 @@ function App() {
       <div>
         <button onClick={() => setIsOpen(true)}>About Us</button>
         <button onClick={() => setActiveDisclaimer(true)}>Disclaimer</button>
-        <br />
-        <div style={{clear:'both'}}></div>
-        
+         
         <Modal open={isOpen} onClose={() => setIsOpen(false)}>Created by architect.</Modal>
         <Modal open={activeDisclaimer} onClose={() => setActiveDisclaimer(false)}>
           The draft shown here is for estimate purposes only. This does not replace the service of
