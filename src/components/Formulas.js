@@ -127,10 +127,10 @@ export const suspendedSlab = (e) => {
     cubicGravel, 
     cubicSand,
     phenolicBoard,
-    cocoLumber,
+    
     tieWire,
     floorJoists,
-    nails,
+  
     rebars
     = '';
 
@@ -197,7 +197,7 @@ export const slabOnGround = (e) => {
 export const waterProofing = (e) => {
   let givenNum = productOrMultiplier(e);
   let area = givenNum.toLocaleString();
-  let givenNum2 = givenNum.toLocaleString("en-PH", {style:"currency", currency:"PHP"});
+   
 
   let cost = givenNum*700;
   cost = cost.toLocaleString("en-PH", {style:"currency", currency:"PHP"})
@@ -244,13 +244,7 @@ export const roof = (e) => {
 
   let givenNum = productOrMultiplier(e);
 
-  let 
-  roofSheets,
-  purlins,
-  rafters,
-  epoxyPrimer
-  = '';
-
+   
   return (
      
       <>
