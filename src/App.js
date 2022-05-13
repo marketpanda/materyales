@@ -64,21 +64,7 @@ function App() {
     let getDimension = getLengthAndWidth();
    
     getDimension = getDimension[0];
- 
-    let getNum = '';
-
-    // per dimensions
-    if ((getDimension.length === 2) && disabled) {
-      getNum = getDimension[0] * getDimension[1];
-    
-    } 
-    
-    //per area
-    if (!disabled) {
-      getNum = document.getElementById('inputF').value;
-   
-    }
-      
+  
  
    
     let formula = '';
