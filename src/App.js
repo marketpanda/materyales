@@ -79,7 +79,7 @@ function App() {
    
     }
       
-    let num = parseFloat(getNum);
+ 
    
     let formula = '';
     
