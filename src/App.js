@@ -44,15 +44,7 @@ function App() {
     theWidth.value = '';
   }
  
-
-  const mathTileAdhesive = e => {
-
-    //1.67kg/sqm, 20kg bag commercially available
-    let s = (1.67 * e ) / 20;
-    s = Math.ceil(s);
-     
-    return s
-  }
+ 
 
   const getLengthAndWidth = e => {
     let dimensions = [];
@@ -88,7 +80,7 @@ function App() {
     }
       
     let num = parseFloat(getNum);
-    let side = Math.sqrt(num);
+   
     let formula = '';
     
 
@@ -193,3 +185,4 @@ function App() {
 }
 
 export default App;
+  
