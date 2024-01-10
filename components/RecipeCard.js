@@ -10,7 +10,7 @@ export default function RecipeCard({ recipe }) {
         <div className='transform rotate-1'>
             <div className='featured'>
                 <Image
-                 src={'https://' + thumbnail.fields.file.url}
+                 src={'https:' + thumbnail.fields.file.url}
                  width={thumbnail.fields.file.details.image.width}
                  height={thumbnail.fields.file.details.image.height}
                  />
