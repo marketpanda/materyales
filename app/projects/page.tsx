@@ -1,10 +1,32 @@
-import projectsData from '@/data/projectsData'
+ 
 import Card from '@/components/Card'
 import { genPageMetadata } from 'app/seo'
+import Image from 'next/image'
+
+import { createClient } from 'contentful'
+
 
 export const metadata = genPageMetadata({ title: 'Projects' })
 
-export default function Projects() {
+
+async function getData() {
+  const client = createClient({
+    space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID as string,
+    accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_KEY as string
+  })
+
+  const res = await client.getEntries({ content_type: 'recipe', include: 2 })
+
+  return res.items
+
+}
+
+
+export default async function Projects({ contents }) {
+  const data = await getData()
+ 
+   
+ 
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -18,15 +40,19 @@ export default function Projects() {
         </div>
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">
-            {projectsData.map((d) => (
-              <Card
-                key={d.title}
-                title={d.title}
-                description={d.description}
-                imgSrc={d.imgSrc}
-                href={d.href}
-              />
-            ))}
+            <div className='flex flex-col gap-2'>
+            {
+              data.map((g:any) => (
+                <div>
+                  <div>{g.fields.title}</div>
+                  <div><pre>{JSON.stringify(g.fields.thumbnail.fields.file.url, null, "\t")}</pre></div>
+                  <Image src={`https://${g.fields.thumbnail.fields.file.url}`} width="100" height="100" alt="image" /> 
+                  <div><pre>{JSON.stringify(g.fields, null, "\t")}</pre></div>
+                </div>
+              ))
+            }
+            </div>
+            
           </div>
         </div>
       </div>

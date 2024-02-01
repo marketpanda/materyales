@@ -72,6 +72,8 @@ module.exports = () => {
           hostname: 'picsum.photos',
         },
       ],
+      domains: ['images.ctfassets.net']
+      
     },
     async headers() {
       return [
