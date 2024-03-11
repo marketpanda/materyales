@@ -38,9 +38,9 @@ const page = async(props:any) => {
         <div>
             {
                 buildingLaws.map((buildingLaw:BuildingLaw) => (
-                    <div>
-                        <div key={buildingLaw.sys.id}>{buildingLaw.fields.title}</div>
-                        <div>{buildingLaw.fields.thumbnail.fields.file.url}</div>
+                    <div key={buildingLaw.sys.id}>
+                        <div>{buildingLaw.fields.title}</div>
+                        <div>{buildingLaw.fields?.thumbnail?.fields?.file?.url}</div>
                         <Link href={`building-laws/${buildingLaw.fields.slug}`} >link</Link>
                     </div>
                 ))
