@@ -53,9 +53,14 @@ export default function Home() {
   const computeTilesTiles = ():void => {
     
     console.log('compute tiles')
-    if (typeof area === 'number') {
+    let tmpArea
+    if (typeof area === "string") {
+      tmpArea = parseFloat(area)
+    }
 
-      const numOfTiles = area / .36
+    if (typeof tmpArea === "number") {
+
+      const numOfTiles = tmpArea / .36
       setTilesTiles(numOfTiles)
     }
   
@@ -63,9 +68,13 @@ export default function Home() {
   
   const computeTilesGrout = ():void => {
     console.log('compute grout')
-    if (typeof area === 'number') {
+    let tmpArea 
+    if (typeof area === "string") { 
+      tmpArea = parseFloat(area)
+    }
+    if (typeof tmpArea === "number") {
   
-      const kgOfGrout = area / 4
+      const kgOfGrout = tmpArea / 4
       setTilesGrout(kgOfGrout)
     }
   }
@@ -169,7 +178,7 @@ export default function Home() {
               {tilesTiles} (60x60cm tiles)
             </span>
             <span>
-              <input value={500} className="w-28 text-right px-2 py-1 outline-none" />
+              <input value={500} className="w-28 text-right px-2 py-1 outline-none" onChange={() => console.log('tiles')}  />
             </span>
             <span className="w-28 flex justify-end">
               {tilesTiles * 500 }
@@ -189,7 +198,7 @@ export default function Home() {
               {tilesGrout}kg
             </span>
             <span>
-              <input value={210} className="w-28 text-right px-2 py-1 outline-none" />
+              <input value={210} className="w-28 text-right px-2 py-1 outline-none" onChange={() => console.log('grout')}/>
             </span>
             <span className="w-28 flex justify-end">
             {tilesGrout * 210 }
