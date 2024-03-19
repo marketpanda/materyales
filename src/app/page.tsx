@@ -221,7 +221,7 @@ export default function Home() {
                 <span className="flex items-center w-8 justify-end"><input type="checkbox" className="h-4 w-4" name="isContingencyMaterials" /></span>
               </div>
               <div className="flex justify-end text-sm cursor-pointer">
-                <span>Contractor's Profit:</span>
+                <span>Contractor&apos;s Profit:</span>
                 <span className="w-12 opacity-60">{15}%</span>
                 <span className="w-24">{ }</span>
                 <span className="flex items-center w-8 justify-end"><input type="checkbox" className="h-4 w-4" name="isContractorsProfit" /></span>
