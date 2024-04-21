@@ -5,7 +5,25 @@ import { useEffect, useState } from "react";
 import { FlyOut } from "./components/FlyOut";
 import { comma } from "postcss/lib/list";
 
-export default function Home() {
+import { Text, Button, Card, Heading, Table } from "@radix-ui/themes";
+ 
+import axios from 'axios'
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+
+const queryClient = new QueryClient()
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Home />
+    </QueryClientProvider>
+  )
+  
+}
+
+
+
+function Home() {
   const [width, setWidth] = useState<number |null>(null)
   const [length, setLength] = useState<number |null>(null)
 
@@ -23,7 +41,21 @@ export default function Home() {
       setArea(cleanDecimals);
     }
   }
+  
  
+
+  const { data:any, isLoading } = useQuery({
+    queryKey: ['exampleData'],
+    queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const data = await axios.get('https://jsonplaceholder.typicode.com/posts/1')
+      
+      return data 
+    }
+  })
+   
+   
+  console.log(isLoading)
 
   useEffect(() => {
     displayArea()
@@ -60,7 +92,8 @@ export default function Home() {
 
     if (typeof tmpArea === "number") {
 
-      const numOfTiles = tmpArea / .36
+      const numOfTiles = Math.ceil(tmpArea / .36)
+
       setTilesTiles(numOfTiles)
     }
   
@@ -99,8 +132,14 @@ export default function Home() {
    
   return (
     <main className="flex min-h-screen flex-col items-center gap-2">
-      <div className="w-full sm:w-[640px] border-4 rounded p-2 flex flex-col"> 
-        <div className="text-2xl font-bold text-purple-700 mb-3">Tile Calculator</div>
+      <div className="w-full sm:w-[640px] flex flex-col gap-2"> 
+        <Card>
+        
+          <Heading size="5">
+            Tile Calculator
+          </Heading>
+          
+
         <form className="flex flex-col gap-2">
           <div className="flex flex-col sm:flex-row gap-2 items-center">
             <div className="w-full sm:w-20 px-2 text-left sm:text-right font-bold">
@@ -155,56 +194,60 @@ export default function Home() {
             </div>
           </div> 
           <div className="flex">
-            <button onClick={estimateNow} className=" flex bg-amber-500 rounded text-white px-2 py-3 w-full justify-center">Estimate</button>
+            <Button
+              style={{ width: '100%'}} 
+              size="3"
+              onClick={estimateNow}>
+              Estimate
+            </Button>
           </div>
         </form>
+        </Card>
+        <Card>
+          <Table.Root>
+            <Table.Header>
+              <Table.ColumnHeaderCell>Material</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>Cost per Unit</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>Total Cost</Table.ColumnHeaderCell>
+            </Table.Header>
+            <Table.Body>
+              <Table.Row>
+                <Table.RowHeaderCell>
+                  <div className="rounded-full w-12 h-12 overflow-hidden">
+                    <img src="https://picsum.photos/id/237/200/300" />
+                  </div>
+                </Table.RowHeaderCell>
+                <Table.Cell> {tilesTiles} (60x60cm tiles)</Table.Cell>
+                <Table.Cell>
+                  <input value={500} className="w-28  outline-none" onChange={() => console.log('tiles')}  />
+                </Table.Cell>
+                <Table.Cell>
+                  {tilesTiles * 500 }
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.RowHeaderCell>
+                  <div className="rounded-full w-12 h-12 overflow-hidden">
+                    <img src="https://picsum.photos/id/237/200/300" />
+                  </div>
+                </Table.RowHeaderCell>
+                <Table.Cell>  {tilesGrout}kg</Table.Cell>
+                <Table.Cell>
+                  210
+                </Table.Cell>
+                <Table.Cell>
+                  {tilesGrout * 210 }
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table.Root>
+        </Card>
         <div className="mt-2 flex flex-col w-full bg-gray-100 font-semibold gap-2 shadow">
           
-          <div className="w-full flex justify-between items-center bg-amber-500 p-2">
-            <span className="w-24 flex justify-center">Material</span>
-            <span className="flex flex-grow justify-center">Quantity</span>
-            <span className="w-32 flex justify-center">Cost per unit</span>
-            <span className="w-24 flex justify-center">Total Cost</span>
-          </div>
-          <div className="w-full flex justify-between gap-2 items-center p-2">
-            <div className="flex flex-col items-center w-24">
-              <div className="rounded-full w-12 h-12 overflow-hidden">
-
-                <img src="https://picsum.photos/id/237/200/300" />
-              </div>
-              Tiles
-            </div> 
-            <span className="flex flex-grow justify-end">
-              {tilesTiles} (60x60cm tiles)
-            </span>
-            <span>
-              <input value={500} className="w-28 text-right px-2 py-1 outline-none" onChange={() => console.log('tiles')}  />
-            </span>
-            <span className="w-28 flex justify-end">
-              {tilesTiles * 500 }
-            </span>
-            
-          </div>
+           
           
-          <div className="w-full flex justify-between gap-2 items-center p-2">
-            <div className="flex flex-col items-center w-24">
-              <div className="rounded-full w-12 h-12 overflow-hidden">
-
-                <img src="https://picsum.photos/id/237/200/300" />
-              </div>
-              Grout
-            </div> 
-            <span className="flex flex-grow justify-end">
-              {tilesGrout}kg
-            </span>
-            <span>
-              <input value={210} className="w-28 text-right px-2 py-1 outline-none" onChange={() => console.log('grout')}/>
-            </span>
-            <span className="w-28 flex justify-end">
-            {tilesGrout * 210 }
-            </span>
-            
-          </div>
+          
           
           
           <div className="w-full flex flex-col gap-2 text-right p-2 border-4">
