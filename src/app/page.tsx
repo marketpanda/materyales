@@ -250,7 +250,11 @@ function Home() {
           
           
           
-          <div className="w-full flex flex-col gap-2 text-right p-2 border-4">
+          {/* <div className="w-full flex flex-col gap-2 text-right p-2 border-4"> */}
+          <Card>
+
+          
+          <div className="w-full flex flex-col gap-2 text-right">
             <div className="flex flex-col gap-2">
 
             
@@ -295,6 +299,7 @@ function Home() {
 
             </div>
           </div>
+          </Card>
           
         </div>
 
