@@ -130,7 +130,7 @@ const Navbar:React.FC = () => {
   );
 };
 
-const ListItem = React.forwardRef<HTMLLIElement, ListItemProps >(({ className, children, title, ...props }, forwardedRef) => (
+const ListItem = React.forwardRef<any, ListItemProps >(({ className, children, title, ...props }, forwardedRef) => (
   <li>
     <NavigationMenu.Link asChild>
       <a
@@ -147,5 +147,8 @@ const ListItem = React.forwardRef<HTMLLIElement, ListItemProps >(({ className, c
     </NavigationMenu.Link>
   </li>
 ));
+
+//for typing error
+ListItem.displayName = 'ListItem'
 
 export default Navbar;
