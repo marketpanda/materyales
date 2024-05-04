@@ -9,6 +9,8 @@ import { Text, Button, Card, Heading, Table } from "@radix-ui/themes";
  
 import axios from 'axios'
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { logout } from "./logout/actions";
+import DemoClientComponent from "./components/DemoClientComponent";
 
 const queryClient = new QueryClient()
 
@@ -138,6 +140,17 @@ function Home() {
           <Heading size="5">
             Tile Calculator
           </Heading>
+
+          <DemoClientComponent />
+
+          <div>
+            <form action={logout}>
+              <button type="submit">
+                Logout
+              </button>
+
+            </form>
+          </div>
           
 
         <form className="flex flex-col gap-2">
@@ -206,10 +219,12 @@ function Home() {
         <Card>
           <Table.Root>
             <Table.Header>
-              <Table.ColumnHeaderCell>Material</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Cost per Unit</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Total Cost</Table.ColumnHeaderCell>
+              <Table.Row>
+                <Table.ColumnHeaderCell>Material</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Cost per Unit</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Total Cost</Table.ColumnHeaderCell>
+              </Table.Row>
             </Table.Header>
             <Table.Body>
               <Table.Row>
@@ -246,9 +261,6 @@ function Home() {
         <div className="mt-2 flex flex-col w-full bg-gray-100 font-semibold gap-2 shadow">
           
            
-          
-          
-          
           
           {/* <div className="w-full flex flex-col gap-2 text-right p-2 border-4"> */}
           <Card>
