@@ -141,14 +141,14 @@ function Home() {
     <main className="flex min-h-screen flex-col items-center gap-2 bg-gray-100 border">
       <div className="w-full sm:w-[640px] flex flex-col gap-2"> 
        
-        <Box className="rounded-md shadow bg-white borderd p-4 mt-2 flex sm:flex-row flex-col gap-2">
-          <Flex  wrap="wrap" gap="3" justify="between" className="w-full border-4">
-            <Box className="sm:flex-1 w-full rounded">
-              <div className="overflow-hidden sm:h-full h-[300px] bg-blue-300 relative rounded">
+        <Box className="rounded-md shadow bg-white borderd mt-2 flex sm:flex-row flex-col gap-2">
+          <Flex  wrap="wrap"  justify="between" className="w-full">
+            <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden">
+              <div className="sm:h-full h-[300px] bg-blue-300 relative">
                 <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
               </div>
             </Box> 
-            <Box  className="sm:w-2/3 w-full"> 
+            <Box  className="sm:w-2/3 w-full p-4"> 
               <DemoClientComponent /> 
               <Heading size="5" className="mt-2">  
                 <span>
@@ -164,10 +164,7 @@ function Home() {
               handleWidthChange = {handleWidthChange}  
               handleAreaChange = {handleAreaChange}  
               estimateNow = {estimateNow}
-            />
-            
-
-             
+            /> 
 
               {/* <form className="flex flex-col gap-2">
                 <div className="flex flex-col sm:flex-row gap-2 items-center">
@@ -235,7 +232,7 @@ function Home() {
           </Flex> 
         </Box>
         <Box className="rounded-md shadow bg-white borderd">
-          <Table.Root>
+          <Table.Root variant="surface">
             <Table.Header>
               <Table.Row>
                 <Table.ColumnHeaderCell>Image</Table.ColumnHeaderCell>
@@ -263,7 +260,7 @@ function Home() {
                   </span>
                 </Table.Cell>
               </Table.Row>
-              <Table.Row >
+              <Table.Row  >
                 <Table.RowHeaderCell px="4" pb="5">
                   <div className="rounded-full w-12 h-12 overflow-hidden">
                     <img src="https://picsum.photos/id/237/200/300" />
@@ -283,106 +280,100 @@ function Home() {
             </Table.Body>
           </Table.Root>
         </Box>
-        <div className="mt-2 flex flex-col w-full bg-gray-100 font-semibold gap-2 shadow">
-          
+        {/* <div className="mt-2 flex flex-col w-full bg-gray-100 font-semibold gap-2 shadow border-4">
+           */}
            
           
         {/* <div className="w-full flex flex-col gap-2 text-right p-2 border-4"> */}
         
-        <Box className="rounded-md shadow bg-white borderd p-2">
+        <Box className="rounded-md shadow bg-white borderd flex sm:flex-row flex-col gap-2">
         
-        <div className="w-full flex flex-col gap-2">
-          <Flex direction="column" className="border w-[500px]">
-            <Text as="label" size="2" >
-              <Flex gap="2" justify="between"> 
-                Total Labor
-                <span>30%</span>
-                <Checkbox defaultChecked />
-              </Flex>
-            </Text>
-            <Text as="label" size="2">
-              <Flex gap="2" justify="between"> 
-                Contingency of Materials
-                <span>5 %</span>
-                <Checkbox defaultChecked />
-              </Flex>
-            </Text>
-            <Text as="label" size="2">
-              <Flex gap="2" justify="between"> 
-                Contractor's Profit
-                <span>15 %</span>
-                <Checkbox defaultChecked />
-              </Flex>
-            </Text>
-            <Text as="label" size="2">
-              <Flex gap="2" justify="between"> 
-                Tax
-                <span>25 %</span>
-                <Checkbox defaultChecked />
-              </Flex>
-            </Text>
-            {/* <Flex gap="2"> 
-              <Checkbox defaultChecked />
-              Contingency of Materials
-            </Flex>
-            <Flex gap="2"> 
-              <Checkbox defaultChecked />
-              Contractor's Profit
-            </Flex>
-            <Flex gap="2"> 
-              <Checkbox defaultChecked />
-              Tax
-            </Flex>  */}
+        {/* <div className="w-full flex flex-col gap-2"> */}
+           <Flex wrap="wrap-reverse">
 
+           
+            <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden">
+              <div className="sm:h-full h-[300px] bg-blue-300 relative">
+                <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
+              </div>
+            </Box> 
+            <Box className="border w-full sm:w-2/3 p-4 pb-10">
+              
+                <div className="flex flex-col w-full text-sm">
+                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
+                    <span className="flex-1 text-right">
+                      Total of Materials:
+                    </span> 
+                    <span className="w-[50px] text-right"> </span>
+                    <span className="w-[120px] text-right">Php1,000,000</span>
+                    <span className="w-[20px] flex items-center"> 
+                      <Checkbox defaultChecked />
+                    </span>
+                  </div>
+                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
+                    <span className="flex-1 text-right">
+                      Total of Labor:
+                    </span> 
+                    <span className="w-[50px] text-right">30%</span>
+                    <span className="w-[120px] text-right">Php300,000</span>
+                    <span className="w-[20px] flex items-center"> 
+                      <Checkbox defaultChecked />
+                    </span>
+                  </div>
+                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
+                    <span className="flex-1 text-right">
+                      Contingency:
+                    </span> 
+                    <span className="w-[50px] text-right">5%</span>
+                    <span className="w-[120px] text-right">Php50,000</span>
+                    <span className="w-[20px] flex items-center"> 
+                      <Checkbox defaultChecked />
+                    </span>
+                  </div>
+                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
+                    <span className="flex-1 text-right">
+                      Contractor's Profit:
+                    </span> 
+                    <span className="w-[50px] text-right">12.5%</span>
+                    <span className="w-[120px] text-right">Php125,000</span>
+                    <span className="w-[20px] flex items-center"> 
+                      <Checkbox defaultChecked />
+                    </span>
+                  </div>
+                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
+                    <span className="flex-1 text-right">
+                      Tax:
+                    </span> 
+                    <span className="w-[50px] text-right">12.5%</span>
+                    <span className="w-[120px] text-right">Php125,000</span>
+                    <span className="w-[20px] flex items-center"> 
+                      <Checkbox defaultChecked />
+                    </span>
+                  </div>
+                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
+                    <span className="flex-1 text-right font-bold">
+                      Total Project Cost:
+                    </span> 
+                    <span className="w-[50px] text-right"> </span>
+                    <span className="w-[120px] text-right font-bold">Php1,600,000</span>
+                    <span className="w-[20px] flex items-center"> 
+                      <Checkbox defaultChecked />
+                    </span>
+                  </div>
+                   
+                   
+                  
+                </div>
+              
+              
+              
+
+            </Box>
           </Flex>
-          
-
-          <div className="flex flex-col gap-2 border-4">
-          
-            <div className="flex justify-end cursor-default">
-              <span>Total of Materials:</span>
-              <span className="w-12 opacity-60"></span>
-              <span className="w-24">{ }</span>
-              <span className="flex items-center w-8 justify-end"></span>
-            </div>
-            <div className="flex justify-end items-center cursor-pointer">
-              <span>Total Labor:</span>
-              <span className="w-12 opacity-60">{30}%</span>
-              <span className="w-24">{ }</span>
-              <span className="flex items-center w-8 justify-end"><input type="checkbox" className="h-4 w-4" name="isLabor" /></span>
-            </div>
-            <div className="flex justify-end text-sm cursor-pointer">
-              <span>Contingency of Materials:</span>
-              <span className="w-12 opacity-60">{5}%</span>
-              <span className="w-24">{ }</span>
-              <span className="flex items-center w-8 justify-end"><input type="checkbox" className="h-4 w-4" name="isContingencyMaterials" /></span>
-            </div>
-            <div className="flex justify-end text-sm cursor-pointer">
-              <span>Contractor&apos;s Profit:</span>
-              <span className="w-12 opacity-60">{15}%</span>
-              <span className="w-24">{ }</span>
-              <span className="flex items-center w-8 justify-end"><input type="checkbox" className="h-4 w-4" name="isContractorsProfit" /></span>
-            </div>
-            <div className="flex justify-end text-sm cursor-pointer">
-              <span>Tax:</span>
-              <span className="w-12 opacity-60">{12.5}%</span>
-              <span className="w-24">{ }</span>
-              <span className="flex items-center w-8 justify-end"><input type="checkbox" className="h-4 w-4" name="isTax" /></span>
-            </div>
-            
-            <div className="flex justify-end cursor-default">
-              <span>Total Project Cost:</span>
-              <span className="w-12 opacity-60"></span>
-              <span className="w-24">{ }</span>
-              <span className="flex items-center w-8 justify-end"></span>
-            </div>
-            
-
-          </div>
-        </div>
         </Box>
           
-        </div>
+
+           
 
       
       </div>
