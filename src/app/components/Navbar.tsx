@@ -5,6 +5,7 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import classNames from 'classnames';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import { logout } from '../logout/actions';
+import Link from 'next/link';
 
 type ListItemProps = {
   className?: string
@@ -95,11 +96,18 @@ const Navbar:React.FC = () => {
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
-          <NavigationMenu.Link
+          {/* <NavigationMenu.Link
             className="text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
             href="https://github.com/radix-ui"
           >
             Github
+          </NavigationMenu.Link> */}
+          <NavigationMenu.Link
+            className="text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
+            href="#"
+          >
+
+            <Link href="/account">Github</Link>
           </NavigationMenu.Link>
         </NavigationMenu.Item>
         <NavigationMenu.Item>

@@ -2,6 +2,8 @@
  
 import React, { useEffect, useState } from 'react' 
 import { createClient } from '../../../utils/supabase/client'
+import { Box } from '@radix-ui/themes'
+import { logout } from '../logout/actions'
 
 const DemoClientComponent = () => {
     const [user, setUser] = useState<any | null>(null)
@@ -28,7 +30,21 @@ const DemoClientComponent = () => {
 
     return (
     
-        <div>DemoClientComponent</div>  
+        <Box className='bg-gray-100 rounded p-2'>
+             <div className='w-full flex justify-between'>
+                <div>
+                    Hi, Jones
+                </div>
+                <form action={logout}>
+                  <button type="submit">
+                    Logout
+                  </button>
+
+                </form>
+
+              </div> 
+            
+        </Box>  
   )
 }
 

@@ -5,7 +5,10 @@ import '@radix-ui/themes/styles.css';
 import { Theme, ThemePanel } from "@radix-ui/themes";
 import Navbar from "./components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: 'swap', 
+});
 
 export const metadata: Metadata = {
   title: "Materyales",
@@ -21,8 +24,7 @@ export default function RootLayout({
     <html lang="en">
         <body className={inter.className}>
           <Theme accentColor="crimson">
-            <Navbar />
-            
+            <Navbar /> 
             <ThemePanel />
             {children}
           </Theme>

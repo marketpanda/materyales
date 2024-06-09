@@ -18,6 +18,11 @@ const config: Config = {
         ...purple,
         ...indigo,
       },
+      fontFamily: {
+        // <link href="https://fonts.googleapis.com/css2?family=  :ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        sans: ['Roboto', 'sans-serif'],
+        heading: ['Montserrat', 'sans-serif']
+      },
       keyframes: {
         enterFromRight: {
           from: { opacity: '0', transform: 'translateX(200px)' },
