@@ -142,7 +142,7 @@ function Home() {
       <div className="w-full sm:w-[640px] flex flex-col gap-2"> 
        
         <Box className="rounded-md shadow bg-white borderd p-4 mt-2 flex sm:flex-row flex-col gap-2">
-          <Flex  wrap="wrap" gap="3" justify="between">
+          <Flex  wrap="wrap" gap="3" justify="between" className="w-full border-4">
             <Box className="sm:flex-1 w-full rounded">
               <div className="overflow-hidden sm:h-full h-[300px] bg-blue-300 relative rounded">
                 <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
