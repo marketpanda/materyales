@@ -31,7 +31,7 @@ function Home() {
   const [width, setWidth] = useState<number | null>(null)
   const [length, setLength] = useState<number | null>(null)
 
-  const [area, setArea] = useState<null | number>(null)
+  const [area, setArea] = useState<null | number | string >(null)
 
   const [tilesTiles, setTilesTiles] = useState<number>(0)
   const [tilesGrout, setTilesGrout] = useState<number>(0)
@@ -96,10 +96,9 @@ function Home() {
     
     console.log('compute tiles')
     let tmpArea
-    if (typeof area === "string") {
-      tmpArea = parseFloat(area)
-    }
-
+    
+    tmpArea = area
+    
     if (typeof tmpArea === "number") {
 
       const numOfTiles = Math.ceil(tmpArea / .36)
@@ -111,9 +110,9 @@ function Home() {
   
   const computeTilesGrout = ():void => { 
     let tmpArea 
-    if (typeof area === "string") { 
-      tmpArea = parseFloat(area)
-    }
+     
+      tmpArea = area
+     
     if (typeof tmpArea === "number") {
   
       const kgOfGrout = tmpArea / 4

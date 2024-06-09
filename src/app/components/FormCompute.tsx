@@ -4,7 +4,7 @@ import * as Form from '@radix-ui/react-form'
 type ComputeParams = {
     length: number | null,
     width: number | null,
-    area: number | null,
+    area: number | null | string,
     handleLengthChange: (e:React.ChangeEvent<HTMLInputElement>) => void,
     handleWidthChange: (e:React.ChangeEvent<HTMLInputElement>) => void,
     handleAreaChange: (e:React.ChangeEvent<HTMLInputElement>) => void,
@@ -19,9 +19,7 @@ const FormCompute:React.FC<ComputeParams> = ({
     handleWidthChange,
     handleAreaChange,
     estimateNow
-}) => {
-
-   
+}) => { 
     
     return (
     <div>
@@ -34,9 +32,7 @@ const FormCompute:React.FC<ComputeParams> = ({
                 <Form.Message className="text-[13px] opacity-[0.8]" match="valueMissing">
                 Please enter a length in meters
                 </Form.Message>
-                {/* <Form.Message className="text-[13px]  opacity-[0.8]" match="typeMismatch">
-                Please enter a valid length
-                </Form.Message> */}
+               
             </div>
             <Form.Control asChild>
                 <input
