@@ -289,7 +289,7 @@ function Home() {
         <Box className="rounded-md shadow bg-white borderd flex sm:flex-row flex-col gap-2">
         
         {/* <div className="w-full flex flex-col gap-2"> */}
-           <Flex wrap="wrap-reverse">
+           <Flex wrap="wrap-reverse" className="w-full">
 
            
             <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden">
