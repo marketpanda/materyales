@@ -1,16 +1,12 @@
 "use client"
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { FlyOut } from "./components/FlyOut";
-import { comma } from "postcss/lib/list";
+import { useEffect, useState } from "react"; 
 
-import { Text, Button, Card, Heading, Table, Flex, Checkbox, Box } from "@radix-ui/themes";
-import * as Form from '@radix-ui/react-form'
+import { Heading, Table, Flex, Checkbox, Box } from "@radix-ui/themes"; 
 
 import axios from 'axios'
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import { logout } from "./logout/actions";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query"; 
 import DemoClientComponent from "./components/DemoClientComponent";
 import FormCompute from "./components/FormCompute";
 
@@ -21,11 +17,9 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Home />
     </QueryClientProvider>
-  )
-  
+  ) 
 }
-
-
+ 
 
 function Home() {
   const [width, setWidth] = useState<number | null>(null)
@@ -34,13 +28,11 @@ function Home() {
   const [area, setArea] = useState<null | number | string >(null)
 
   const [tilesTiles, setTilesTiles] = useState<number>(0)
-  const [tilesGrout, setTilesGrout] = useState<number>(0)
-
+  const [tilesGrout, setTilesGrout] = useState<number>(0) 
 
   const displayArea = () => {
      if (typeof width === 'number' && typeof length === 'number') {
-      const area2: number = width * length;
-
+      const area2: number = width * length; 
       const cleanDecimals: number = parseFloat(area2.toFixed(2))
       setArea(cleanDecimals);
     }
@@ -50,7 +42,6 @@ function Home() {
     
   }, [width, length])
   
- 
 
   const { data:any, isLoading } = useQuery({
     queryKey: ['exampleData'],
@@ -61,9 +52,6 @@ function Home() {
       return data 
     }
   })
-   
-   
-  console.log(isLoading)
 
   useEffect(() => {
     displayArea()
@@ -111,10 +99,9 @@ function Home() {
   const computeTilesGrout = ():void => { 
     let tmpArea 
      
-      tmpArea = area
+    tmpArea = area
      
     if (typeof tmpArea === "number") {
-  
       const kgOfGrout = tmpArea / 4
       setTilesGrout(kgOfGrout)
     }
@@ -165,69 +152,7 @@ function Home() {
               handleAreaChange = {handleAreaChange}  
               estimateNow = {estimateNow}
             /> 
-
-              {/* <form className="flex flex-col gap-2">
-                <div className="flex flex-col sm:flex-row gap-2 items-center">
-                  <div className="w-full sm:w-20 px-2 text-left sm:text-right font-bold">
-                    Length
-                  </div>
-                  <div className="flex w-full items-center bg-white">
-                    <input
-                      value={!length ? '' : length}
-                      onChange={handleLengthChange}
-                      placeholder="Type a length"
-                      type="number"
-                      name="length"
-                      className="p-2 w-full outline-none font-bold text-purple-800 text-2xl text-right" />
-                    <div className="w-16 text-left text-2xl font-bold text-purple-800">
-                      m
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-2 items-center">
-                  <div className="w-full sm:w-20 px-2 text-left sm:text-right font-bold">
-                    Width
-                  </div>
-                  <div className="flex w-full items-center bg-white">
-                    <input
-                      value={!width ? '' : width}
-                      onChange={handleWidthChange}
-                      placeholder="Type a width"
-                      type="number"
-                      name="length"
-                      className="p-2 w-full outline-none font-bold text-purple-800 text-2xl text-right" />
-                    <div className="w-16 text-left text-2xl font-bold text-purple-800">
-                      m
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-2 items-center">
-                  <div className="w-full sm:w-20 px-2 text-left sm:text-right font-bold">
-                    Area
-                  </div>
-                  <div className="flex w-full items-center bg-white">
-                    <input
-                      value={!area ? '' : area}
-                      onChange={handleAreaChange}
-                      onClick={handleDirectArea}
-                      placeholder="Type an area or generate"
-                      type="number"
-                      name="length"
-                      className="p-2 w-full outline-none font-bold text-purple-800 text-2xl text-right" />
-                    <div className="w-16 text-left text-2xl font-bold text-purple-800">
-                      sqm
-                    </div>
-                  </div>
-                </div> 
-                <div className="flex">
-                  <Button
-                    style={{ width: '100%'}} 
-                    size="3"
-                    onClick={estimateNow}>
-                    Estimate
-                  </Button>
-                </div>
-              </form> */}
+ 
             </Box> 
           </Flex> 
         </Box>
@@ -298,9 +223,8 @@ function Home() {
               </div>
             </Box> 
             <Box className="border w-full sm:w-2/3 p-4 pb-10">
-              
-                <div className="flex flex-col w-full text-sm">
-                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
+              <div className="flex flex-col w-full text-sm">
+                <div className="flex justify-end gap-4 w-full items-center p-1"> 
                     <span className="flex-1 text-right">
                       Total of Materials:
                     </span> 

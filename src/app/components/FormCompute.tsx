@@ -84,12 +84,12 @@ const FormCompute:React.FC<ComputeParams> = ({
                 </Form.Control>
             </Form.Field>
             <Form.Submit asChild>
-            <button
-                className="box-border w-full text-violet shadow-blackA4 hover:bg-purple-500 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-purple-800 text-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]"
-                onClick={estimateNow}
-                >
-                Estimate
-            </button>
+                <button
+                    className="box-border w-full text-violet shadow-blackA4 hover:bg-purple-500 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-purple-800 text-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]"
+                    onClick={estimateNow}
+                    >
+                    Estimate
+                </button>
             </Form.Submit>
         </Form.Root> 
     </div>
