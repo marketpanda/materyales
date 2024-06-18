@@ -2,13 +2,12 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react"; 
-
 import { Heading, Table, Flex, Checkbox, Box } from "@radix-ui/themes"; 
-
 import axios from 'axios'
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query"; 
 import DemoClientComponent from "./components/DemoClientComponent";
 import FormCompute from "./components/FormCompute";
+import { priceMaterialsTiles } from "./constants/numbers";
 
 const queryClient = new QueryClient()
 
@@ -25,11 +24,63 @@ function Home() {
   const [width, setWidth] = useState<number | null>(null)
   const [length, setLength] = useState<number | null>(null)
 
+  type DimensionsBasicType = {
+    width?: number | null,
+    length?: number | null,
+    area?: number | null
+  }
+
+  const [dimensions, setDimensions] = useState<DimensionsBasicType>({
+    width: 0,
+    length: 0,
+    area: 0
+  })
+
   const [area, setArea] = useState<null | number | string >(null)
 
   const [tilesTiles, setTilesTiles] = useState<number>(0)
   const [tilesGrout, setTilesGrout] = useState<number>(0) 
 
+  type singleComponent = {
+    qty: number,
+    units: string,
+    price?: number,
+    total?: number
+  }
+
+  type componentTilesType = {
+    tiles: singleComponent | null,
+    grout?:singleComponent | null,
+  }
+
+  const initialComponentTiles = {
+    tiles: { qty: 0, units: 'pcs', price: priceMaterialsTiles.tiles },
+    grout: { qty: 0, units: 'kg', price: priceMaterialsTiles.grout }
+  }
+
+  const [componentTilesNumbers, setComponentTilesNumbers] = useState<componentTilesType>(initialComponentTiles)
+
+  //use function instead of useState
+  const [runningTotalMaterials, setRunningTotalMaterials] = useState<number>(0) 
+
+  const summaryBreakdown = {
+    sbTotalMaterials: null,
+    sbLabor: null, 
+    sbContingency: null,
+    sbContractorsProfit: null,
+    sbTax: null,
+  }
+
+  type sbType = {
+    sbTotalMaterials?: number | null,
+    sbLabor?: number | null, 
+    sbContingency?: number | null,
+    sbContractorsProfit?: number | null,
+    sbTax?: number | null,
+  }
+
+  const [summaryBreakdownState, setSummaryBreakdownState] = useState<sbType>(summaryBreakdown) 
+  
   const displayArea = () => {
      if (typeof width === 'number' && typeof length === 'number') {
       const area2: number = width * length; 
@@ -37,48 +88,58 @@ function Home() {
       setArea(cleanDecimals);
     }
   }
+ 
 
-  useEffect(() => {
-    
-  }, [width, length])
-  
+  // const { data:any, isLoading } = useQuery({
+  //   queryKey: ['exampleData'],
+  //   queryFn: async () => {
+  //     await new Promise((resolve) => setTimeout(resolve, 2000))
+  //     const data = await axios.get('https://jsonplaceholder.typicode.com/posts/1')      
+  //     return data 
+  //   }
+  // })
 
-  const { data:any, isLoading } = useQuery({
-    queryKey: ['exampleData'],
-    queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      const data = await axios.get('https://jsonplaceholder.typicode.com/posts/1')
-      
-      return data 
-    }
-  })
-
-  useEffect(() => {
-    displayArea()
+  useEffect(() => { 
+    const timeoutId = setTimeout(() => { 
+      displayArea()
+    }, 500)
 
     return () => {
-
+      clearTimeout(timeoutId)
     }
   }, [width, length])
 
-  useEffect(() => {
-    console.log(area)
-     
-    return () => {
+ 
+  type DimensionKey = 'length' | 'width' | 'area'
 
-    }
-  }, [area])
-
+  const updateValue = (param: Partial<{ [key in DimensionKey]: number | null  }> ) => { 
+    setDimensions(prev => ({ ...prev, ...param })) 
+  }
 
   const handleLengthChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const value  = parseFloat(e.target.value)
-    setLength(isNaN(value) ? null : value)
-    
+    setLength(isNaN(value) ? null : value) 
+    updateValue({ length: (isNaN(value) ? null : value) })
+     
   }
   
   const handleWidthChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value)
     setWidth(parseFloat(e?.target.value))
+    updateValue({ width: (isNaN(value) ? null : value)})
   }
+
+  const handleAreaChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value)
+    setArea(parseFloat(e?.target.value))
+    setWidth(0)
+    setLength(0)
+    updateValue({ width: 0, length: 0, area: (isNaN(value) ? null : value)})
+  }
+
+  useEffect(() => {
+    console.log(dimensions)
+  }, [dimensions])
 
   const computeTilesTiles = ():void => {
     
@@ -87,11 +148,12 @@ function Home() {
     
     tmpArea = area
     
-    if (typeof tmpArea === "number") {
+    if (typeof tmpArea === "number") { 
+      const numOfTiles = Math.ceil(tmpArea / .36) 
+      setTilesTiles(numOfTiles) 
 
-      const numOfTiles = Math.ceil(tmpArea / .36)
-
-      setTilesTiles(numOfTiles)
+      const forTotal = numOfTiles * (priceMaterialsTiles.tiles ?? 0)
+      setRunningTotalMaterials(prev => prev + forTotal)
     }
   
   }
@@ -104,6 +166,9 @@ function Home() {
     if (typeof tmpArea === "number") {
       const kgOfGrout = tmpArea / 4
       setTilesGrout(kgOfGrout)
+
+      const forTotal = kgOfGrout * (priceMaterialsTiles.grout ?? 0)
+      setRunningTotalMaterials(prev => prev + forTotal)
     }
   }
 
@@ -113,17 +178,17 @@ function Home() {
     setArea(null)
   }
 
-  const handleAreaChange = (e:any) => {
-    setArea(parseFloat(e.target.value))
-  }
-
   const estimateNow = (e:any) => {
     e.preventDefault()
     computeTilesTiles()
     computeTilesGrout() 
+
+    console.log(runningTotalMaterials)
+    setSummaryBreakdownState(prev => ({...prev, sbTotalMaterials: runningTotalMaterials}))
+    console.log(summaryBreakdownState)
   }
 
-   
+  
   return (
     <main className="flex min-h-screen flex-col items-center gap-2 bg-gray-100 border">
       <div className="w-full sm:w-[640px] flex flex-col gap-2"> 
@@ -144,9 +209,9 @@ function Home() {
               </Heading>
 
             <FormCompute
-              length={length}
-              width={width}
-              area={area}
+              length = {length}
+              width = {width}
+              area = {area}
               handleLengthChange = {handleLengthChange}
               handleWidthChange = {handleWidthChange}  
               handleAreaChange = {handleAreaChange}  
@@ -175,7 +240,7 @@ function Home() {
                   </div>
                 </Table.RowHeaderCell>
                 <Table.Cell> tiles</Table.Cell>
-                <Table.Cell> {tilesTiles} (60x60cm tiles)</Table.Cell>
+                <Table.Cell>{tilesTiles} (60x60cm tiles)</Table.Cell>
                 <Table.Cell>
                   <input value={500} className="w-28  outline-none" onChange={() => console.log('tiles')}  />
                 </Table.Cell>
@@ -229,7 +294,7 @@ function Home() {
                       Total of Materials:
                     </span> 
                     <span className="w-[50px] text-right"> </span>
-                    <span className="w-[120px] text-right">Php1,000,000</span>
+                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbTotalMaterials }</span>
                     <span className="w-[20px] flex items-center"> 
                       <Checkbox defaultChecked />
                     </span>
@@ -284,26 +349,11 @@ function Home() {
                       <Checkbox defaultChecked />
                     </span>
                   </div>
-                   
-                   
-                  
                 </div>
-              
-              
-              
-
             </Box>
           </Flex>
         </Box>
-          
-
-           
-
-      
       </div>
-
-
-     
     </main>
   );
 }
