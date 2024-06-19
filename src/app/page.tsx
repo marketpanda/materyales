@@ -60,8 +60,7 @@ function Home() {
 
   const [componentTilesNumbers, setComponentTilesNumbers] = useState<componentTilesType>(initialComponentTiles)
 
-  //use function instead of useState
-  const [runningTotalMaterials, setRunningTotalMaterials] = useState<number>(0) 
+ 
 
   const summaryBreakdown = {
     sbTotalMaterials: null,
@@ -137,9 +136,43 @@ function Home() {
     updateValue({ width: 0, length: 0, area: (isNaN(value) ? null : value)})
   }
 
+
+  const computeTotalOfMaterials = (componentArray: componentTilesType) => {
+    let total:number = 0
+    for (const material in componentArray) {
+      const component = componentArray[material as keyof componentTilesType]
+      if (component) {
+        const qty = component.qty ?? 0
+        const price = component.price ?? 0
+        total += qty * price
+      }
+    }
+    return total
+  } 
+
   useEffect(() => {
     console.log(dimensions)
   }, [dimensions])
+
+
+  useEffect(() => {
+    console.log(componentTilesNumbers)
+    const totalMaterials = computeTotalOfMaterials(componentTilesNumbers)
+    const tax = totalMaterials * .125
+    const labor = totalMaterials * .25
+    const contingency = totalMaterials * .05
+    const contractorProfit = totalMaterials * .125
+    
+    console.log(totalMaterials)
+    setSummaryBreakdownState(prev => ({...prev,
+      sbTotalMaterials: totalMaterials,
+      sbLabor: labor,
+      sbTax: tax,
+      sbContingency: contingency,
+      sbContractorsProfit: contractorProfit
+    }))
+    
+  }, [componentTilesNumbers])
 
   const computeTilesTiles = ():void => {
     
@@ -152,8 +185,11 @@ function Home() {
       const numOfTiles = Math.ceil(tmpArea / .36) 
       setTilesTiles(numOfTiles) 
 
+      setComponentTilesNumbers((prev:componentTilesType) => ({...prev, tiles: prev.tiles ? { ...prev.tiles, qty: numOfTiles } : null}))
+
+
       const forTotal = numOfTiles * (priceMaterialsTiles.tiles ?? 0)
-      setRunningTotalMaterials(prev => prev + forTotal)
+      
     }
   
   }
@@ -167,8 +203,11 @@ function Home() {
       const kgOfGrout = tmpArea / 4
       setTilesGrout(kgOfGrout)
 
+      console.log(kgOfGrout)
+      setComponentTilesNumbers((prev:componentTilesType) => ({...prev, grout: prev.grout ? { ...prev.grout,   qty: kgOfGrout } : null}))
+
       const forTotal = kgOfGrout * (priceMaterialsTiles.grout ?? 0)
-      setRunningTotalMaterials(prev => prev + forTotal)
+       
     }
   }
 
@@ -178,14 +217,13 @@ function Home() {
     setArea(null)
   }
 
+  
+
   const estimateNow = (e:any) => {
     e.preventDefault()
     computeTilesTiles()
     computeTilesGrout() 
-
-    console.log(runningTotalMaterials)
-    setSummaryBreakdownState(prev => ({...prev, sbTotalMaterials: runningTotalMaterials}))
-    console.log(summaryBreakdownState)
+    console.log(componentTilesNumbers)
   }
 
   
@@ -242,11 +280,11 @@ function Home() {
                 <Table.Cell> tiles</Table.Cell>
                 <Table.Cell>{tilesTiles} (60x60cm tiles)</Table.Cell>
                 <Table.Cell>
-                  <input value={500} className="w-28  outline-none" onChange={() => console.log('tiles')}  />
+                  <input value={ componentTilesNumbers?.tiles?.price } className="w-28  outline-none" onChange={() => console.log('tiles')}  />
                 </Table.Cell>
                 <Table.Cell pr="5">
                    <span className="justify-end pr-5  flex w-full bg-gray-100 rounded-full p-2"> 
-                  {tilesTiles * 500 }
+                  {componentTilesNumbers.tiles?.price ? tilesTiles * componentTilesNumbers.tiles.price : 0 }
                   </span>
                 </Table.Cell>
               </Table.Row>
@@ -259,11 +297,12 @@ function Home() {
                 <Table.Cell>grout</Table.Cell>
                 <Table.Cell>{tilesGrout}kg</Table.Cell>
                 <Table.Cell>
-                  210
+                  <input value={componentTilesNumbers?.grout?.price} className="w-28  outline-none" onChange={() => console.log('tiles')}  />
                 </Table.Cell>
                 <Table.Cell pr="5">
                   <span className="justify-end pr-5  flex w-full bg-gray-100 rounded-full p-2">   
-                  {tilesGrout * 210 }
+                  {componentTilesNumbers.grout?.price ? tilesGrout * componentTilesNumbers.grout.price : 0 }
+                  
                   </span>
                 </Table.Cell>
               </Table.Row>
@@ -304,7 +343,7 @@ function Home() {
                       Total of Labor:
                     </span> 
                     <span className="w-[50px] text-right">30%</span>
-                    <span className="w-[120px] text-right">Php300,000</span>
+                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbLabor }</span>
                     <span className="w-[20px] flex items-center"> 
                       <Checkbox defaultChecked />
                     </span>
@@ -314,7 +353,7 @@ function Home() {
                       Contingency:
                     </span> 
                     <span className="w-[50px] text-right">5%</span>
-                    <span className="w-[120px] text-right">Php50,000</span>
+                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbContingency }</span>
                     <span className="w-[20px] flex items-center"> 
                       <Checkbox defaultChecked />
                     </span>
@@ -324,7 +363,7 @@ function Home() {
                       Contractor's Profit:
                     </span> 
                     <span className="w-[50px] text-right">12.5%</span>
-                    <span className="w-[120px] text-right">Php125,000</span>
+                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbContractorsProfit }</span>
                     <span className="w-[20px] flex items-center"> 
                       <Checkbox defaultChecked />
                     </span>
@@ -334,7 +373,7 @@ function Home() {
                       Tax:
                     </span> 
                     <span className="w-[50px] text-right">12.5%</span>
-                    <span className="w-[120px] text-right">Php125,000</span>
+                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbTax }</span>
                     <span className="w-[20px] flex items-center"> 
                       <Checkbox defaultChecked />
                     </span>
@@ -344,7 +383,7 @@ function Home() {
                       Total Project Cost:
                     </span> 
                     <span className="w-[50px] text-right"> </span>
-                    <span className="w-[120px] text-right font-bold">Php1,600,000</span>
+                    <span className="w-[120px] text-right font-bold">{ Object.values(summaryBreakdownState).reduce((a, b) => (a ?? 0 )+ (b ?? 0), 0) }</span>
                     <span className="w-[20px] flex items-center"> 
                       <Checkbox defaultChecked />
                     </span>
