@@ -1,13 +1,15 @@
 "use client"
 
 import Image from "next/image";
-import { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react"; 
 import { Heading, Table, Flex, Checkbox, Box } from "@radix-ui/themes"; 
 import axios from 'axios'
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query"; 
 import DemoClientComponent from "./components/DemoClientComponent";
 import FormCompute from "./components/FormCompute";
 import { priceMaterialsTiles } from "./constants/numbers";
+import ComponentBrandPortal from "./components/ComponentBrandPortal";
+import ComponentBrandPortalSimple from "./components/ComponentBrandPortalSimple";
 
 const queryClient = new QueryClient()
 
@@ -24,12 +26,36 @@ function Home() {
   const [width, setWidth] = useState<number | null>(null)
   const [length, setLength] = useState<number | null>(null)
 
+  type ShowcaseType = {
+    [key: string]: boolean | undefined | null
+  }
+  
+  const tilesShowcaseInitial:ShowcaseType = {
+    tiles: false,
+    grout: false
+  }
+
+  const [showcaseComponent, setShowcaseComponent] = useState<ShowcaseType>(tilesShowcaseInitial)
+
+  const handleClickShowcaseComponent = (component:string) => {
+    console.log("component is ", component) 
+    setShowcaseComponent(prev => ({...prev, [component]: !prev[component]}))
+    console.log(showcaseComponent) 
+  }
+
+  // <ComponentBrandPortalSimple
+  //    showcaseComponent="grout"
+  //    setShowcaseComponent={setShowcaseComponent}  
+  //    handleClickShowcaseComponent={() => handleClickShowcaseComponent("grout")}
+  // />
+
+
   type DimensionsBasicType = {
     width?: number | null,
     length?: number | null,
     area?: number | null
   }
-
+tilesShowcaseInitial
   const [dimensions, setDimensions] = useState<DimensionsBasicType>({
     width: 0,
     length: 0,
@@ -41,17 +67,19 @@ function Home() {
   const [tilesTiles, setTilesTiles] = useState<number>(0)
   const [tilesGrout, setTilesGrout] = useState<number>(0) 
 
-  type singleComponent = {
+  //should be importable for incoming components as well
+  type singleComponent = { 
     qty: number,
     units: string,
     price?: number,
     total?: number
   }
-
+  
+  //should be importable for incoming components as well
   type componentTilesType = {
-    tiles: singleComponent | null,
-    grout?:singleComponent | null,
+    [key: string]: singleComponent | null | undefined, 
   }
+
 
   const initialComponentTiles = {
     tiles: { qty: 0, units: 'pcs', price: priceMaterialsTiles.tiles },
@@ -60,7 +88,6 @@ function Home() {
 
   const [componentTilesNumbers, setComponentTilesNumbers] = useState<componentTilesType>(initialComponentTiles)
 
- 
 
   const summaryBreakdown = {
     sbTotalMaterials: null,
@@ -183,13 +210,10 @@ function Home() {
     
     if (typeof tmpArea === "number") { 
       const numOfTiles = Math.ceil(tmpArea / .36) 
-      setTilesTiles(numOfTiles) 
-
+      setTilesTiles(numOfTiles)  
       setComponentTilesNumbers((prev:componentTilesType) => ({...prev, tiles: prev.tiles ? { ...prev.tiles, qty: numOfTiles } : null}))
-
-
-      const forTotal = numOfTiles * (priceMaterialsTiles.tiles ?? 0)
-      
+ 
+      const forTotal = numOfTiles * (priceMaterialsTiles.tiles ?? 0)  
     }
   
   }
@@ -225,6 +249,8 @@ function Home() {
     computeTilesGrout() 
     console.log(componentTilesNumbers)
   }
+
+ 
 
   
   return (
@@ -271,13 +297,21 @@ function Home() {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              <Table.Row>
+              {/* <Table.Row>
                 <Table.RowHeaderCell px="4">
                   <div className="rounded-full w-12 h-12 overflow-hidden">
                     <img src="https://picsum.photos/id/237/200/300" />
                   </div>
                 </Table.RowHeaderCell>
-                <Table.Cell> tiles</Table.Cell>
+                <Table.Cell>
+                  tiles
+                  
+                  <ComponentBrandPortalSimple 
+                    showcaseComponent={showcaseComponent}
+                    setShowcaseComponent={setShowcaseComponent}  
+                    handleClickShowcaseComponent={() => handleClickShowcaseComponent("tiles")}
+                  />
+                </Table.Cell>
                 <Table.Cell>{tilesTiles} (60x60cm tiles)</Table.Cell>
                 <Table.Cell>
                   <input value={ componentTilesNumbers?.tiles?.price } className="w-28  outline-none" onChange={() => console.log('tiles')}  />
@@ -288,13 +322,33 @@ function Home() {
                   </span>
                 </Table.Cell>
               </Table.Row>
+
+              {  
+                showcaseComponent["tiles"] ? (
+                  <Table.Row>
+                    <Table.Cell colSpan={5}>Tiles Showcase Here</Table.Cell>
+                  </Table.Row>
+                ) : "" 
+              }
+              
+ 
+ 
               <Table.Row  >
                 <Table.RowHeaderCell px="4" pb="5">
                   <div className="rounded-full w-12 h-12 overflow-hidden">
                     <img src="https://picsum.photos/id/237/200/300" />
                   </div>
                 </Table.RowHeaderCell>
-                <Table.Cell>grout</Table.Cell>
+                <Table.Cell>
+                  <div className="mb-2">
+                    grout
+                  </div>
+                  <ComponentBrandPortalSimple 
+                    showcaseComponent={showcaseComponent}
+                    setShowcaseComponent={setShowcaseComponent}  
+                    handleClickShowcaseComponent={() => handleClickShowcaseComponent("grout")}
+                  />
+                </Table.Cell>
                 <Table.Cell>{tilesGrout}kg</Table.Cell>
                 <Table.Cell>
                   <input value={componentTilesNumbers?.grout?.price} className="w-28  outline-none" onChange={() => console.log('tiles')}  />
@@ -304,6 +358,77 @@ function Home() {
                   {componentTilesNumbers.grout?.price ? tilesGrout * componentTilesNumbers.grout.price : 0 }
                   
                   </span>
+                </Table.Cell>
+              </Table.Row>
+              { 
+
+                showcaseComponent["grout"] ? (
+
+                <Table.Row>
+                  <Table.Cell colSpan={5}>Tiles Grout Showcase Here</Table.Cell>
+                </Table.Row>
+                ) : ""
+
+              } */}
+
+              {
+                Object.keys(componentTilesNumbers).map(key => (
+                  <React.Fragment key={key}>
+                      <Table.Row>
+                        <Table.RowHeaderCell px="4">
+                          <div className="rounded-full w-12 h-12 overflow-hidden">
+                            <img src="https://picsum.photos/id/237/200/300" />
+                          </div>
+                        </Table.RowHeaderCell>
+                        <Table.Cell>
+                          <div className="flex flex-col gap-2">
+
+                            {key}
+                            {/* <ComponentBrandPortal /> */}
+                            <ComponentBrandPortalSimple 
+                              keyComponent={key}
+                              showcaseComponent={showcaseComponent}
+                              setShowcaseComponent={setShowcaseComponent}  
+                              handleClickShowcaseComponent={() => handleClickShowcaseComponent(key)}
+                            />
+                          </div>
+                        </Table.Cell>
+                        <Table.Cell>{`${componentTilesNumbers[key]?.qty} ${componentTilesNumbers[key]?.units}`}</Table.Cell>
+                        <Table.Cell>
+                          <input value={ componentTilesNumbers[key]?.price } className="w-28  outline-none" onChange={() => console.log('tiles')}  />
+                        </Table.Cell>
+                        <Table.Cell pr="5">
+                          <span className="justify-end pr-5  flex w-full bg-gray-100 rounded-full p-2"> 
+                              {
+                                (componentTilesNumbers[key]?.qty ?? 0) * (componentTilesNumbers[key]?.price ?? 0)
+                              }
+                              {
+                                 
+                              } 
+                          </span>
+                        </Table.Cell>
+                      </Table.Row>
+
+                      {  
+                        showcaseComponent[key] ? (
+                          <Table.Row>
+                            <Table.Cell colSpan={5}>{key} Showcase Here</Table.Cell>
+                          </Table.Row>
+                        ) : "" 
+                      }
+
+                  </React.Fragment>
+                ))
+              } 
+
+              <Table.Row>
+                <Table.Cell colSpan={5}>
+                  <pre className="text-xs">componentTilesNumbers</pre>
+                  <pre className="text-xs opacity-80">{JSON.stringify(componentTilesNumbers, null, 2)}</pre>
+                  <pre className="text-xs">summaryBreakdownState</pre>
+                  <pre className="text-xs opacity-80">{JSON.stringify(summaryBreakdownState, null, 2)}</pre>
+                  <pre className="text-xs">showcaseComponent</pre>
+                  <pre className="text-xs opacity-80">{JSON.stringify(showcaseComponent, null, 2)}</pre>
                 </Table.Cell>
               </Table.Row>
             </Table.Body>
