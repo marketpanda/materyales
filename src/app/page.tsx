@@ -55,7 +55,7 @@ function Home() {
     length?: number | null,
     area?: number | null
   }
-tilesShowcaseInitial
+// tilesShowcaseInitial
   const [dimensions, setDimensions] = useState<DimensionsBasicType>({
     width: 0,
     length: 0,
@@ -90,22 +90,32 @@ tilesShowcaseInitial
 
 
   const summaryBreakdown = {
-    sbTotalMaterials: null,
-    sbLabor: null, 
-    sbContingency: null,
-    sbContractorsProfit: null,
-    sbTax: null,
+    sbTotalMaterials: { include: true },
+    sbLabor: { include: true }, 
+    sbContingency: { include: true },
+    sbContractorsProfit: { include: true },
+    sbTax: { include: true },
   }
 
-  type sbType = {
-    sbTotalMaterials?: number | null,
-    sbLabor?: number | null, 
-    sbContingency?: number | null,
-    sbContractorsProfit?: number | null,
-    sbTax?: number | null,
+  type SbTypeStrand = {
+    value?: number,
+    include?: boolean
   }
 
-  const [summaryBreakdownState, setSummaryBreakdownState] = useState<sbType>(summaryBreakdown) 
+  type SbType = {
+    sbTotalMaterials?: SbTypeStrand | null,
+    sbLabor?: SbTypeStrand | null, 
+    sbContingency?: SbTypeStrand | null,
+    sbContractorsProfit?: SbTypeStrand | null,
+    sbTax?: SbTypeStrand | null,
+  }
+
+  const [summaryBreakdownState, setSummaryBreakdownState] = useState<SbType>(summaryBreakdown) 
+
+
+  
+
+
   
   const displayArea = () => {
      if (typeof width === 'number' && typeof length === 'number') {
@@ -192,11 +202,11 @@ tilesShowcaseInitial
     
     console.log(totalMaterials)
     setSummaryBreakdownState(prev => ({...prev,
-      sbTotalMaterials: totalMaterials,
-      sbLabor: labor,
-      sbTax: tax,
-      sbContingency: contingency,
-      sbContractorsProfit: contractorProfit
+      sbTotalMaterials: {...prev.sbTotalMaterials, value: totalMaterials},
+      sbLabor: {...prev.sbLabor, value: labor},
+      sbTax: {...prev.sbTax, value: tax},
+      sbContingency: {...prev.sbContingency, value: contingency},
+      sbContractorsProfit: {...prev.sbContractorsProfit, value: contractorProfit}
     }))
     
   }, [componentTilesNumbers])
@@ -249,6 +259,26 @@ tilesShowcaseInitial
     computeTilesGrout() 
     console.log(componentTilesNumbers)
   }
+
+
+  const toggleIncludeBreakdown = (breakdownComponent:keyof SbType) => { 
+    console.log(summaryBreakdownState)
+    setSummaryBreakdownState((prev) => {
+      const component = prev[breakdownComponent]
+      return {
+        ...prev,
+        [breakdownComponent]: component ?
+        {...component, include: !component.include } :
+        component
+      }
+    })
+  }
+
+  // const handleClickShowcaseComponent = (component:string) => {
+  //   console.log("component is ", component) 
+  //   setShowcaseComponent(prev => ({...prev, [component]: !prev[component]}))
+  //   console.log(showcaseComponent) 
+  // }
 
  
 
@@ -402,9 +432,6 @@ tilesShowcaseInitial
                               {
                                 (componentTilesNumbers[key]?.qty ?? 0) * (componentTilesNumbers[key]?.price ?? 0)
                               }
-                              {
-                                 
-                              } 
                           </span>
                         </Table.Cell>
                       </Table.Row>
@@ -453,66 +480,82 @@ tilesShowcaseInitial
             </Box> 
             <Box className="border w-full sm:w-2/3 p-4 pb-10">
               <div className="flex flex-col w-full text-sm">
-                <div className="flex justify-end gap-4 w-full items-center p-1"> 
-                    <span className="flex-1 text-right">
-                      Total of Materials:
-                    </span> 
-                    <span className="w-[50px] text-right"> </span>
-                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbTotalMaterials }</span>
-                    <span className="w-[20px] flex items-center"> 
-                      <Checkbox defaultChecked />
-                    </span>
-                  </div>
-                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
-                    <span className="flex-1 text-right">
-                      Total of Labor:
-                    </span> 
-                    <span className="w-[50px] text-right">30%</span>
-                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbLabor }</span>
-                    <span className="w-[20px] flex items-center"> 
-                      <Checkbox defaultChecked />
-                    </span>
-                  </div>
-                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
-                    <span className="flex-1 text-right">
-                      Contingency:
-                    </span> 
-                    <span className="w-[50px] text-right">5%</span>
-                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbContingency }</span>
-                    <span className="w-[20px] flex items-center"> 
-                      <Checkbox defaultChecked />
-                    </span>
-                  </div>
-                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
-                    <span className="flex-1 text-right">
-                      Contractor's Profit:
-                    </span> 
-                    <span className="w-[50px] text-right">12.5%</span>
-                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbContractorsProfit }</span>
-                    <span className="w-[20px] flex items-center"> 
-                      <Checkbox defaultChecked />
-                    </span>
-                  </div>
-                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
-                    <span className="flex-1 text-right">
-                      Tax:
-                    </span> 
-                    <span className="w-[50px] text-right">12.5%</span>
-                    <span className="w-[120px] text-right">{ summaryBreakdownState.sbTax }</span>
-                    <span className="w-[20px] flex items-center"> 
-                      <Checkbox defaultChecked />
-                    </span>
-                  </div>
-                  <div className="flex justify-end gap-4 w-full items-center p-1"> 
-                    <span className="flex-1 text-right font-bold">
-                      Total Project Cost:
-                    </span> 
-                    <span className="w-[50px] text-right"> </span>
-                    <span className="w-[120px] text-right font-bold">{ Object.values(summaryBreakdownState).reduce((a, b) => (a ?? 0 )+ (b ?? 0), 0) }</span>
-                    <span className="w-[20px] flex items-center"> 
-                      <Checkbox defaultChecked />
-                    </span>
-                  </div>
+                <div
+                  onClick={() => toggleIncludeBreakdown("sbTotalMaterials")}
+                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  <span className="flex-1 text-right">
+                    Total of Materials:
+                  </span> 
+                  <span className="w-[50px] text-right"> </span>
+                  <span className="w-[120px] text-right">{ summaryBreakdownState.sbTotalMaterials?.value }</span>
+                  <span className="w-[20px] flex items-center"> 
+                    <Checkbox checked={summaryBreakdownState.sbTotalMaterials?.include} />
+                  </span>
+                </div>
+                <div
+                  onClick={() => toggleIncludeBreakdown("sbLabor")}
+                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  <span className="flex-1 text-right">
+                    Total of Labor:
+                  </span> 
+                  <span className="w-[50px] text-right">30%</span>
+                  <span className="w-[120px] text-right">{ summaryBreakdownState.sbLabor?.value }</span>
+                  <span className="w-[20px] flex items-center"> 
+                    <Checkbox checked={summaryBreakdownState.sbLabor?.include}  />
+                  </span>
+                </div>
+                <div
+                  onClick={() => toggleIncludeBreakdown("sbContingency")}
+                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  <span className="flex-1 text-right">
+                    Contingency:
+                  </span> 
+                  <span className="w-[50px] text-right">5%</span>
+                  <span className="w-[120px] text-right">{ summaryBreakdownState.sbContingency?.value }</span>
+                  <span className="w-[20px] flex items-center"> 
+                    <Checkbox checked={summaryBreakdownState.sbContingency?.include} />
+                  </span>
+                </div>
+                <div
+                  onClick={() => toggleIncludeBreakdown("sbContractorsProfit")}
+                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  <span className="flex-1 text-right">
+                    Contractor's Profit:
+                  </span> 
+                  <span className="w-[50px] text-right">12.5%</span>
+                  <span className="w-[120px] text-right">{ summaryBreakdownState.sbContractorsProfit?.value }</span>
+                  <span className="w-[20px] flex items-center"> 
+                    <Checkbox checked={summaryBreakdownState.sbContractorsProfit?.include} />
+                  </span>
+                </div>
+                <div
+                  onClick={() => toggleIncludeBreakdown("sbTax")}
+                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  <span className="flex-1 text-right">
+                    Tax:
+                  </span> 
+                  <span className="w-[50px] text-right">12.5%</span>
+                  <span className="w-[120px] text-right">{ summaryBreakdownState.sbTax?.value }</span>
+                  <span className="w-[20px] flex items-center"> 
+                  <Checkbox checked={summaryBreakdownState.sbTax?.include} />
+                  </span>
+                </div>
+                <div
+                  
+                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  <span className="flex-1 text-right font-bold">
+                    Total Project Cost:
+                  </span> 
+                  <span className="w-[50px] text-right"> </span>
+                  <span className="w-[120px] text-right font-bold">{ Object.values(summaryBreakdownState)
+                    .reduce((acc, item) => {
+                      if (item && item.include) return (acc + (item?.value ?? 0))
+                      return acc
+                    }, 0) }</span>
+                  <span className="w-[20px] flex items-center"> 
+                    
+                  </span>
+                </div>
                 </div>
             </Box>
           </Flex>
