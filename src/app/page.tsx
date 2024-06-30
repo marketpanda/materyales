@@ -10,6 +10,8 @@ import FormCompute from "./components/FormCompute";
 import { priceMaterialsTiles } from "./constants/numbers";
 import ComponentBrandPortal from "./components/ComponentBrandPortal";
 import ComponentBrandPortalSimple from "./components/ComponentBrandPortalSimple";
+import ComponentShowcaseDetails from "./components/ComponentShowcaseDetails";
+import ComponentButtons from "./components/ComponentButtons";
 
 const queryClient = new QueryClient()
 
@@ -111,12 +113,7 @@ function Home() {
   }
 
   const [summaryBreakdownState, setSummaryBreakdownState] = useState<SbType>(summaryBreakdown) 
-
-
-  
-
-
-  
+ 
   const displayArea = () => {
      if (typeof width === 'number' && typeof length === 'number') {
       const area2: number = width * length; 
@@ -250,8 +247,7 @@ function Home() {
     setLength(null)
     setArea(null)
   }
-
-  
+ 
 
   const estimateNow = (e:any) => {
     e.preventDefault()
@@ -279,9 +275,7 @@ function Home() {
   //   setShowcaseComponent(prev => ({...prev, [component]: !prev[component]}))
   //   console.log(showcaseComponent) 
   // }
-
  
-
   
   return (
     <main className="flex min-h-screen flex-col items-center gap-2 bg-gray-100 border">
@@ -290,7 +284,12 @@ function Home() {
         <Box className="rounded-md shadow bg-white borderd mt-2 flex sm:flex-row flex-col gap-2">
           <Flex  wrap="wrap"  justify="between" className="w-full">
             <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden">
-              <div className="sm:h-full h-[300px] bg-blue-300 relative">
+              <div className="absolute z-[1000]">
+
+                <ComponentButtons component="tiles" />
+              </div>
+              
+              <div className="sm:h-full h-[300px] bg-blue-300 relative left-0 right-0"> 
                 <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
               </div>
             </Box> 
@@ -319,87 +318,17 @@ function Home() {
           <Table.Root variant="surface">
             <Table.Header>
               <Table.Row>
+              
                 <Table.ColumnHeaderCell>Image</Table.ColumnHeaderCell>
                 <Table.ColumnHeaderCell>Material</Table.ColumnHeaderCell>
                 <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
                 <Table.ColumnHeaderCell>Cost per Unit</Table.ColumnHeaderCell>
-                <Table.ColumnHeaderCell className="text-center">Total Cost</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell className="hidden md:table-cell">
+                    Total Cost
+                </Table.ColumnHeaderCell>
               </Table.Row>
             </Table.Header>
-            <Table.Body>
-              {/* <Table.Row>
-                <Table.RowHeaderCell px="4">
-                  <div className="rounded-full w-12 h-12 overflow-hidden">
-                    <img src="https://picsum.photos/id/237/200/300" />
-                  </div>
-                </Table.RowHeaderCell>
-                <Table.Cell>
-                  tiles
-                  
-                  <ComponentBrandPortalSimple 
-                    showcaseComponent={showcaseComponent}
-                    setShowcaseComponent={setShowcaseComponent}  
-                    handleClickShowcaseComponent={() => handleClickShowcaseComponent("tiles")}
-                  />
-                </Table.Cell>
-                <Table.Cell>{tilesTiles} (60x60cm tiles)</Table.Cell>
-                <Table.Cell>
-                  <input value={ componentTilesNumbers?.tiles?.price } className="w-28  outline-none" onChange={() => console.log('tiles')}  />
-                </Table.Cell>
-                <Table.Cell pr="5">
-                   <span className="justify-end pr-5  flex w-full bg-gray-100 rounded-full p-2"> 
-                  {componentTilesNumbers.tiles?.price ? tilesTiles * componentTilesNumbers.tiles.price : 0 }
-                  </span>
-                </Table.Cell>
-              </Table.Row>
-
-              {  
-                showcaseComponent["tiles"] ? (
-                  <Table.Row>
-                    <Table.Cell colSpan={5}>Tiles Showcase Here</Table.Cell>
-                  </Table.Row>
-                ) : "" 
-              }
-              
- 
- 
-              <Table.Row  >
-                <Table.RowHeaderCell px="4" pb="5">
-                  <div className="rounded-full w-12 h-12 overflow-hidden">
-                    <img src="https://picsum.photos/id/237/200/300" />
-                  </div>
-                </Table.RowHeaderCell>
-                <Table.Cell>
-                  <div className="mb-2">
-                    grout
-                  </div>
-                  <ComponentBrandPortalSimple 
-                    showcaseComponent={showcaseComponent}
-                    setShowcaseComponent={setShowcaseComponent}  
-                    handleClickShowcaseComponent={() => handleClickShowcaseComponent("grout")}
-                  />
-                </Table.Cell>
-                <Table.Cell>{tilesGrout}kg</Table.Cell>
-                <Table.Cell>
-                  <input value={componentTilesNumbers?.grout?.price} className="w-28  outline-none" onChange={() => console.log('tiles')}  />
-                </Table.Cell>
-                <Table.Cell pr="5">
-                  <span className="justify-end pr-5  flex w-full bg-gray-100 rounded-full p-2">   
-                  {componentTilesNumbers.grout?.price ? tilesGrout * componentTilesNumbers.grout.price : 0 }
-                  
-                  </span>
-                </Table.Cell>
-              </Table.Row>
-              { 
-
-                showcaseComponent["grout"] ? (
-
-                <Table.Row>
-                  <Table.Cell colSpan={5}>Tiles Grout Showcase Here</Table.Cell>
-                </Table.Row>
-                ) : ""
-
-              } */}
+            <Table.Body> 
 
               {
                 Object.keys(componentTilesNumbers).map(key => (
@@ -425,21 +354,36 @@ function Home() {
                         </Table.Cell>
                         <Table.Cell>{`${componentTilesNumbers[key]?.qty} ${componentTilesNumbers[key]?.units}`}</Table.Cell>
                         <Table.Cell>
-                          <input value={ componentTilesNumbers[key]?.price } className="w-28  outline-none" onChange={() => console.log('tiles')}  />
+                          <input value={ componentTilesNumbers[key]?.price } className="w-20 outline-none" onChange={() => console.log('tiles')}  />
                         </Table.Cell>
-                        <Table.Cell pr="5">
-                          <span className="justify-end pr-5  flex w-full bg-gray-100 rounded-full p-2"> 
+                        <Table.Cell pr="5" className="md:table-cell hidden">
+                          <span className="justify-end pr-5 flex w-full bg-gray-100 rounded-full p-2">
                               {
                                 (componentTilesNumbers[key]?.qty ?? 0) * (componentTilesNumbers[key]?.price ?? 0)
                               }
                           </span>
                         </Table.Cell>
-                      </Table.Row>
+                      </Table.Row> 
+                      <Table.Row className="md:hidden">
+                        <Table.Cell colSpan={5}> 
+                          <div className="flex justify-end items-center gap-2 mb-5">
 
+                            <span className="font-bold">Total Cost</span>
+                            <span className="justify-end pr-5 flex w-[150px] bg-gray-100 rounded-full p-2 ">
+                                {
+                                  (componentTilesNumbers[key]?.qty ?? 0) * (componentTilesNumbers[key]?.price ?? 0)
+                                }
+                            </span> 
+                          </div>
+                        </Table.Cell>
+                      </Table.Row>
                       {  
                         showcaseComponent[key] ? (
                           <Table.Row>
-                            <Table.Cell colSpan={5}>{key} Showcase Here</Table.Cell>
+                            <Table.Cell colSpan={5}>
+                              {/* {key} Showcase Here */}
+                              <ComponentShowcaseDetails component={key} />
+                            </Table.Cell>
                           </Table.Row>
                         ) : "" 
                       }
@@ -448,7 +392,7 @@ function Home() {
                 ))
               } 
 
-              <Table.Row>
+              {/* <Table.Row>
                 <Table.Cell colSpan={5}>
                   <pre className="text-xs">componentTilesNumbers</pre>
                   <pre className="text-xs opacity-80">{JSON.stringify(componentTilesNumbers, null, 2)}</pre>
@@ -457,7 +401,7 @@ function Home() {
                   <pre className="text-xs">showcaseComponent</pre>
                   <pre className="text-xs opacity-80">{JSON.stringify(showcaseComponent, null, 2)}</pre>
                 </Table.Cell>
-              </Table.Row>
+              </Table.Row> */}
             </Table.Body>
           </Table.Root>
         </Box>
@@ -482,7 +426,7 @@ function Home() {
               <div className="flex flex-col w-full text-sm">
                 <div
                   onClick={() => toggleIncludeBreakdown("sbTotalMaterials")}
-                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                   <span className="flex-1 text-right">
                     Total of Materials:
                   </span> 
@@ -494,7 +438,7 @@ function Home() {
                 </div>
                 <div
                   onClick={() => toggleIncludeBreakdown("sbLabor")}
-                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                   <span className="flex-1 text-right">
                     Total of Labor:
                   </span> 
@@ -506,7 +450,7 @@ function Home() {
                 </div>
                 <div
                   onClick={() => toggleIncludeBreakdown("sbContingency")}
-                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                   <span className="flex-1 text-right">
                     Contingency:
                   </span> 
@@ -518,7 +462,7 @@ function Home() {
                 </div>
                 <div
                   onClick={() => toggleIncludeBreakdown("sbContractorsProfit")}
-                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                   <span className="flex-1 text-right">
                     Contractor's Profit:
                   </span> 
@@ -530,7 +474,7 @@ function Home() {
                 </div>
                 <div
                   onClick={() => toggleIncludeBreakdown("sbTax")}
-                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                   <span className="flex-1 text-right">
                     Tax:
                   </span> 
@@ -542,7 +486,7 @@ function Home() {
                 </div>
                 <div
                   
-                  className="flex justify-end gap-4 w-full items-center p-1"> 
+                  className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                   <span className="flex-1 text-right font-bold">
                     Total Project Cost:
                   </span> 

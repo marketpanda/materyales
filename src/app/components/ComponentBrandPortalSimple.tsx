@@ -27,7 +27,7 @@ const ComponentBrandPortalSimple:React.FC<ShowcaseTypeComponent> = ({
       variant="surface"
       color="crimson"
       size="2">
-        <div className='text-xs mx-3 cursor-pointer'>
+        <div className='text-xs cursor-pointer'>
           Materials for { keyComponent }
         </div>
     </Button>
