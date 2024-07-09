@@ -12,7 +12,7 @@ import ComponentButtons from "../../components/ComponentButtons";
 import { usePathname } from "next/navigation";
 import { materials } from "@/common/materials";
 
-export default function page() {
+export default function Page() {
     
     const thisRoute:string = usePathname().split('/')[usePathname().split('/').length - 1] 
 
