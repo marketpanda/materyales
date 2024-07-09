@@ -5,13 +5,14 @@ type ComputeParams = {
     length: number | null,
     width: number | null,
     area: number | null | string,
-    handleLengthChange: (e:React.ChangeEvent<HTMLInputElement>) => void,
-    handleWidthChange: (e:React.ChangeEvent<HTMLInputElement>) => void,
-    handleAreaChange: (e:React.ChangeEvent<HTMLInputElement>) => void,
-    estimateNow: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+    handleLengthChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
+    handleWidthChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
+    handleAreaChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
+    estimateNow?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const FormCompute:React.FC<ComputeParams> = ({
+    
     length,
     width,
     area,

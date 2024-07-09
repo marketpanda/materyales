@@ -45,19 +45,14 @@ function Home() {
     console.log(showcaseComponent) 
   }
 
-  // <ComponentBrandPortalSimple
-  //    showcaseComponent="grout"
-  //    setShowcaseComponent={setShowcaseComponent}  
-  //    handleClickShowcaseComponent={() => handleClickShowcaseComponent("grout")}
-  // />
-
 
   type DimensionsBasicType = {
     width?: number | null,
     length?: number | null,
     area?: number | null
   }
-// tilesShowcaseInitial
+
+
   const [dimensions, setDimensions] = useState<DimensionsBasicType>({
     width: 0,
     length: 0,
@@ -123,14 +118,6 @@ function Home() {
   }
  
 
-  // const { data:any, isLoading } = useQuery({
-  //   queryKey: ['exampleData'],
-  //   queryFn: async () => {
-  //     await new Promise((resolve) => setTimeout(resolve, 2000))
-  //     const data = await axios.get('https://jsonplaceholder.typicode.com/posts/1')      
-  //     return data 
-  //   }
-  // })
 
   useEffect(() => { 
     const timeoutId = setTimeout(() => { 
@@ -190,7 +177,6 @@ function Home() {
 
 
   useEffect(() => {
-    console.log(componentTilesNumbers)
     const totalMaterials = computeTotalOfMaterials(componentTilesNumbers)
     const tax = totalMaterials * .125
     const labor = totalMaterials * .25
@@ -221,33 +207,22 @@ function Home() {
       setComponentTilesNumbers((prev:componentTilesType) => ({...prev, tiles: prev.tiles ? { ...prev.tiles, qty: numOfTiles } : null}))
  
       const forTotal = numOfTiles * (priceMaterialsTiles.tiles ?? 0)  
-    }
-  
+    }  
   }
   
   const computeTilesGrout = ():void => { 
     let tmpArea 
-     
     tmpArea = area
      
     if (typeof tmpArea === "number") {
       const kgOfGrout = tmpArea / 4
       setTilesGrout(kgOfGrout)
 
-      console.log(kgOfGrout)
       setComponentTilesNumbers((prev:componentTilesType) => ({...prev, grout: prev.grout ? { ...prev.grout,   qty: kgOfGrout } : null}))
 
-      const forTotal = kgOfGrout * (priceMaterialsTiles.grout ?? 0)
        
     }
   }
-
-  const handleDirectArea = () => {
-    setWidth(null)
-    setLength(null)
-    setArea(null)
-  }
- 
 
   const estimateNow = (e:any) => {
     e.preventDefault()
@@ -270,46 +245,42 @@ function Home() {
     })
   }
 
-  // const handleClickShowcaseComponent = (component:string) => {
-  //   console.log("component is ", component) 
-  //   setShowcaseComponent(prev => ({...prev, [component]: !prev[component]}))
-  //   console.log(showcaseComponent) 
-  // }
- 
+{/* <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden relative">
+                    <div className="absolute z-[1000] flex items-center h-full"></div> */}
+
+
   
   return (
     <main className="flex min-h-screen flex-col items-center gap-2 bg-gray-100 border">
       <div className="w-full sm:w-[640px] flex flex-col gap-2"> 
        
-        <Box className="rounded-md shadow bg-white borderd mt-2 flex sm:flex-row flex-col gap-2">
+        <Box className="rounded-md shadow bg-white mt-2 flex sm:flex-row flex-col gap-2">
           <Flex  wrap="wrap"  justify="between" className="w-full">
-            <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden">
-              <div className="absolute z-[1000]">
-
+            <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden relative">
+              <div className="absolute z-[1000] flex items-center h-full">
                 <ComponentButtons component="tiles" />
               </div>
-              
               <div className="sm:h-full h-[300px] bg-blue-300 relative left-0 right-0"> 
                 <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
               </div>
             </Box> 
-            <Box  className="sm:w-2/3 w-full p-4"> 
+            <Box className="sm:w-2/3 w-full p-4"> 
               <DemoClientComponent /> 
               <Heading size="5" className="mt-2">  
                 <span>
-                Tiles Calculator
+                  Tiles Calculator
                 </span>
               </Heading>
 
-            <FormCompute
-              length = {length}
-              width = {width}
-              area = {area}
-              handleLengthChange = {handleLengthChange}
-              handleWidthChange = {handleWidthChange}  
-              handleAreaChange = {handleAreaChange}  
-              estimateNow = {estimateNow}
-            /> 
+              <FormCompute
+                length = {length}
+                width = {width}
+                area = {area}
+                handleLengthChange = {handleLengthChange}
+                handleWidthChange = {handleWidthChange}  
+                handleAreaChange = {handleAreaChange}  
+                estimateNow = {estimateNow}
+              /> 
  
             </Box> 
           </Flex> 
@@ -343,7 +314,7 @@ function Home() {
                           <div className="flex flex-col gap-2">
 
                             {key}
-                            {/* <ComponentBrandPortal /> */}
+                          
                             <ComponentBrandPortalSimple 
                               keyComponent={key}
                               showcaseComponent={showcaseComponent}
@@ -381,7 +352,7 @@ function Home() {
                         showcaseComponent[key] ? (
                           <Table.Row>
                             <Table.Cell colSpan={5}>
-                              {/* {key} Showcase Here */}
+                              
                               <ComponentShowcaseDetails component={key} />
                             </Table.Cell>
                           </Table.Row>
@@ -392,31 +363,12 @@ function Home() {
                 ))
               } 
 
-              {/* <Table.Row>
-                <Table.Cell colSpan={5}>
-                  <pre className="text-xs">componentTilesNumbers</pre>
-                  <pre className="text-xs opacity-80">{JSON.stringify(componentTilesNumbers, null, 2)}</pre>
-                  <pre className="text-xs">summaryBreakdownState</pre>
-                  <pre className="text-xs opacity-80">{JSON.stringify(summaryBreakdownState, null, 2)}</pre>
-                  <pre className="text-xs">showcaseComponent</pre>
-                  <pre className="text-xs opacity-80">{JSON.stringify(showcaseComponent, null, 2)}</pre>
-                </Table.Cell>
-              </Table.Row> */}
+           
             </Table.Body>
           </Table.Root>
-        </Box>
-        {/* <div className="mt-2 flex flex-col w-full bg-gray-100 font-semibold gap-2 shadow border-4">
-           */}
-           
-          
-        {/* <div className="w-full flex flex-col gap-2 text-right p-2 border-4"> */}
-        
+        </Box> 
         <Box className="rounded-md shadow bg-white borderd flex sm:flex-row flex-col gap-2">
-        
-        {/* <div className="w-full flex flex-col gap-2"> */}
-           <Flex wrap="wrap-reverse" className="w-full">
-
-           
+          <Flex wrap="wrap-reverse" className="w-full">
             <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden">
               <div className="sm:h-full h-[300px] bg-blue-300 relative">
                 <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
