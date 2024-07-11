@@ -2,6 +2,7 @@ import React from 'react'
 import * as Form from '@radix-ui/react-form'
 
 type ComputeParams = {
+    material: string | null, 
     length: number | null,
     width: number | null,
     area: number | null | string,
@@ -11,8 +12,8 @@ type ComputeParams = {
     estimateNow?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
-const FormCompute:React.FC<ComputeParams> = ({
-    
+const FormCompute:React.FC<ComputeParams> = ({ 
+    material,
     length,
     width,
     area,
@@ -25,6 +26,7 @@ const FormCompute:React.FC<ComputeParams> = ({
     return (
     <div>
         <Form.Root className="w-full">
+            <div>Let's compute for { material ? material : '' }</div>
             <Form.Field className="grid mb-[10px]" name="email">
             <div className="flex items-baseline justify-between">
                 <Form.Label className="text-[15px] font-medium leading-[35px]">Length

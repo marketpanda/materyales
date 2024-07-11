@@ -257,9 +257,9 @@ function Home() {
         <Box className="rounded-md shadow bg-white mt-2 flex sm:flex-row flex-col gap-2">
           <Flex  wrap="wrap"  justify="between" className="w-full">
             <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden relative">
-              <div className="absolute z-[1000] flex items-center h-full">
-                <ComponentButtons component="tiles" />
-              </div>
+            <div className="absolute z-[1000] flex items-center h-full w-full">
+                        <ComponentButtons component="tiles" />
+                    </div>
               <div className="sm:h-full h-[300px] bg-blue-300 relative left-0 right-0"> 
                 <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
               </div>

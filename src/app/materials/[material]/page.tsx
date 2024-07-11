@@ -11,6 +11,9 @@ import ComponentShowcaseDetails from "../../components/ComponentShowcaseDetails"
 import ComponentButtons from "../../components/ComponentButtons";
 import { usePathname } from "next/navigation";
 import { materials } from "@/common/materials";
+import { Material } from "@/common/types";
+import useMaterialsList, { UnitOptions } from "@/app/hooks/useMaterialsList";
+import MaterialTable from "@/app/components/MaterialTable";
 
 export default function Page() {
     
@@ -22,8 +25,25 @@ export default function Page() {
         return materialStrand ? materialStrand.title : ""
 
     }
-    
 
+     
+    const [material, setMaterial] = useState(thisRoute)
+
+    const isTiles = useMaterialsList({ material: 'tiles'})
+    console.log(isTiles)
+
+    console.log(material)
+
+    interface MaterialElementsList { 
+            [key: string] : UnitOptions
+    }  
+
+    const populateMaterialComponents:MaterialElementsList | null = useMaterialsList({ material })    
+    console.log(populateMaterialComponents)
+    
+    const materialsKeyList = populateMaterialComponents ? Object.entries(populateMaterialComponents) : null
+    console.log(materialsKeyList)
+    
     return (
         <>
             <Box className="rounded-md shadow bg-white borderd mt-2 flex sm:flex-row flex-col gap-2">
@@ -36,16 +56,14 @@ export default function Page() {
                         <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
                     </div>
                 </Box> 
-                <Box className="sm:w-2/3 w-full p-4"> 
-                    
+                <Box className="sm:w-2/3 w-full p-4">
                     <Heading size="5" className="mt-2">{ <GenerateHeader currentRoute={thisRoute} /> }</Heading>
-
                     <FormCompute
+                        material = {material}
                         length = {100}
                         width = {100}
                         area = {100}
-                    /> 
-
+                    />
                 </Box> 
                 </Flex> 
             </Box>
@@ -64,6 +82,8 @@ export default function Page() {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body> 
+
+                    
 
                     {/* {
                     Object.keys(componentTilesNumbers).map(key => (
