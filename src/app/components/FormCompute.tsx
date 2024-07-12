@@ -2,7 +2,7 @@ import React from 'react'
 import * as Form from '@radix-ui/react-form'
 
 type ComputeParams = {
-    material: string | null, 
+    material?: string | null, 
     length: number | null,
     width: number | null,
     area: number | null | string,

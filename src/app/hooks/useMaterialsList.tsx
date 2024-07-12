@@ -1,14 +1,14 @@
  
-interface UnitOptions {
+export interface UnitOptions {
     units: string[]
     unitSize?: string
     costPerUnit?: number
     imageIcon?: string
 }
 
-interface Materials {
-    [key: string] : {
-        [key: string] : UnitOptions
+export interface Materials {
+    [category: string] : {
+        [material: string] : UnitOptions
     }
 }
 export default function useMaterialsList({material} : { material: string}) { 
@@ -26,7 +26,7 @@ export default function useMaterialsList({material} : { material: string}) {
                 units: ['bag', 'kg'],
                 costPerUnit: 50,
                 unitSize: '1 kg',
-                imageIcon: 'https://picsum.photos/id/237/200/300'
+                imageIcon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFGQrmKeUse2_2bxgzoHv0su3g8PSrWoF5yg&s'
             }
         }, 
         paints: {

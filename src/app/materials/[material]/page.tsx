@@ -82,8 +82,7 @@ export default function Page() {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body> 
-
-                    
+                    <MaterialTable materialComponent={material} /> 
 
                     {/* {
                     Object.keys(componentTilesNumbers).map(key => (
