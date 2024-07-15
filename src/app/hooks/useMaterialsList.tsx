@@ -1,7 +1,8 @@
  
 export interface UnitOptions {
     units: string[]
-    unitSize?: string
+    quantity?: number
+    unitSize?: string | null
     costPerUnit?: number
     imageIcon?: string
 }
@@ -11,7 +12,7 @@ export interface Materials {
         [material: string] : UnitOptions
     }
 }
-export default function useMaterialsList({material} : { material: string}) { 
+export default function useMaterialsList({material} : { material: string }) { 
 
 
     const materialsList:Materials = {
@@ -30,12 +31,33 @@ export default function useMaterialsList({material} : { material: string}) {
             }
         }, 
         paints: {
-            topcoat: { units: ['can', 'pail'] },
-            primer: { units: ['can', 'pail'] },
-            paintbrush: { units: ['pcs', 'set'] },
+            topcoat: {
+                units: ['can', 'pail'],
+                costPerUnit: 600,
+                unitSize: '300x300',
+                imageIcon: 'https://picsum.photos/id/237/200/300'
+            },
+            primer: {
+                units: ['can', 'pail'],
+                costPerUnit: 300,
+                unitSize: 'galloon',
+                imageIcon: 'https://picsum.photos/id/237/200/300'
+            },
+            paintbrush: {
+                units: ['pcs'],
+                costPerUnit: 50,
+                unitSize: null,
+                imageIcon: 'https://picsum.photos/id/237/200/300'
+            },
+            roller: {
+                units: ['pcs'],
+                costPerUnit: 150,
+                unitSize: null,
+                imageIcon: 'https://picsum.photos/id/237/200/300'
+            },
         }
     } 
 
-    return materialsList[material] ? materialsList[material] : null
+    return  { [material]: materialsList[material] } 
     
 }

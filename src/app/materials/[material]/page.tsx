@@ -35,7 +35,7 @@ export default function Page() {
     console.log(material)
 
     interface MaterialElementsList { 
-            [key: string] : UnitOptions
+        [key: string] : UnitOptions | null | undefined
     }  
 
     const populateMaterialComponents:MaterialElementsList | null = useMaterialsList({ material })    
@@ -43,6 +43,8 @@ export default function Page() {
     
     const materialsKeyList = populateMaterialComponents ? Object.entries(populateMaterialComponents) : null
     console.log(materialsKeyList)
+
+   
     
     return (
         <>
