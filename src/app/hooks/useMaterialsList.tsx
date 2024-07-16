@@ -1,6 +1,6 @@
  
 export interface UnitOptions {
-    units: string[]
+    units?: string[]
     quantity?: number
     unitSize?: string | null
     costPerUnit?: number
