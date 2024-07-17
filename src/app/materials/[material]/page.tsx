@@ -15,6 +15,22 @@ import { Material } from "@/common/types";
 import useMaterialsList, { UnitOptions } from "@/app/hooks/useMaterialsList";
 import MaterialTable from "@/app/components/MaterialTable";
 
+
+export interface Dimensions {
+    length?: number,
+    width?: number,
+    area?: number
+}
+
+export interface MaterialDimensionsProps {
+    [key:string] : Dimensions
+}
+
+interface MaterialElementsList { 
+    [key: string] : UnitOptions 
+}  
+
+
 export default function Page() {
     
     const thisRoute:string = usePathname().split('/')[usePathname().split('/').length - 1] 
@@ -23,20 +39,30 @@ export default function Page() {
 
         const materialStrand = materials.find(material => material.name === currentRoute)
         return materialStrand ? materialStrand.title : ""
-
     }
-
+    
+    const materialDimensionsInitial:MaterialDimensionsProps | null = {
+        tiles: {
+            length: 0,
+            width: 0,
+            area: 0
+        },
+        paints: {
+            length: 0,
+            width: 0,
+            area: 0
+        }
+    }
      
+    const [materialDimensions, setMaterialDimensions] = useState(materialDimensionsInitial)
+
     const [material, setMaterial] = useState(thisRoute)
 
+ 
     const isTiles = useMaterialsList({ material: 'tiles'})
-    console.log(isTiles)
+    
 
-    console.log(material)
-
-    interface MaterialElementsList { 
-        [key: string] : UnitOptions 
-    }  
+   
 
     const populateMaterialComponents:MaterialElementsList  = useMaterialsList({ material })    
     console.log(populateMaterialComponents)
@@ -44,7 +70,20 @@ export default function Page() {
     const materialsKeyList = populateMaterialComponents ? Object.entries(populateMaterialComponents) : null
     console.log(materialsKeyList)
 
-   
+    const handleLengthChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        let value = parseFloat(e.target.value) 
+        setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions[material], length: value} }))
+    
+        console.log(materialDimensions[material].length)
+    } 
+    const handleParamsChange = (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions  ) => {
+        let value = parseFloat(e.target.value) 
+        setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions[material], [params]: value} }))
+    
+        console.log("params")
+        console.log(params, value)
+        console.log(materialDimensions[material].length)
+    } 
     
     return (
         <>
@@ -61,10 +100,11 @@ export default function Page() {
                 <Box className="sm:w-2/3 w-full p-4">
                     <Heading size="5" className="mt-2">{ <GenerateHeader currentRoute={thisRoute} /> }</Heading>
                     <FormCompute
-                        material = {material}
-                        length = {100}
-                        width = {100}
-                        area = {100}
+                        material={ material }
+                        length={ materialDimensions[material].length || null }
+                        width={ materialDimensions[material].width || null } 
+                        area={ 100 || null } 
+                        handleParamsChange={handleParamsChange}
                     />
                 </Box> 
                 </Flex> 

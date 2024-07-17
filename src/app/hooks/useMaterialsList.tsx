@@ -14,14 +14,14 @@ export interface Materials {
 }
 export default function useMaterialsList({material} : { material: string }) { 
 
-
     const materialsList:Materials = {
         tiles: {
             tile: { 
                 units: ['pc', 'box'],
                 costPerUnit: 300,
                 unitSize: '300x300',
-                imageIcon: 'https://picsum.photos/id/237/200/300'
+                imageIcon: 'https://picsum.photos/id/237/200/300',
+                
             },
             grout: {
                 units: ['bag', 'kg'],

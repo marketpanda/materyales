@@ -1,13 +1,15 @@
 import React from 'react'
 import * as Form from '@radix-ui/react-form'
+import { Dimensions } from '../materials/[material]/page'
 
 type ComputeParams = {
     material?: string | null, 
     length: number | null,
     width: number | null,
     area: number | null | string,
+    handleParamsChange?: (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions ) => void,
     handleLengthChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
-    handleWidthChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
+    handleWidthChange?: (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions ) => void,
     handleAreaChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
     estimateNow?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
@@ -19,9 +21,12 @@ const FormCompute:React.FC<ComputeParams> = ({
     area,
     handleLengthChange,
     handleWidthChange,
+    handleParamsChange,
     handleAreaChange,
     estimateNow
 }) => { 
+
+    
     
     return (
     <div>
@@ -41,7 +46,7 @@ const FormCompute:React.FC<ComputeParams> = ({
                 <input
                     className="box-border text-right w-full bg-blackA2 shadow-blackA6 inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none hover:shadow-[0_0_0_1px_black] focus:shadow-[0_0_0_2px_black] selection:color-white selection:bg-blackA6"
                     value={length !== null ? length : ''}
-                    onChange={handleLengthChange}
+                    onChange={(e) => handleParamsChange && handleParamsChange(e, 'length')} 
                     autoComplete='off'
                     required
                 />
@@ -61,10 +66,9 @@ const FormCompute:React.FC<ComputeParams> = ({
                     <input
                         className="box-border w-full text-right bg-blackA2 shadow-blackA6 inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none  shadow-[0_0_0_1px] outline-none hover:shadow-[0_0_0_1px_black] focus:shadow-[0_0_0_2px_black] selection:color-white selection:bg-blackA6"
                         value={width !== null ? width : ''}
-                        onChange={handleWidthChange} 
+                        onChange={(e) => handleParamsChange && handleParamsChange(e, 'width')} 
                         autoComplete='off'
-                         
-                        />
+                    />
                 </Form.Control>
             </Form.Field>
             <Form.Field className="grid mb-[10px]" name="question">

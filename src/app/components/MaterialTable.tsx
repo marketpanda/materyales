@@ -102,13 +102,19 @@ const MaterialTable:React.FC<Props> = ({materialComponent}) => {
                             </Table.Cell>
                             <Table.Cell>
                                 {/* {`${componentTilesNumbers[key]?.qty} ${componentTilesNumbers[key]?.units}`} */}
+                              <input
+                                // value={ costPerUnit }
+                                value={ componentsState[materialComponent][materialName].costPerUnit }
+                                className="w-20 outline-none p-2 font-semibold rounded text-l text-right"
+                                onChange={(e) => handleChangeValue(e, {mat: materialName, cpu: costPerUnit })}
+                                disabled />
                             </Table.Cell>
                             <Table.Cell>
                               {/* <input value={ componentTilesNumbers[key]?.price } className="w-20 outline-none" onChange={() => console.log('tiles')}  /> */}
                               <input
                                 // value={ costPerUnit }
                                 value={ componentsState[materialComponent][materialName].costPerUnit }
-                                className="w-20 outline-none bg-purple-100 p-2 font-semibold rounded text-l"
+                                className="w-20 outline-none bg-purple-100 p-2 font-semibold rounded text-l text-right"
                                 onChange={(e) => handleChangeValue(e, {mat: materialName, cpu: costPerUnit })}  />
                                 
                             </Table.Cell>
@@ -118,6 +124,12 @@ const MaterialTable:React.FC<Props> = ({materialComponent}) => {
                                     (componentTilesNumbers[key]?.qty ?? 0) * (componentTilesNumbers[key]?.price ?? 0)
                                   }
                               </span> */}
+                               <input
+                                // value={ costPerUnit }
+                                value={ componentsState[materialComponent][materialName].costPerUnit }
+                                className="w-20 outline-none p-2 font-semibold rounded text-l text-right"
+                                onChange={(e) => handleChangeValue(e, {mat: materialName, cpu: costPerUnit })}
+                                disabled />
                             </Table.Cell>
                         </Table.Row> 
                         <Table.Row> 
