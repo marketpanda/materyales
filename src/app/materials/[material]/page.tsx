@@ -14,6 +14,7 @@ import { materials } from "@/common/materials";
 import { Material } from "@/common/types";
 import useMaterialsList, { UnitOptions } from "@/app/hooks/useMaterialsList";
 import MaterialTable from "@/app/components/MaterialTable";
+import { parse } from "path";
 
 
 export interface Dimensions {
@@ -36,7 +37,6 @@ export default function Page() {
     const thisRoute:string = usePathname().split('/')[usePathname().split('/').length - 1] 
 
     const GenerateHeader = ({ currentRoute }:{ currentRoute: string }) => {
-
         const materialStrand = materials.find(material => material.name === currentRoute)
         return materialStrand ? materialStrand.title : ""
     }
@@ -53,37 +53,92 @@ export default function Page() {
             area: 0
         }
     }
-     
-    const [materialDimensions, setMaterialDimensions] = useState(materialDimensionsInitial)
 
-    const [material, setMaterial] = useState(thisRoute)
-
- 
-    const isTiles = useMaterialsList({ material: 'tiles'})
     
+    const [materialDimensions, setMaterialDimensions] = useState(materialDimensionsInitial)
+    
+    const [material, setMaterial] = useState(thisRoute)
+    
+    const [dimensionsForDisplay, setDimensionsForDisplay] = useState({
+        [material]:materialDimensionsInitial[material]
+    })
 
-   
+    console.log(dimensionsForDisplay)
+
+    const isTiles = useMaterialsList({ material: 'tiles'}) 
+    
 
     const populateMaterialComponents:MaterialElementsList  = useMaterialsList({ material })    
     console.log(populateMaterialComponents)
     
     const materialsKeyList = populateMaterialComponents ? Object.entries(populateMaterialComponents) : null
-    console.log(materialsKeyList)
-
-    const handleLengthChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-        let value = parseFloat(e.target.value) 
-        setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions[material], length: value} }))
-    
-        console.log(materialDimensions[material].length)
-    } 
+     
     const handleParamsChange = (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions  ) => {
         let value = parseFloat(e.target.value) 
+
+
+        if (params === 'area') {
+
+        }
         setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions[material], [params]: value} }))
-    
-        console.log("params")
-        console.log(params, value)
-        console.log(materialDimensions[material].length)
+        setDimensionsForDisplay({ [material]: {
+            ...dimensionsForDisplay[material], [params]:value
+        }})
+        console.log("dimensionsForDisplay ", dimensionsForDisplay)
     } 
+    
+    const handleDirectAreaChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseFloat(e.target.value)
+        if (isNaN(value)) return
+        handleParamsChange(e, 'area')
+        setDimensionsForDisplay((prev) => ({ ...prev, [material]: {
+            ...prev[material],
+            length: 0,
+            width: 0,
+            area: value
+        }}))
+    }
+
+    interface Dims {
+        len: number | undefined,
+        wid: number | undefined
+    }
+    
+    const getAreaByLengthAndWidth = ({len, wid}: Dims) => {
+        if (!Number(len) || !Number(wid)) return
+        return (len && wid) ?  len * wid : 0
+    }
+    useEffect(() => {
+
+        const timeoudId = setTimeout(() => {
+            const newArea = getAreaByLengthAndWidth({
+                len:materialDimensions[material].length,
+                wid:materialDimensions[material].width
+            })
+    
+            setDimensionsForDisplay((prev) => ({
+                ...prev, [material]:  {
+                    ...materialDimensions[material], area: newArea
+                }
+            }))
+            // setMaterialDimensions((prev) => ({
+            //     ...prev, [material]:  {
+            //         ...materialDimensions[material], area: newArea
+            //     }
+            // }))
+
+        
+        }, 500)
+
+        return () => {
+            clearTimeout(timeoudId)
+        }
+
+    }, [materialDimensions[material].length, materialDimensions[material].width])
+
+
+
+    
     
     return (
         <>
@@ -101,11 +156,20 @@ export default function Page() {
                     <Heading size="5" className="mt-2">{ <GenerateHeader currentRoute={thisRoute} /> }</Heading>
                     <FormCompute
                         material={ material }
+                        length={ dimensionsForDisplay[material].length || null }
+                        width={ dimensionsForDisplay[material].width || null } 
+                        area={ dimensionsForDisplay[material].area || null } 
+                        handleParamsChange={handleParamsChange}
+                        handleDirectAreaChange={handleDirectAreaChange}
+                    />
+                    {/* <FormCompute
+                        material={ material }
                         length={ materialDimensions[material].length || null }
                         width={ materialDimensions[material].width || null } 
-                        area={ 100 || null } 
+                        area={ materialDimensions[material].area || null } 
                         handleParamsChange={handleParamsChange}
-                    />
+                        handleDirectAreaChange={handleDirectAreaChange}
+                    /> */}
                 </Box> 
                 </Flex> 
             </Box>

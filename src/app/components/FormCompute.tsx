@@ -11,6 +11,7 @@ type ComputeParams = {
     handleLengthChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
     handleWidthChange?: (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions ) => void,
     handleAreaChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
+    handleDirectAreaChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
     estimateNow?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
@@ -18,11 +19,9 @@ const FormCompute:React.FC<ComputeParams> = ({
     material,
     length,
     width,
-    area,
-    handleLengthChange,
-    handleWidthChange,
+    area, 
     handleParamsChange,
-    handleAreaChange,
+    handleDirectAreaChange,
     estimateNow
 }) => { 
 
@@ -85,7 +84,7 @@ const FormCompute:React.FC<ComputeParams> = ({
                     <input
                         className="box-border text-right w-full bg-blackA2 shadow-blackA6 inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none  shadow-[0_0_0_1px] outline-none hover:shadow-[0_0_0_1px_black] focus:shadow-[0_0_0_2px_black] selection:color-white selection:bg-blackA6"
                         value={area !== null ? area : ''}
-                        onChange={handleAreaChange}
+                        onChange={(e) => handleDirectAreaChange && handleDirectAreaChange(e)}
                         autoComplete='off'
                     />
                 </Form.Control>
