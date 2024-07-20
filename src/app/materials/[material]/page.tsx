@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image";
-import React, { useEffect, useState } from "react"; 
+import React, { useCallback, useEffect, useRef, useState } from "react"; 
 import { Heading, Table, Flex, Checkbox, Box } from "@radix-ui/themes"; 
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query"; 
 import FormCompute from "../../components/FormCompute";
@@ -20,19 +20,22 @@ import { parse } from "path";
 export interface Dimensions {
     length?: number,
     width?: number,
-    area?: number
+    area?: number,
+    volume?: number,
+    diameter?: number
 }
 
 export interface MaterialDimensionsProps {
     [key:string] : Dimensions
 }
 
+//tabulation of materials list
 interface MaterialElementsList { 
     [key: string] : UnitOptions 
 }  
+ 
 
-
-export default function Page() {
+export default function Page():JSX.Element {
     
     const thisRoute:string = usePathname().split('/')[usePathname().split('/').length - 1] 
 
@@ -41,7 +44,7 @@ export default function Page() {
         return materialStrand ? materialStrand.title : ""
     }
     
-    const materialDimensionsInitial:MaterialDimensionsProps | null = {
+    const materialDimensionsInitial:MaterialDimensionsProps = {
         tiles: {
             length: 0,
             width: 0,
@@ -52,56 +55,63 @@ export default function Page() {
             width: 0,
             area: 0
         }
-    }
-
+    } 
     
     const [materialDimensions, setMaterialDimensions] = useState(materialDimensionsInitial)
     
     const [material, setMaterial] = useState(thisRoute)
+
+    //pass down prop to component to enable interactivity of button to a user
+    const [areaReference, setAreaReference] = useState<number>(0)
     
+    const [directAreaChange, setDirectAreaChange] = useState<boolean>(false)
+
     const [dimensionsForDisplay, setDimensionsForDisplay] = useState({
         [material]:materialDimensionsInitial[material]
     })
 
     console.log(dimensionsForDisplay)
-
-    const isTiles = useMaterialsList({ material: 'tiles'}) 
-    
+ 
 
     const populateMaterialComponents:MaterialElementsList  = useMaterialsList({ material })    
     console.log(populateMaterialComponents)
     
     const materialsKeyList = populateMaterialComponents ? Object.entries(populateMaterialComponents) : null
      
-    const handleParamsChange = (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions  ) => {
-        let value = parseFloat(e.target.value) 
-
-
-        if (params === 'area') {
-
+    const handleParamsChange = (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions, directArea?:boolean) => {
+        let value = parseFloat(e.target.value)  
+        
+        if (directArea) {
+            console.log('using direct area input') 
         }
-        setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions[material], [params]: value} }))
+
+        setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions[material], [params]: value }}))
+         
         setDimensionsForDisplay({ [material]: {
             ...dimensionsForDisplay[material], [params]:value
-        }})
-        console.log("dimensionsForDisplay ", dimensionsForDisplay)
+        }}) 
     } 
     
     const handleDirectAreaChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const value = parseFloat(e.target.value)
         if (isNaN(value)) return
-        handleParamsChange(e, 'area')
+         
+        handleParamsChange(e, 'area', true) 
+       
+        // setDimensionsForDisplay({[material]:materialDimensionsInitial[material]}) 
         setDimensionsForDisplay((prev) => ({ ...prev, [material]: {
             ...prev[material],
             length: 0,
             width: 0,
             area: value
-        }}))
+        }})) 
+
+        
     }
 
     interface Dims {
-        len: number | undefined,
-        wid: number | undefined
+        len?:number,
+        wid?:number
     }
     
     const getAreaByLengthAndWidth = ({len, wid}: Dims) => {
@@ -118,27 +128,56 @@ export default function Page() {
     
             setDimensionsForDisplay((prev) => ({
                 ...prev, [material]:  {
+                    ...dimensionsForDisplay[material], area: newArea
+                }
+            }))  
+
+            setMaterialDimensions((prev) => ({
+                ...prev, [material]: {
                     ...materialDimensions[material], area: newArea
                 }
-            }))
-            // setMaterialDimensions((prev) => ({
-            //     ...prev, [material]:  {
-            //         ...materialDimensions[material], area: newArea
-            //     }
-            // }))
-
-        
+            }) ) 
         }, 500)
 
         return () => {
             clearTimeout(timeoudId)
         }
 
-    }, [materialDimensions[material].length, materialDimensions[material].width])
+    }, [materialDimensions[material].length, materialDimensions[material].width]) 
 
-
-
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const runEstimate = useCallback((e:React.FormEvent<HTMLElement>) => {
     
+        e.preventDefault() 
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current)
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            const num = materialDimensions[material].area 
+                if (num && !isNaN(num)) { 
+                setAreaReference(num)
+            }
+
+        }, 500)
+       
+    }, [material, materialDimensions])
+
+    // useEffect(() => {
+
+    //     const timeoudId = setTimeout(() => {  
+    //         setDimensionsForDisplay((prev) => ({
+    //             ...prev, [material]:  {
+    //                 ...materialDimensions[material], length: 0, width: 0
+    //             }
+    //         }))
+
+    //     }, 500) 
+    //     return () => {
+    //         clearTimeout(timeoudId)
+    //     }
+
+    // }, [materialDimensions[material].area]) 
     
     return (
         <>
@@ -161,15 +200,8 @@ export default function Page() {
                         area={ dimensionsForDisplay[material].area || null } 
                         handleParamsChange={handleParamsChange}
                         handleDirectAreaChange={handleDirectAreaChange}
-                    />
-                    {/* <FormCompute
-                        material={ material }
-                        length={ materialDimensions[material].length || null }
-                        width={ materialDimensions[material].width || null } 
-                        area={ materialDimensions[material].area || null } 
-                        handleParamsChange={handleParamsChange}
-                        handleDirectAreaChange={handleDirectAreaChange}
-                    /> */}
+                        estimateNow={runEstimate}
+                    /> 
                 </Box> 
                 </Flex> 
             </Box>
@@ -188,7 +220,7 @@ export default function Page() {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body> 
-                    <MaterialTable materialComponent={material} /> 
+                    <MaterialTable materialComponent={material} area={areaReference} /> 
 
                     {/* {
                     Object.keys(componentTilesNumbers).map(key => (

@@ -1,16 +1,17 @@
-import React, { ChangeEvent, SetStateAction, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import useMaterialsList, { UnitOptions } from '../hooks/useMaterialsList'
 import { Table } from '@radix-ui/themes'
+import { useMaterialQuantity } from '../hooks/useMaterialQuantity'
 
 interface Props {
   materialComponent:string
+  area: number
 }
 
 interface ComponentType { 
   [key:string]: {    
     [key:string]: UnitOptions  
-  }
-  
+  } 
 } 
 
 // interface ComponentsStateProps {
@@ -23,49 +24,60 @@ type MaterialStrand = [mat:string, matComponents:UnitOptions]
 interface InputProps {
   mat: string,
   cpu: number | undefined
-}
+} 
 
-
-const MaterialTable:React.FC<Props> = ({materialComponent}) => {
+const MaterialTable:React.FC<Props> = ({materialComponent, area}) => {
 
     const categoryBreakdownMaterials:ComponentType = useMaterialsList({ material: materialComponent })
-    console.log(categoryBreakdownMaterials)
-    
+    console.log(categoryBreakdownMaterials)  
+
+    const [componentsState, setComponentsState] = useState<ComponentType>(categoryBreakdownMaterials) 
+    console.log(componentsState)  
+    for (let material in categoryBreakdownMaterials[materialComponent]) {
+        
+      const getQuantity = useMaterialQuantity({material: materialComponent, materialStrand: material })
+      const theQuantity = getQuantity().quantity  
+      
+      const costPerUnit = categoryBreakdownMaterials[materialComponent][material].costPerUnit 
+
+      const getTotalCost = (costPerUnit ?? 0) * (theQuantity || 0)
+      console.log(getTotalCost)
+      categoryBreakdownMaterials[materialComponent][material].quantity = theQuantity
+      categoryBreakdownMaterials[materialComponent][material].totalCost = getTotalCost 
+    }
+      
     let categoryBreakdownMaterialsArray:MaterialStrand[] = []
+
+
     
     if (categoryBreakdownMaterials) categoryBreakdownMaterialsArray = Object.entries(categoryBreakdownMaterials[materialComponent])
-     
+    console.log(categoryBreakdownMaterials) 
+    
     const handleChangeValue = (event:ChangeEvent<HTMLInputElement>, { mat, cpu }: InputProps) => {
-     
+      
       setComponentsState(( prev:ComponentType ) => ({
-          ...prev, [materialComponent]: { ...componentsState[materialComponent],
-            [mat]: {
-                ...componentsState[materialComponent][mat], costPerUnit: Number(event.target.value)
+        ...prev, [materialComponent]: { ...componentsState[materialComponent],
+          [mat]: {
+            ...componentsState[materialComponent][mat], costPerUnit: Number(event.target.value)
               }
             }
           }
         )
       )
-    }
- 
-    const [componentsState, setComponentsState] = useState<ComponentType>(categoryBreakdownMaterials)
-
-    console.log(componentsState)
-
-    useEffect(() => {
-      console.log("componentsState ", componentsState)
-    }, [componentsState])
+    } 
 
     return (
         <>
             { categoryBreakdownMaterialsArray?.map((material, n:number) => {
                 const materialName = material[0]
                 const costPerUnit = material[1].costPerUnit
-                const imageIcon = material[1].imageIcon
-                const unitSize = material[1].unitSize
+                const imageIcon = material[1].imageIcon  
 
-                console.log(materialComponent)
-                console.log("material[1] ")
+                
+                
+                // const total = (theQuantity ?? 0) * (costPerUnit || 0)
+                
+                // console.log(total) 
 
                 return (
                     <> 
@@ -83,7 +95,7 @@ const MaterialTable:React.FC<Props> = ({materialComponent}) => {
                         
                         <Table.Row>
                             <Table.RowHeaderCell px="4">
-                              <div className="rounded-full w-12 h-12 overflow-hidden">
+                              <div className="rounded-full w-12 h-12 overflow-hidden" key={n}>
                                 {/* <img src="https://picsum.photos/id/237/200/300" /> */}
                                 <img src={imageIcon} />
                               </div>
@@ -102,11 +114,11 @@ const MaterialTable:React.FC<Props> = ({materialComponent}) => {
                             </Table.Cell>
                             <Table.Cell>
                                 {/* {`${componentTilesNumbers[key]?.qty} ${componentTilesNumbers[key]?.units}`} */}
-                              <input
-                                // value={ costPerUnit }
-                                value={ componentsState[materialComponent][materialName].costPerUnit }
+                              <input 
+                                value={ componentsState[materialComponent][materialName].quantity }
+                              
                                 className="w-20 outline-none p-2 font-semibold rounded text-l text-right"
-                                onChange={(e) => handleChangeValue(e, {mat: materialName, cpu: costPerUnit })}
+                                
                                 disabled />
                             </Table.Cell>
                             <Table.Cell>
@@ -124,19 +136,20 @@ const MaterialTable:React.FC<Props> = ({materialComponent}) => {
                                     (componentTilesNumbers[key]?.qty ?? 0) * (componentTilesNumbers[key]?.price ?? 0)
                                   }
                               </span> */}
-                               <input
-                                // value={ costPerUnit }
-                                value={ componentsState[materialComponent][materialName].costPerUnit }
+                               <input 
+                            
+                                value={ componentsState[materialComponent][materialName].totalCost }
+                                // value={ 888 }
                                 className="w-20 outline-none p-2 font-semibold rounded text-l text-right"
                                 onChange={(e) => handleChangeValue(e, {mat: materialName, cpu: costPerUnit })}
                                 disabled />
                             </Table.Cell>
                         </Table.Row> 
-                        <Table.Row> 
+                        {/* <Table.Row> 
                           <Table.Cell colSpan={5}>
                             <pre className='text-xs opacity-50 w-full whitespace-pre-wrap'>{JSON.stringify(componentsState, null, 2)}</pre>
                           </Table.Cell>
-                        </Table.Row>
+                        </Table.Row> */}
                     </>
                 )
                 } 

@@ -12,7 +12,7 @@ type ComputeParams = {
     handleWidthChange?: (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions ) => void,
     handleAreaChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
     handleDirectAreaChange?: (e:React.ChangeEvent<HTMLInputElement>) => void,
-    estimateNow?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+    estimateNow?: (e:React.FormEvent<HTMLElement>) => void,  
 }
 
 const FormCompute:React.FC<ComputeParams> = ({ 
@@ -24,12 +24,10 @@ const FormCompute:React.FC<ComputeParams> = ({
     handleDirectAreaChange,
     estimateNow
 }) => { 
-
-    
     
     return (
     <div>
-        <Form.Root className="w-full">
+        <Form.Root className="w-full" onSubmit={(e) => estimateNow?.(e)}>
             <div>Let's compute for { material ? material : '' }</div>
             <Form.Field className="grid mb-[10px]" name="email">
             <div className="flex items-baseline justify-between">
@@ -47,18 +45,18 @@ const FormCompute:React.FC<ComputeParams> = ({
                     value={length !== null ? length : ''}
                     onChange={(e) => handleParamsChange && handleParamsChange(e, 'length')} 
                     autoComplete='off'
-                    required
+                    
                 />
             </Form.Control>
             </Form.Field>
             <Form.Field className="grid mb-[10px]" name="question">
                 <div className="flex items-baseline justify-between">
                     <Form.Label className="text-[15px] font-medium leading-[35px]">
-                    Width
+                        Width
                     <span className='opacity-50'> (meters)</span>
                     </Form.Label>
                     <Form.Message className="text-[13px] opacity-[0.8]" match="valueMissing">
-                    Please enter a width in meters
+                        Please enter a width in meters
                     </Form.Message>
                 </div>
                 <Form.Control asChild>
@@ -92,7 +90,7 @@ const FormCompute:React.FC<ComputeParams> = ({
             <Form.Submit asChild>
                 <button
                     className="box-border w-full text-violet shadow-blackA4 hover:bg-purple-500 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-purple-800 text-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]"
-                    onClick={estimateNow}
+                    role='submit'
                     >
                     Estimate
                 </button>
