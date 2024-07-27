@@ -1,28 +1,15 @@
 "use client"
-import { Button } from '@radix-ui/themes'
-import { createBrowserClient } from '@supabase/ssr'
+import { signInWithGoogle } from '@/lib/auth-action'
 import React from 'react'
 
-export default function OAuthForm() {
-   
-    const supabase = createBrowserClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    )
-
-    const loginWithGithub = async() => { 
-        const result = await
-        supabase.auth.signInWithOAuth({
-            provider: 'github',
-            options: {
-                redirectTo: `${location.origin}/auth-server-actions/callback`
-            }
-        })
-
-        if (result) console.log(result)
-    } 
+export default function OAuthForm() { 
     
     return (
-        <Button onClick={loginWithGithub}>Login with Github</Button>
+        <button        
+            onClick={() => signInWithGoogle()}
+            className="box-border w-full text-violet shadow-blackA4 hover:bg-purple-500 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-purple-800 text-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]">
+                Login with Google
+        </button>
+        
     )
 }

@@ -20,9 +20,10 @@ export function useMaterialQuantity({material, materialStrand}: Props)  {
             console.log('Failed to retrieve material. Defaulting to 0')
             return { quantity: 0 }
         }
-
+        
         return calculateFn(material, materialStrand)
     }, [material, materialStrand])
+    
 
     return calculateQuantity
 } 

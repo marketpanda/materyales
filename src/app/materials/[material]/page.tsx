@@ -14,8 +14,8 @@ import { materials } from "@/common/materials";
 import { Material } from "@/common/types";
 import useMaterialsList, { UnitOptions } from "@/app/hooks/useMaterialsList";
 import MaterialTable from "@/app/components/MaterialTable";
-import { parse } from "path";
-
+import { parse } from "path"; 
+import Navbar from "@/app/components/Navbar";
 
 export interface Dimensions {
     length?: number,
@@ -33,12 +33,15 @@ export interface MaterialDimensionsProps {
 interface MaterialElementsList { 
     [key: string] : UnitOptions 
 }  
- 
+
+interface Dims {
+    len?:number,
+    wid?:number
+}
 
 export default function Page():JSX.Element {
     
-    const thisRoute:string = usePathname().split('/')[usePathname().split('/').length - 1] 
-
+    const thisRoute:string = usePathname().split('/')[usePathname().split('/').length - 1]  
     const GenerateHeader = ({ currentRoute }:{ currentRoute: string }) => {
         const materialStrand = materials.find(material => material.name === currentRoute)
         return materialStrand ? materialStrand.title : ""
@@ -57,39 +60,26 @@ export default function Page():JSX.Element {
         }
     } 
     
-    const [materialDimensions, setMaterialDimensions] = useState(materialDimensionsInitial)
+    const [materialDimensions, setMaterialDimensions] = useState<MaterialDimensionsProps>(materialDimensionsInitial)
     
-    const [material, setMaterial] = useState(thisRoute)
+    const [material, setMaterial] = useState<string>(thisRoute)
 
     //pass down prop to component to enable interactivity of button to a user
-    const [areaReference, setAreaReference] = useState<number>(0)
-    
-    const [directAreaChange, setDirectAreaChange] = useState<boolean>(false)
+    const [areaReference, setAreaReference] = useState<number>(0) 
 
     const [dimensionsForDisplay, setDimensionsForDisplay] = useState({
         [material]:materialDimensionsInitial[material]
     })
-
-    console.log(dimensionsForDisplay)
- 
-
-    const populateMaterialComponents:MaterialElementsList  = useMaterialsList({ material })    
-    console.log(populateMaterialComponents)
-    
-    const materialsKeyList = populateMaterialComponents ? Object.entries(populateMaterialComponents) : null
+   
      
     const handleParamsChange = (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions, directArea?:boolean) => {
         let value = parseFloat(e.target.value)  
         
-        if (directArea) {
-            console.log('using direct area input') 
-        }
+        if (directArea) { console.log('using direct area input') }
 
         setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions[material], [params]: value }}))
          
-        setDimensionsForDisplay({ [material]: {
-            ...dimensionsForDisplay[material], [params]:value
-        }}) 
+        setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], [params]:value }}) 
     } 
     
     const handleDirectAreaChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -109,10 +99,7 @@ export default function Page():JSX.Element {
         
     }
 
-    interface Dims {
-        len?:number,
-        wid?:number
-    }
+  
     
     const getAreaByLengthAndWidth = ({len, wid}: Dims) => {
         if (!Number(len) || !Number(wid)) return
@@ -136,7 +123,7 @@ export default function Page():JSX.Element {
                 ...prev, [material]: {
                     ...materialDimensions[material], area: newArea
                 }
-            }) ) 
+            })) 
         }, 500)
 
         return () => {
@@ -149,15 +136,15 @@ export default function Page():JSX.Element {
     const runEstimate = useCallback((e:React.FormEvent<HTMLElement>) => {
     
         e.preventDefault() 
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current)
-        }
+        if (timeoutRef.current) clearTimeout(timeoutRef.current)
 
         timeoutRef.current = setTimeout(() => {
             const num = materialDimensions[material].area 
                 if (num && !isNaN(num)) { 
                 setAreaReference(num)
             }
+
+            console.log('hi there')
 
         }, 500)
        
@@ -180,11 +167,11 @@ export default function Page():JSX.Element {
     // }, [materialDimensions[material].area]) 
     
     return (
-        <>
-            <Box className="rounded-md shadow bg-white borderd mt-2 flex sm:flex-row flex-col gap-2">
+        <> 
+            <Box className="rounded-md shadow bg-white borderd mt-10 flex sm:flex-row flex-col gap-2">
                 <Flex  wrap="wrap"  justify="between" className="w-full">
                 <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden relative">
-                    <div className="absolute z-[1000] flex items-center h-full w-full">
+                    <div className="absolute z-10 flex items-center h-full w-full">
                         <ComponentButtons component="tiles" />
                     </div>
                     <div className="sm:h-full h-[300px] bg-blue-300 relative left-0 right-0"> 
@@ -292,7 +279,7 @@ export default function Page():JSX.Element {
                 <Flex wrap="wrap-reverse" className="w-full">
                 <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden">
                     <div className="sm:h-full h-[300px] bg-blue-300 relative">
-                    <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
+                        <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
                     </div>
                 </Box> 
                 <Box className="border w-full sm:w-2/3 p-4 pb-10">

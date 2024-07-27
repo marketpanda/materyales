@@ -9,7 +9,7 @@ export default function MaterialsLayout({
 }) {
   return (
     <>
-        <div>Navbar</div>
+         
         {children}
     </>
      

@@ -1,6 +1,5 @@
 import React from 'react'
-import { Box } from '@radix-ui/themes' 
-import logout from './logout'
+import { Box } from '@radix-ui/themes'  
  
 
 export default function Signout() {
@@ -11,7 +10,7 @@ export default function Signout() {
                 <div>
                   Hi, Jones
                 </div>
-                <form action={logout}>
+                <form>
                   <button type="submit">
                     Logout
                   </button> 

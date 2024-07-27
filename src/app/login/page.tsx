@@ -1,14 +1,11 @@
 "use client"
-
-
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { AiOutlineLoading3Quarters } from "react-icons/ai"
+ 
+import * as z from "zod" 
 import { Box, Flex, Heading } from '@radix-ui/themes'
 import Image from 'next/image'
-import * as Form from '@radix-ui/react-form'
-import { signInWithEmailAndPassword } from '../auth-server-actions/actions'
+import * as Form from '@radix-ui/react-form' 
 import OAuthForm from '../components/OAuthForm'
+import { login } from "@/lib/auth-action"
  
 
 const FormSchema = z
@@ -24,24 +21,12 @@ const FormSchema = z
 type FormData = z.infer<typeof FormSchema>
 
 export default function LoginPage() {
+ 
 
-  const form = useForm()
-
-  const handleSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => { 
-    
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const data: FormData = {
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
-    }
-    const result = await signInWithEmailAndPassword(data)
-    if (result) console.log(result)
-  }
   
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center gap-2 bg-gray-100 border">
+      <main className="flex min-h-screen justify-center items-center gap-2 bg-gray-100 ">
         <div className="w-full sm:w-[640px] flex flex-col gap-2"> 
         
           <Box className="rounded-md shadow bg-white borderd mt-2 flex sm:flex-row flex-col gap-2"> 
@@ -57,7 +42,7 @@ export default function LoginPage() {
                
               <Heading size="5" className="mt-2">Login</Heading>
               
-              <Form.Root className="w-full" onSubmit={(e) => handleSubmitLogin(e)}>
+              <Form.Root className="w-full" action=""  >
                   <Form.Field className="grid mb-[10px]" name="email">
                     <div className="flex items-baseline justify-between">
                         <Form.Label className="text-[15px] font-medium leading-[35px]">Username/Email</Form.Label>
@@ -70,6 +55,7 @@ export default function LoginPage() {
                           className="box-border text-right w-full bg-blackA2 shadow-blackA6 inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none hover:shadow-[0_0_0_1px_black] focus:shadow-[0_0_0_2px_black] selection:color-white selection:bg-blackA6"
                           // value={length !== null ? length : ''}
                           // onChange={ }
+                          name="email"
                           autoComplete='off'
                           required
                     />
@@ -97,16 +83,16 @@ export default function LoginPage() {
                   </Form.Field>
                   
                   <Form.Submit asChild>
-                      <button className="box-border w-full text-violet shadow-blackA4 hover:bg-purple-500 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-purple-800 text-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]"
-                          >
+                      <button
+                        type="submit"
+                        formAction={login}
+                        className="box-border w-full text-violet shadow-blackA4 hover:bg-purple-500 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-purple-800 text-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]">
                         Login
                       </button>
                   </Form.Submit>
-                  <div className='mt-2'>
-
-                  </div>
+                  
+                  <OAuthForm /> 
               </Form.Root> 
-              <OAuthForm /> 
  
               </Box> 
             </Flex> 

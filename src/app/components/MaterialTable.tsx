@@ -5,7 +5,7 @@ import { useMaterialQuantity } from '../hooks/useMaterialQuantity'
 
 interface Props {
   materialComponent:string
-  area: number
+  area:number
 }
 
 interface ComponentType { 
@@ -22,62 +22,84 @@ interface ComponentType {
 type MaterialStrand = [mat:string, matComponents:UnitOptions]
 
 interface InputProps {
-  mat: string,
-  cpu: number | undefined
+  mat: string
+  param: string
 } 
 
 const MaterialTable:React.FC<Props> = ({materialComponent, area}) => {
+    console.log("area ", area)
 
-    const categoryBreakdownMaterials:ComponentType = useMaterialsList({ material: materialComponent })
-    console.log(categoryBreakdownMaterials)  
+    const categoryBreakdownMaterials:ComponentType = useMaterialsList({ material: materialComponent })   
+    const [componentsState, setComponentsState] = useState<ComponentType>(categoryBreakdownMaterials)   
 
-    const [componentsState, setComponentsState] = useState<ComponentType>(categoryBreakdownMaterials) 
-    console.log(componentsState)  
-    for (let material in categoryBreakdownMaterials[materialComponent]) {
-        
-      const getQuantity = useMaterialQuantity({material: materialComponent, materialStrand: material })
-      const theQuantity = getQuantity().quantity  
+    // for (let material in componentsState[materialComponent]) { 
       
-      const costPerUnit = categoryBreakdownMaterials[materialComponent][material].costPerUnit 
-
-      const getTotalCost = (costPerUnit ?? 0) * (theQuantity || 0)
-      console.log(getTotalCost)
-      categoryBreakdownMaterials[materialComponent][material].quantity = theQuantity
-      categoryBreakdownMaterials[materialComponent][material].totalCost = getTotalCost 
-    }
+    //   const getQuantity = useMaterialQuantity({material: materialComponent, materialStrand: material })
+    //   const { quantity } = getQuantity()  
+    //   console.log(quantity)
       
-    let categoryBreakdownMaterialsArray:MaterialStrand[] = []
-
-
+    //   const { costPerUnit } = categoryBreakdownMaterials[materialComponent][material]  
+      
+    //   const totalCost = (costPerUnit ?? 0) * (quantity || 0) 
+    //   console.log(totalCost)
+      
+    //   componentsState[materialComponent][material].quantity = quantity
+    //   componentsState[materialComponent][material].totalCost = totalCost  
+      
+    // }
+     
+    // let categoryBreakdownMaterialsArray:MaterialStrand[] = [] 
     
-    if (categoryBreakdownMaterials) categoryBreakdownMaterialsArray = Object.entries(categoryBreakdownMaterials[materialComponent])
-    console.log(categoryBreakdownMaterials) 
-    
-    const handleChangeValue = (event:ChangeEvent<HTMLInputElement>, { mat, cpu }: InputProps) => {
+    const [categoryBreakdownMaterialsArray, setCategoryBreakdownMaterialsArray] = 
+      useState<MaterialStrand[]>(Object.entries(componentsState[materialComponent]))
       
+    
+    const handleChangeValue = (event:ChangeEvent<HTMLInputElement>, { param, mat }: InputProps) => { 
+      if (!Number(event.target.value)) return
       setComponentsState(( prev:ComponentType ) => ({
         ...prev, [materialComponent]: { ...componentsState[materialComponent],
-          [mat]: {
-            ...componentsState[materialComponent][mat], costPerUnit: Number(event.target.value)
-              }
-            }
-          }
-        )
-      )
+            [mat]: { ...componentsState[materialComponent][mat], [param]: Number(event.target.value) }
+      }}))
+      console.log(componentsState)
     } 
+
+    const materialStrandDependencies = Object.entries(componentsState)
+
+    console.log( materialStrandDependencies ) 
+    
+    console.log( componentsState ) 
+
+    useEffect(() => { 
+      const computeAndDisplayArea = () => {
+
+        const qty = componentsState[materialComponent]['tile'].quantity 
+        const cpu = componentsState[materialComponent]['tile'].costPerUnit
+        const newTotal = (qty ? qty : 0) * (cpu ? cpu : 0) 
+  
+        setComponentsState((prev) => ({
+          ...prev, [materialComponent]: { ...componentsState[materialComponent],
+            ['tile']: { ...componentsState[materialComponent]['tile'], totalCost: newTotal}
+          }
+        }))
+      }
+
+      const timeOutId = setTimeout(() => {
+        computeAndDisplayArea() 
+      }, 500)
+
+      return () => clearTimeout(timeOutId) 
+    }, [
+      // componentsState[materialComponent]['tile'].quantity,
+      // componentsState[materialComponent]['tile'].costPerUnit
+    ])
+
+   
 
     return (
         <>
             { categoryBreakdownMaterialsArray?.map((material, n:number) => {
-                const materialName = material[0]
-                const costPerUnit = material[1].costPerUnit
-                const imageIcon = material[1].imageIcon  
-
-                
-                
-                // const total = (theQuantity ?? 0) * (costPerUnit || 0)
-                
-                // console.log(total) 
+                const materialName = material[0] 
+                const imageIcon = material[1].imageIcon    
 
                 return (
                     <> 
@@ -115,19 +137,16 @@ const MaterialTable:React.FC<Props> = ({materialComponent, area}) => {
                             <Table.Cell>
                                 {/* {`${componentTilesNumbers[key]?.qty} ${componentTilesNumbers[key]?.units}`} */}
                               <input 
-                                value={ componentsState[materialComponent][materialName].quantity }
-                              
-                                className="w-20 outline-none p-2 font-semibold rounded text-l text-right"
-                                
-                                disabled />
+                                value={ componentsState[materialComponent][materialName].quantity } 
+                                className="w-20 outline-none bg-purple-100 p-2 font-semibold rounded text-l text-right" 
+                                onChange={(e) => handleChangeValue(e, { mat: materialName, param: 'quantity' })}  />
                             </Table.Cell>
                             <Table.Cell>
                               {/* <input value={ componentTilesNumbers[key]?.price } className="w-20 outline-none" onChange={() => console.log('tiles')}  /> */}
-                              <input
-                                // value={ costPerUnit }
+                              <input 
                                 value={ componentsState[materialComponent][materialName].costPerUnit }
                                 className="w-20 outline-none bg-purple-100 p-2 font-semibold rounded text-l text-right"
-                                onChange={(e) => handleChangeValue(e, {mat: materialName, cpu: costPerUnit })}  />
+                                onChange={(e) => handleChangeValue(e, { mat: materialName, param: 'costPerUnit' })}  />
                                 
                             </Table.Cell>
                             <Table.Cell pr="5" className="md:table-cell hidden">
@@ -136,12 +155,9 @@ const MaterialTable:React.FC<Props> = ({materialComponent, area}) => {
                                     (componentTilesNumbers[key]?.qty ?? 0) * (componentTilesNumbers[key]?.price ?? 0)
                                   }
                               </span> */}
-                               <input 
-                            
-                                value={ componentsState[materialComponent][materialName].totalCost }
-                                // value={ 888 }
-                                className="w-20 outline-none p-2 font-semibold rounded text-l text-right"
-                                onChange={(e) => handleChangeValue(e, {mat: materialName, cpu: costPerUnit })}
+                               <input  
+                                value={ componentsState[materialComponent][materialName].totalCost } 
+                                className="w-20 outline-none p-2 font-semibold rounded text-l text-right" 
                                 disabled />
                             </Table.Cell>
                         </Table.Row> 

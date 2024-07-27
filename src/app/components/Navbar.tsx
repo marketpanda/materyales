@@ -3,9 +3,8 @@
 import React from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import classNames from 'classnames';
-import { CaretDownIcon } from '@radix-ui/react-icons';
-import { logout } from '../logout/actions';
-import Link from 'next/link';
+import { CaretDownIcon } from '@radix-ui/react-icons';   
+import LoginLogoutButton from './LoginLogoutButton';
 
 type ListItemProps = {
   className?: string
@@ -15,9 +14,13 @@ type ListItemProps = {
 }
 
 const Navbar:React.FC = () => {
+
+ 
+
+
   return (
-    <NavigationMenu.Root className="relative z-[1] flex w-screen justify-center">
-      <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none rounded-[6px] bg-white p-1 shadow-[0_2px_10px]">
+    <NavigationMenu.Root className="fixed bg-white flex w-screen justify-center z-20">
+      <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none rounded-[6px] p-1">
         <NavigationMenu.Item>
           <NavigationMenu.Trigger className="text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
             Learn{' '}
@@ -95,29 +98,9 @@ const Navbar:React.FC = () => {
           </NavigationMenu.Content>
         </NavigationMenu.Item>
 
-        <NavigationMenu.Item>
-          <NavigationMenu.Link
-            className="text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
-            href="#"
-          >
-             
-          </NavigationMenu.Link>
-        </NavigationMenu.Item>
-        <NavigationMenu.Item>
-          <NavigationMenu.Link
-            className="text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
-            href="#"
-          >
-            <div>
-            <form action={logout}>
-              <button type="submit">
-                Logout
-              </button>
-
-            </form>
-          </div>
-          </NavigationMenu.Link>
-        </NavigationMenu.Item>
+        
+          <LoginLogoutButton />
+       
 
         <NavigationMenu.Indicator className="data-[state=visible]:animate-fadeIn data-[state=hidden]:animate-fadeOut top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease]">
           <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-white" />
