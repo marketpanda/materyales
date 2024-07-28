@@ -26,8 +26,7 @@ interface InputProps {
   param: string
 } 
 
-const MaterialTable:React.FC<Props> = ({materialComponent, area}) => {
-    console.log("area ", area)
+const MaterialTable:React.FC<Props> = ({materialComponent, area}) => { 
 
     const categoryBreakdownMaterials:ComponentType = useMaterialsList({ material: materialComponent })   
     const [componentsState, setComponentsState] = useState<ComponentType>(categoryBreakdownMaterials)   

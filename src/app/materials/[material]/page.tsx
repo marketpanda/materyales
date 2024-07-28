@@ -74,17 +74,14 @@ export default function Page():JSX.Element {
      
     const handleParamsChange = (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions, directArea?:boolean) => {
         let value = parseFloat(e.target.value)  
-        
-        if (directArea) { console.log('using direct area input') }
-
+        e.preventDefault()
+ 
         setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions[material], [params]: value }}))
-         
         setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], [params]:value }}) 
     } 
     
     const handleDirectAreaChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseFloat(e.target.value)
-        if (isNaN(value)) return
+        const value = parseFloat(e.target.value) 
          
         handleParamsChange(e, 'area', true) 
        
@@ -94,9 +91,7 @@ export default function Page():JSX.Element {
             length: 0,
             width: 0,
             area: value
-        }})) 
-
-        
+        }}))  
     }
 
   
@@ -144,7 +139,7 @@ export default function Page():JSX.Element {
                 setAreaReference(num)
             }
 
-            console.log('hi there')
+            console.log(dimensionsForDisplay)
 
         }, 500)
        
@@ -195,15 +190,14 @@ export default function Page():JSX.Element {
             <Box className="rounded-md shadow bg-white borderd">
                 <Table.Root variant="surface">
                 <Table.Header>
-                    <Table.Row>
-                    
-                    <Table.ColumnHeaderCell>Image</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Material</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Cost per Unit</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell className="hidden md:table-cell">
-                        Total Cost
-                    </Table.ColumnHeaderCell>
+                    <Table.Row> 
+                        <Table.ColumnHeaderCell>Image</Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell>Material</Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell>Cost per Unit</Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell className="hidden md:table-cell">
+                            Total Cost
+                        </Table.ColumnHeaderCell>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body> 

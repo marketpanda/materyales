@@ -110,8 +110,8 @@ function Home() {
  
   const displayArea = () => {
      if (typeof width === 'number' && typeof length === 'number') {
-      const area2: number = width * length; 
-      const cleanDecimals: number = parseFloat(area2.toFixed(2))
+      const area: number = width * length; 
+      const cleanDecimals: number = parseFloat(area.toFixed(2))
       setArea(cleanDecimals);
     }
   }
@@ -139,7 +139,6 @@ function Home() {
     const value  = parseFloat(e.target.value)
     setLength(isNaN(value) ? null : value) 
     updateValue({ length: (isNaN(value) ? null : value) })
-     
   }
   
   const handleWidthChange = (e:React.ChangeEvent<HTMLInputElement>) => {
