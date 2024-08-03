@@ -60,7 +60,7 @@ export default function Page():JSX.Element {
         }
     } 
     
-    const [materialDimensions, setMaterialDimensions] = useState<MaterialDimensionsProps>(materialDimensionsInitial)
+    const [materialDimensions, setMaterialDimensions] = useState<MaterialDimensionsProps | null>(materialDimensionsInitial)
     
     const [material, setMaterial] = useState<string>(thisRoute)
 
@@ -70,13 +70,21 @@ export default function Page():JSX.Element {
     const [dimensionsForDisplay, setDimensionsForDisplay] = useState({
         [material]:materialDimensionsInitial[material]
     })
-   
      
     const handleParamsChange = (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions, directArea?:boolean) => {
         let value = parseFloat(e.target.value)  
         e.preventDefault()
- 
-        setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions[material], [params]: value }}))
+
+        
+        if (params === 'area') {
+            setMaterialDimensions((prev) => ({ ...prev, [material]: {
+                ...materialDimensions?.[material],
+                //we reset length and width to 0 if user goes directly to area input
+                length: 0, width: 0, [params]: value }}))
+        } else { 
+            setMaterialDimensions((prev) => ({ ...prev, [material]: { ...materialDimensions?.[material], [params]: value }}))
+        }
+        
         setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], [params]:value }}) 
     } 
     
@@ -92,9 +100,7 @@ export default function Page():JSX.Element {
             width: 0,
             area: value
         }}))  
-    }
-
-  
+    } 
     
     const getAreaByLengthAndWidth = ({len, wid}: Dims) => {
         if (!Number(len) || !Number(wid)) return
@@ -103,20 +109,24 @@ export default function Page():JSX.Element {
     useEffect(() => {
 
         const timeoudId = setTimeout(() => {
+
+            //related to direct area input
+            if (materialDimensions?.[material].length === 0 || materialDimensions?.[material].width === 0) return
+
             const newArea = getAreaByLengthAndWidth({
-                len:materialDimensions[material].length,
-                wid:materialDimensions[material].width
+                len:materialDimensions?.[material].length,
+                wid:materialDimensions?.[material].width
             })
     
             setDimensionsForDisplay((prev) => ({
-                ...prev, [material]:  {
+                ...prev, [material]: {
                     ...dimensionsForDisplay[material], area: newArea
                 }
             }))  
 
             setMaterialDimensions((prev) => ({
                 ...prev, [material]: {
-                    ...materialDimensions[material], area: newArea
+                    ...materialDimensions?.[material], area: newArea
                 }
             })) 
         }, 500)
@@ -125,25 +135,20 @@ export default function Page():JSX.Element {
             clearTimeout(timeoudId)
         }
 
-    }, [materialDimensions[material].length, materialDimensions[material].width]) 
+    }, [materialDimensions?.[material].length, materialDimensions?.[material].width]) 
 
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-    const runEstimate = useCallback((e:React.FormEvent<HTMLElement>) => {
-    
+    const runEstimate = useCallback((e:React.FormEvent<HTMLElement>) => { 
         e.preventDefault() 
         if (timeoutRef.current) clearTimeout(timeoutRef.current)
 
         timeoutRef.current = setTimeout(() => {
-            const num = materialDimensions[material].area 
+            const num = materialDimensions?.[material].area 
                 if (num && !isNaN(num)) { 
                 setAreaReference(num)
-            }
-
-            console.log(dimensionsForDisplay)
-
-        }, 500)
-       
-    }, [material, materialDimensions])
+            }  
+        }, 500) 
+    }, [material, materialDimensions, areaReference])
 
     // useEffect(() => {
 
@@ -201,7 +206,7 @@ export default function Page():JSX.Element {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body> 
-                    <MaterialTable materialComponent={material} area={areaReference} /> 
+                    <MaterialTable materialComponent={material} area={areaReference} />
 
                     {/* {
                     Object.keys(componentTilesNumbers).map(key => (
@@ -284,7 +289,7 @@ export default function Page():JSX.Element {
                         <span className="flex-1 text-right">
                         Total of Materials:
                         </span> 
-                        <span className="w-[50px] text-right"> </span>
+                        <span className="w-[50px] text-right"></span>
                         <span className="w-[120px] text-right">
                             {/* { summaryBreakdownState.sbTotalMaterials?.value } */}
                         </span>

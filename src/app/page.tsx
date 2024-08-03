@@ -58,7 +58,7 @@ function Home() {
     area: 0
   })
 
-  const [area, setArea] = useState<null | number | string >(null)
+  const [area, setArea] = useState<null | number>(null)
 
   const [tilesTiles, setTilesTiles] = useState<number>(0)
   const [tilesGrout, setTilesGrout] = useState<number>(0) 

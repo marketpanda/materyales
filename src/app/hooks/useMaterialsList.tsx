@@ -21,16 +21,16 @@ export default function useMaterialsList({material} : { material: string }) {
                 costPerUnit: 300,
                 unitSize: '300x300',
                 imageIcon: 'https://picsum.photos/id/237/200/300',
-                totalCost: 24,
-                quantity: 21
+                totalCost: 0,
+                quantity: 0
                 
             },
             grout: {
                 units: ['bag', 'kg'],
                 costPerUnit: 50,
                 unitSize: '1 kg',
-                totalCost: 32,
-                quantity: 2221,
+                totalCost: 0,
+                quantity: 0,
                 imageIcon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFGQrmKeUse2_2bxgzoHv0su3g8PSrWoF5yg&s'
             }
         }, 
@@ -61,8 +61,7 @@ export default function useMaterialsList({material} : { material: string }) {
             },
         }
     } 
-
-    console.log(materialsList['tiles'])
+ 
     return  { [material]: materialsList[material] } 
     
 }
