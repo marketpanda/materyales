@@ -132,19 +132,28 @@ const MaterialTable:React.FC<Props> = ({materialComponent, area}) => {
     // }, [ 
     //   componentsStateForDisplay[materialComponent]['tile'].quantity,
     //   componentsStateForDisplay[materialComponent]['tile'].costPerUnit
-    // ]) 
+    // ])
+    
+    useEffect(() => {
+      console.log(
+        componentsStateForDisplay?.[materialComponent]['tile'].quantity,
+      )
+     }, [ 
+      componentsStateForDisplay ? componentsStateForDisplay[materialComponent]['tile'].quantity : "",
+      componentsStateForDisplay ? componentsStateForDisplay[materialComponent]['tile'].costPerUnit : "", 
+    ]) 
 
     return (
         <> 
           {
             componentsStateForDisplay && Object.keys(componentsStateForDisplay[materialComponent]).map((materialInstance, n) => {
-              const {imageIcon} = componentsStateForDisplay[materialComponent][materialInstance]
+              const { imageIcon } = componentsStateForDisplay[materialComponent][materialInstance]
               return (
                 <>
                     <Table.Row>
                       <Table.RowHeaderCell px="4">
                         <div className="rounded-full w-12 h-12 overflow-hidden" key={n}> 
-                          <img src={imageIcon} />
+                          <img src={ imageIcon } />
                         </div>
                       </Table.RowHeaderCell>
                       <Table.Cell>

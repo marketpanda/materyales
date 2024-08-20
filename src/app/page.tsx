@@ -116,8 +116,7 @@ function Home() {
     }
   }
  
-
-
+ 
   useEffect(() => { 
     const timeoutId = setTimeout(() => { 
       displayArea()
@@ -126,8 +125,7 @@ function Home() {
     return () => {
       clearTimeout(timeoutId)
     }
-  }, [width, length])
-
+  }, [width, length]) 
  
   type DimensionKey = 'length' | 'width' | 'area'
 
@@ -350,8 +348,7 @@ function Home() {
                         {  
                           showcaseComponent[key] ? (
                             <Table.Row>
-                              <Table.Cell colSpan={5}>
-                                
+                              <Table.Cell colSpan={5}> 
                                 <ComponentShowcaseDetails component={key} />
                               </Table.Cell>
                             </Table.Row>
