@@ -24,6 +24,8 @@ const FormCompute:React.FC<ComputeParams> = ({
     handleDirectAreaChange,
     estimateNow
 }) => { 
+
+    console.log(length)
     
     return (
     <div>
@@ -35,9 +37,8 @@ const FormCompute:React.FC<ComputeParams> = ({
                 <span className='opacity-50'> (meters)</span>
                 </Form.Label>
                 <Form.Message className="text-[13px] opacity-[0.8]" match="valueMissing">
-                Please enter a length in meters
+                    Please enter a length in meters
                 </Form.Message>
-               
             </div>
             <Form.Control asChild>
                 <input

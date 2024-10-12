@@ -16,6 +16,8 @@ import useMaterialsList, { UnitOptions } from "@/app/hooks/useMaterialsList";
 import MaterialTable from "@/app/components/MaterialTable";
 import { parse } from "path"; 
 import Navbar from "@/app/components/Navbar";
+import { SbType } from "@/app/types/components";
+import useMaterialComponentsSummaryBreakdown from "@/app/hooks/useMaterialComponentsSummaryBreakdown";
 
 export interface Dimensions {
     length?: number,
@@ -37,6 +39,15 @@ interface MaterialElementsList {
 interface Dims {
     len?:number,
     wid?:number
+}
+
+interface SummaryBreakDownProps {
+    summaryBreakdownSbLabor?: number,
+    summaryBreakdownSbTotalMaterials?: number,
+    summaryBreakdownSbContingency?: number,
+    summaryBreakdownSbContractorsProfit?: number,
+    summaryBreakdownSbTax?: number,
+
 }
 
 export default function Page():JSX.Element {
@@ -70,7 +81,14 @@ export default function Page():JSX.Element {
     const [dimensionsForDisplay, setDimensionsForDisplay] = useState({
         [material]:materialDimensionsInitial[material]
     })
+
+    
      
+    const [summaryBreakDownDisplay, setSummaryBreakDownDisplay] = useState<SummaryBreakDownProps>({
+         
+        
+    })
+
     const handleParamsChange = (e:React.ChangeEvent<HTMLInputElement>, params:keyof Dimensions, directArea?:boolean) => {
         let value = parseFloat(e.target.value)  
         e.preventDefault()
@@ -150,6 +168,16 @@ export default function Page():JSX.Element {
         }, 500) 
     }, [material, materialDimensions, areaReference])
 
+    const summaryBreakdown = {
+        sbTotalMaterials: { include: true, value: 0 },
+        sbLabor: { include: true, value: 0 }, 
+        sbContingency: { include: true, value: 0 },
+        sbContractorsProfit: { include: true, value: 0 },
+        sbTax: { include: true, value: 0},
+    }
+
+    const [summaryBreakdownState, setSummaryBreakdownState] = useState<SbType>(summaryBreakdown)
+
     // useEffect(() => {
 
     //     const timeoudId = setTimeout(() => {  
@@ -165,6 +193,58 @@ export default function Page():JSX.Element {
     //     }
 
     // }, [materialDimensions[material].area]) 
+
+    const toggleIncludeBreakdown = (breakdownComponent:keyof SbType) => {  
+        
+        setSummaryBreakdownState((prev) => {
+          const component = prev[breakdownComponent]
+          return {
+            ...prev,
+            [breakdownComponent]: component ?
+            {...component, include: !component.include } :
+            component
+          }
+        })
+      }
+
+    const [materialComponentTotal, setMaterialComponentTotal] = useState<number>(0)
+
+    console.log(materialComponentTotal)
+ 
+    useEffect(() => {
+        console.log(materialComponentTotal)
+
+        const {
+            sbLabor: summaryBreakdownSbLabor,
+            sbTotalMaterials: summaryBreakdownSbTotalMaterials, 
+            sbContingency: summaryBreakdownSbContingency,
+            sbContractorsProfit: summaryBreakdownSbContractorsProfit,
+            sbTax: summaryBreakdownSbTax
+            
+        } = useMaterialComponentsSummaryBreakdown(materialComponentTotal)
+
+        setSummaryBreakDownDisplay({
+            summaryBreakdownSbLabor: summaryBreakdownSbLabor,
+            summaryBreakdownSbTotalMaterials: summaryBreakdownSbTotalMaterials,
+            summaryBreakdownSbContingency: summaryBreakdownSbContingency,
+            summaryBreakdownSbContractorsProfit: summaryBreakdownSbContractorsProfit,
+            summaryBreakdownSbTax: summaryBreakdownSbTax
+        } )
+
+        console.log(summaryBreakdownSbContractorsProfit)
+         
+    }, [materialComponentTotal])
+
+    console.log(summaryBreakDownDisplay.summaryBreakdownSbContractorsProfit)
+
+
+   const { 
+    summaryBreakdownSbLabor,
+    summaryBreakdownSbTotalMaterials,
+    summaryBreakdownSbContingency,
+    summaryBreakdownSbContractorsProfit,
+    summaryBreakdownSbTax
+    } = summaryBreakDownDisplay
     
     return (
         <> 
@@ -205,8 +285,13 @@ export default function Page():JSX.Element {
                         </Table.ColumnHeaderCell>
                     </Table.Row>
                 </Table.Header>
-                <Table.Body> 
-                    <MaterialTable materialComponent={material} area={areaReference} />
+                <Table.Body>
+                    <MaterialTable
+                        materialComponent={material}
+                        area={areaReference}
+                        materialComponentTotal={materialComponentTotal}
+                        setMaterialComponentTotal={setMaterialComponentTotal}
+                    />
 
                     {/* {
                     Object.keys(componentTilesNumbers).map(key => (
@@ -284,7 +369,7 @@ export default function Page():JSX.Element {
                 <Box className="border w-full sm:w-2/3 p-4 pb-10">
                     <div className="flex flex-col w-full text-sm">
                     <div
-                        // onClick={() => toggleIncludeBreakdown("sbTotalMaterials")}
+                        onClick={() => toggleIncludeBreakdown("sbTotalMaterials")}
                         className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                         <span className="flex-1 text-right">
                         Total of Materials:
@@ -292,13 +377,14 @@ export default function Page():JSX.Element {
                         <span className="w-[50px] text-right"></span>
                         <span className="w-[120px] text-right">
                             {/* { summaryBreakdownState.sbTotalMaterials?.value } */}
+                            { summaryBreakdownSbTotalMaterials }  
                         </span>
                         <span className="w-[20px] flex items-center"> 
-                        {/* <Checkbox checked={summaryBreakdownState.sbTotalMaterials?.include} /> */}
+                        <Checkbox checked={summaryBreakdownState.sbTotalMaterials?.include} />
                         </span>
                     </div>
                     <div
-                        // onClick={() => toggleIncludeBreakdown("sbLabor")}
+                        onClick={() => toggleIncludeBreakdown("sbLabor")}
                         className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                         <span className="flex-1 text-right">
                         Total of Labor:
@@ -306,13 +392,14 @@ export default function Page():JSX.Element {
                         <span className="w-[50px] text-right">30%</span>
                         <span className="w-[120px] text-right">
                             {/* { summaryBreakdownState.sbLabor?.value } */}
+                            { summaryBreakdownSbLabor }
                             </span>
                         <span className="w-[20px] flex items-center"> 
-                        {/* <Checkbox checked={summaryBreakdownState.sbLabor?.include}  /> */}
+                        <Checkbox checked={summaryBreakdownState.sbLabor?.include} />
                         </span>
                     </div>
                     <div
-                        // onClick={() => toggleIncludeBreakdown("sbContingency")}
+                        onClick={() => toggleIncludeBreakdown("sbContingency")}
                         className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                         <span className="flex-1 text-right">
                         Contingency:
@@ -320,13 +407,14 @@ export default function Page():JSX.Element {
                         <span className="w-[50px] text-right">5%</span>
                         <span className="w-[120px] text-right">
                             {/* { summaryBreakdownState.sbContingency?.value } */}
+                            { summaryBreakdownSbContingency }
                             </span>
                         <span className="w-[20px] flex items-center"> 
-                        {/* <Checkbox checked={summaryBreakdownState.sbContingency?.include} /> */}
+                        <Checkbox checked={summaryBreakdownState.sbContingency?.include} />
                         </span>
                     </div>
                     <div
-                        // onClick={() => toggleIncludeBreakdown("sbContractorsProfit")}
+                        onClick={() => toggleIncludeBreakdown("sbContractorsProfit")}
                         className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                         <span className="flex-1 text-right">
                         Contractor's Profit:
@@ -334,13 +422,15 @@ export default function Page():JSX.Element {
                         <span className="w-[50px] text-right">12.5%</span>
                         <span className="w-[120px] text-right">
                             {/* { summaryBreakdownState.sbContractorsProfit?.value } */}
+                            { summaryBreakdownSbContractorsProfit }
+    
                             </span>
                         <span className="w-[20px] flex items-center"> 
-                        {/* <Checkbox checked={summaryBreakdownState.sbContractorsProfit?.include} /> */}
+                        <Checkbox checked={summaryBreakdownState.sbContractorsProfit?.include} />
                         </span>
                     </div>
                     <div
-                        // onClick={() => toggleIncludeBreakdown("sbTax")}
+                        onClick={() => toggleIncludeBreakdown("sbTax")}
                         className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
                         <span className="flex-1 text-right">
                         Tax:
@@ -348,9 +438,10 @@ export default function Page():JSX.Element {
                         <span className="w-[50px] text-right">12.5%</span>
                         <span className="w-[120px] text-right">
                             {/* { summaryBreakdownState.sbTax?.value } */}
+                            {summaryBreakdownSbTax}
                             </span>
                         <span className="w-[20px] flex items-center"> 
-                        {/* <Checkbox checked={summaryBreakdownState.sbTax?.include} /> */}
+                        <Checkbox checked={summaryBreakdownState.sbTax?.include} />
                         </span>
                     </div>
                     <div
@@ -360,11 +451,17 @@ export default function Page():JSX.Element {
                         Total Project Cost:
                         </span> 
                         <span className="w-[50px] text-right"> </span>
-                        {/* <span className="w-[120px] text-right font-bold">{ Object.values(summaryBreakdownState)
+                        <span className="w-[120px] text-right font-bold">
+                            {/* { Object.values(summaryBreakdownState)
                         .reduce((acc, item) => {
                             if (item && item.include) return (acc + (item?.value ?? 0))
                             return acc
-                        }, 0) }</span> */}
+                        }, 0) } */}
+
+                                {
+                                    Object.values(summaryBreakDownDisplay).reduce((acc, curr) => acc + curr, 0)
+                                }
+                        </span>
                         <span className="w-[20px] flex items-center"> 
                         
                         </span>

@@ -4,13 +4,14 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react"; 
 import { Heading, Table, Flex, Checkbox, Box } from "@radix-ui/themes";  
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query"; 
-import DemoClientComponent from "./components/DemoClientComponent";
 import FormCompute from "./components/FormCompute";
 import { priceMaterialsTiles } from "./constants/numbers"; 
 import ComponentBrandPortalSimple from "./components/ComponentBrandPortalSimple";
 import ComponentShowcaseDetails from "./components/ComponentShowcaseDetails";
 import ComponentButtons from "./components/ComponentButtons";
 import Navbar from "./components/Navbar";
+import { DimensionKey, SbType, singleComponent, SummaryBreakdownStrand } from "./types/components";
+import WelcomeNote from "./components/WelcomeNote";
 
 const queryClient = new QueryClient()
 
@@ -44,13 +45,11 @@ function Home() {
     console.log(showcaseComponent) 
   }
 
-
   type DimensionsBasicType = {
     width?: number | null,
     length?: number | null,
     area?: number | null
   }
-
 
   const [dimensions, setDimensions] = useState<DimensionsBasicType>({
     width: 0,
@@ -61,21 +60,12 @@ function Home() {
   const [area, setArea] = useState<null | number>(null)
 
   const [tilesTiles, setTilesTiles] = useState<number>(0)
-  const [tilesGrout, setTilesGrout] = useState<number>(0) 
+  const [tilesGrout, setTilesGrout] = useState<number>(0)
 
-  //should be importable for incoming components as well
-  type singleComponent = { 
-    qty: number,
-    units: string,
-    price?: number,
-    total?: number
-  }
-  
   //should be importable for incoming components as well
   type componentTilesType = {
     [key: string]: singleComponent | null | undefined, 
   }
-
 
   const initialComponentTiles = {
     tiles: { qty: 0, units: 'pcs', price: priceMaterialsTiles.tiles },
@@ -84,26 +74,12 @@ function Home() {
 
   const [componentTilesNumbers, setComponentTilesNumbers] = useState<componentTilesType>(initialComponentTiles)
 
-
   const summaryBreakdown = {
     sbTotalMaterials: { include: true },
     sbLabor: { include: true }, 
     sbContingency: { include: true },
     sbContractorsProfit: { include: true },
     sbTax: { include: true },
-  }
-
-  type SbTypeStrand = {
-    value?: number,
-    include?: boolean
-  }
-
-  type SbType = {
-    sbTotalMaterials?: SbTypeStrand | null,
-    sbLabor?: SbTypeStrand | null, 
-    sbContingency?: SbTypeStrand | null,
-    sbContractorsProfit?: SbTypeStrand | null,
-    sbTax?: SbTypeStrand | null,
   }
 
   const [summaryBreakdownState, setSummaryBreakdownState] = useState<SbType>(summaryBreakdown) 
@@ -116,7 +92,6 @@ function Home() {
     }
   }
  
- 
   useEffect(() => { 
     const timeoutId = setTimeout(() => { 
       displayArea()
@@ -126,33 +101,31 @@ function Home() {
       clearTimeout(timeoutId)
     }
   }, [width, length]) 
- 
-  type DimensionKey = 'length' | 'width' | 'area'
 
   const updateValue = (param: Partial<{ [key in DimensionKey]: number | null  }> ) => { 
     setDimensions(prev => ({ ...prev, ...param })) 
   }
 
   const handleLengthChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    
     const value  = parseFloat(e.target.value)
     setLength(isNaN(value) ? null : value) 
-    updateValue({ length: (isNaN(value) ? null : value) })
+    updateValue({ length: (isNaN(value) ? null : value)})
   }
   
   const handleWidthChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
-    setWidth(parseFloat(e?.target.value))
+    setWidth(isNaN(value) ? null : value)
     updateValue({ width: (isNaN(value) ? null : value)})
   }
 
   const handleAreaChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
-    setArea(parseFloat(e?.target.value))
+    setArea(isNaN(value) ? null : value)
     setWidth(0)
     setLength(0)
     updateValue({ width: 0, length: 0, area: (isNaN(value) ? null : value)})
   }
-
 
   const computeTotalOfMaterials = (componentArray: componentTilesType) => {
     let total:number = 0
@@ -262,28 +235,15 @@ function Home() {
                 </div>
               </Box> 
               <Box className="sm:w-2/3 w-full p-4"> 
-                <DemoClientComponent /> 
-                <Heading size="5" className="mt-2">  
-                  <span>
-                    Tiles Calculator
-                  </span>
-                </Heading>
-
-                <FormCompute
-                  length = {length}
-                  width = {width}
-                  area = {area}
-                  handleLengthChange = {handleLengthChange}
-                  handleWidthChange = {handleWidthChange}  
-                  handleAreaChange = {handleAreaChange}  
-                  estimateNow = {estimateNow}
-                /> 
-  
+                <WelcomeNote /> 
               </Box> 
             </Flex> 
           </Box>
           <Box className="rounded-md shadow bg-white borderd">
-            <Table.Root variant="surface">
+            <div className="m-5"> 
+              Please click in the menu above. At the moment. Only the tile category works
+            </div>
+            {/* <Table.Root variant="surface">
               <Table.Header>
                 <Table.Row>
                 
@@ -361,10 +321,13 @@ function Home() {
 
             
               </Table.Body>
-            </Table.Root>
+            </Table.Root> */}
           </Box> 
           <Box className="rounded-md shadow bg-white borderd flex sm:flex-row flex-col gap-2">
-            <Flex wrap="wrap-reverse" className="w-full">
+            <div className="m-5"> 
+              Done by architect
+            </div>
+            {/* <Flex wrap="wrap-reverse" className="w-full">
               <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden">
                 <div className="sm:h-full h-[300px] bg-blue-300 relative">
                   <Image alt="" layout="fill" objectFit="cover" className="absolute inset-o" src="https://znetflooring.com/media/catalog/product/cache/2bd175c9fdca7a1f445c94dbd4a9111b/6/f/6f9e783ab474dbdb351bee10fa6e1f2c1ef0fcd16404f074a709fc6f4b6c0fcb.jpeg" />
@@ -450,7 +413,7 @@ function Home() {
                   </div>
                   </div>
               </Box>
-            </Flex>
+            </Flex> */}
           </Box>
         </div>
       </main>

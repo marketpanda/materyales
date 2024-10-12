@@ -7,6 +7,8 @@ import { createSearchParamsBailoutProxy } from 'next/dist/client/components/sear
 interface Props {
   materialComponent:string
   area:number
+  materialComponentTotal?: number
+  setMaterialComponentTotal: React.Dispatch<number>
 }
 
 interface ComponentType { 
@@ -27,12 +29,14 @@ interface InputProps {
   param: string
 } 
 
-const MaterialTable:React.FC<Props> = ({materialComponent, area}) => { 
+const MaterialTable:React.FC<Props> = ({materialComponent, area, materialComponentTotal, setMaterialComponentTotal}) => { 
     // materialComponent
     // tiles
 
+    console.log("materialComponentTotal ", materialComponentTotal)
+
     const getMaterialList = useMaterialsList({ material: materialComponent })
- 
+
     // const categoryBreakdownMaterials:ComponentType = useMaterialsList({ material: materialComponent })  
     const categoryBreakdownMaterials:ComponentType = getMaterialList  
     const [componentsState, setComponentsState] = useState<ComponentType>(categoryBreakdownMaterials)
@@ -45,6 +49,8 @@ const MaterialTable:React.FC<Props> = ({materialComponent, area}) => {
 
     useEffect(() => {
       if (!componentsStateForDisplay) return 
+
+      const tempNums:number[] = []
 
       const ComputeQuantitiesAndCosts = async () => {
         const updatedComponentsState = { ...categoryBreakdownMaterials }
@@ -64,8 +70,14 @@ const MaterialTable:React.FC<Props> = ({materialComponent, area}) => {
           }
         }
         setComponentsStateForDisplay(updatedComponentsState)
+
+        Object.values(updatedComponentsState[materialComponent]).map(item => tempNums.push(Number(item.totalCost)))
+        const numTotal = tempNums.reduce((acc, num )=> acc + num, 0)
+        
+        setMaterialComponentTotal(numTotal) 
       }
-  
+
+      
       ComputeQuantitiesAndCosts()
       }, [ materialComponent, area ]
     )
@@ -180,7 +192,9 @@ const MaterialTable:React.FC<Props> = ({materialComponent, area}) => {
                         <input 
                           value={ componentsStateForDisplay[materialComponent][materialInstance].costPerUnit }
                           className="w-20 outline-none bg-purple-100 p-2 font-semibold rounded text-l text-right"
-                          onChange={(e) => handleChangeValue(e, { mat: materialInstance, param: 'costPerUnit' })}  />
+                          onChange={(e) => handleChangeValue(e, { mat: materialInstance, param: 'costPerUnit' })}
+                          disabled
+                        />
                           
                       </Table.Cell>
                       <Table.Cell pr="5" className="md:table-cell hidden">
