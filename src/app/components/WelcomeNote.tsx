@@ -7,7 +7,11 @@ import Link from 'next/link'
 const WelcomeNote = () => {  
     return  (
         <> 
-            <Image src={PatapatViaduct} className='w-full' height={300} alt="Patapat Viaduct" />
+            <Image src={PatapatViaduct}  
+                alt="Patapat Viaduct"
+                layout='fill'
+                objectFit='contain'
+            />
             <div>
                 Hello. Welcome to Materyales.
                 The goal of this website is to help you breakdown construction costs, with focus on materials,
