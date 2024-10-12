@@ -7,12 +7,13 @@ import Link from 'next/link'
 const WelcomeNote = () => {  
     return  (
         <> 
-            <Image src={PatapatViaduct}  
-                alt="Patapat Viaduct"
-                layout='fill'
-                objectFit='contain'
-            />
+            
             <div>
+            <Image src={PatapatViaduct}  
+                alt="Patapat Viaduct" 
+                objectFit='contain'
+                className='w-full'
+            />
                 Hello. Welcome to Materyales.
                 The goal of this website is to help you breakdown construction costs, with focus on materials,
                 be it a small DIY or a medium house project.
