@@ -24,8 +24,7 @@ const FormCompute:React.FC<ComputeParams> = ({
     handleDirectAreaChange,
     estimateNow
 }) => { 
-
-    console.log(length)
+ 
     
     return (
     <div>
@@ -73,7 +72,7 @@ const FormCompute:React.FC<ComputeParams> = ({
                 <div className="flex items-baseline justify-between">
                     <Form.Label className="text-[15px] font-medium leading-[35px]">
                     Area
-                    <span className='opacity-50'> (square meters)</span>
+                    <span className='opacity-50'>(square meters)</span>
                     </Form.Label>
                     <Form.Message className="text-[13px] opacity-[0.8]" match="valueMissing">
                     Please enter area in meters

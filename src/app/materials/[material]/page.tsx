@@ -1,26 +1,24 @@
 "use client"
 import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react"; 
-import { Heading, Table, Flex, Checkbox, Box } from "@radix-ui/themes"; 
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query"; 
-import FormCompute from "../../components/FormCompute";
-import { priceMaterialsTiles } from "../../constants/numbers";
-import ComponentBrandPortal from "../../components/ComponentBrandPortal";
-import ComponentBrandPortalSimple from "../../components/ComponentBrandPortalSimple";
-import ComponentShowcaseDetails from "../../components/ComponentShowcaseDetails";
-import ComponentButtons from "../../components/ComponentButtons";
-import { usePathname } from "next/navigation";
-import { materials } from "@/common/materials";
-import { Material } from "@/common/types";
+import { Heading, Table, Flex, Checkbox, Box } from "@radix-ui/themes";  
+import FormCompute from "../../components/FormCompute"; 
+import ComponentButtons from "../../components/ComponentButtons"; 
+import { materials } from "@/common/materials"; 
 import useMaterialsList, { UnitOptions } from "@/app/hooks/useMaterialsList";
-import MaterialTable from "@/app/components/MaterialTable";
-import { parse } from "path"; 
-import Navbar from "@/app/components/Navbar";
+import MaterialTable, { ComponentType } from "@/app/components/MaterialTable"; 
 import { SbType } from "@/app/types/components";
 import useMaterialComponentsSummaryBreakdown from "@/app/hooks/useMaterialComponentsSummaryBreakdown";
-import { useGetLastStringOnRoute } from "@/app/hooks/useGetLastStringOnRoute";
-import currencyFormatter from "@/app/utils/CurrencyFormatter";
+import { useGetLastStringOnRoute } from "@/app/hooks/useGetLastStringOnRoute"; 
 import CurrencyFormatter from "@/app/utils/CurrencyFormatter";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSave } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons' 
+import { Flip, toast, ToastContainer } from "react-toastify";
+
+import 'react-toastify/dist/ReactToastify.css'
+import { db } from "@/app/lib/db";
+
 
 export interface Dimensions {
     length?: number,
@@ -195,11 +193,9 @@ export default function Page():JSX.Element {
     // }, [materialDimensions[material].area]) 
 
     const toggleIncludeBreakdown = (breakdownComponent:keyof SbType) => { 
-        console.log("breakdownComponent ", breakdownComponent) 
         
         setSummaryBreakdownState((prev) => {
-            const component = prev[breakdownComponent]
-            console.log("component ", component) 
+            const component = prev[breakdownComponent] 
           return {
             ...prev,
             [breakdownComponent]: component ?
@@ -207,16 +203,12 @@ export default function Page():JSX.Element {
             component
           }
         })
-
-        console.log("summaryBreakdownState ", summaryBreakdownState)
+ 
       }
 
-    const [materialComponentTotal, setMaterialComponentTotal] = useState<number>(0)
-
-    console.log(materialComponentTotal)
+    const [materialComponentTotal, setMaterialComponentTotal] = useState<number>(0) 
  
-    useEffect(() => {
-        console.log(materialComponentTotal)
+    useEffect(() => { 
 
         const {
             sbLabor: summaryBreakdownSbLabor,
@@ -241,13 +233,9 @@ export default function Page():JSX.Element {
             sbContingency: { include: true, value: summaryBreakdownSbContingency },
             sbContractorsProfit: { include: true, value: summaryBreakdownSbContractorsProfit },
             sbTax: { include: true, value: summaryBreakdownSbTax}
-        })
-
-        console.log(summaryBreakdownSbContractorsProfit)
+        }) 
          
-    }, [materialComponentTotal])
-
-    console.log(summaryBreakDownDisplay.summaryBreakdownSbContractorsProfit)
+    }, [materialComponentTotal]) 
 
     const { 
         summaryBreakdownSbLabor,
@@ -262,6 +250,42 @@ export default function Page():JSX.Element {
             if (item && item.include) return (acc + (item?.value ?? 0))
             return acc
         }, 0) 
+ 
+    const [materialsComponent, setMaterialsComponent] = useState({})
+
+    const { materialsCompute } = db
+
+    const saveComputation = async() => { 
+        try {
+            await materialsCompute.add({ 
+                category: material,
+                dimensions: materialDimensions ?? {},
+                materials: materialsComponent, 
+                summaryBreakdown: summaryBreakdownState 
+            })
+        } catch (error) {
+            console.log(error)
+        }
+
+        toast.success('Saved', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light", 
+            });
+    }
+    
+    const clearComputation = () => {
+        setMaterialDimensions(materialDimensionsInitial)  
+        setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], area:0 }})
+        setAreaReference(0)
+        console.log(materialDimensions) 
+        console.log('cleared') 
+    }
     
     return (
         <> 
@@ -308,7 +332,11 @@ export default function Page():JSX.Element {
                         area={areaReference}
                         materialComponentTotal={materialComponentTotal}
                         setMaterialComponentTotal={setMaterialComponentTotal}
+                        materialsComponent={materialsComponent}
+                        setMaterialsComponent={setMaterialsComponent}
                     />
+                    <>
+                    
 
                     {/* {
                     Object.keys(componentTilesNumbers).map(key => (
@@ -371,12 +399,12 @@ export default function Page():JSX.Element {
                         </React.Fragment>
                     ))
                     }  */}
-
-                
+                    </>
                 </Table.Body>
                 </Table.Root>
             </Box> 
             <Box className="rounded-md shadow bg-white borderd flex sm:flex-row flex-col gap-2">
+                
                 <Flex wrap="wrap-reverse" className="w-full">
                 <Box className="sm:flex-1 w-full rounded-l-md overflow-hidden">
                     <div className="sm:h-full h-[300px] bg-blue-300 relative">
@@ -385,6 +413,19 @@ export default function Page():JSX.Element {
                 </Box> 
                 <Box className="border w-full sm:w-2/3 p-4 pb-10">
                     <div className="flex flex-col w-full text-sm">
+                        <div
+                            className="w-full border rounded bg-gray-100 px-3 p-2 flex justify-end items-center gap-4">
+                            <button onClick={saveComputation}>
+                                <FontAwesomeIcon icon={faSave} size="1x" />
+                                <span className="hover:underline ml-2">Save</span>
+                            </button>
+                            
+                            <button onClick={clearComputation}> 
+                                <FontAwesomeIcon icon={faXmark} size="1x" /> 
+                                <span className="hover:underline ml-2">Clear</span>
+                            </button>
+                            
+                        </div>
                     <div
                         onClick={() => toggleIncludeBreakdown("sbTotalMaterials")}
                         className="flex justify-end gap-4 w-full items-center p-1 hover:bg-red-100 cursor-pointer duration-300 transition-colors ease-in-out rounded"> 
@@ -475,6 +516,8 @@ export default function Page():JSX.Element {
                 </Box>
                 </Flex>
             </Box>
+            <ToastContainer />
+            
         </>   
     )
 }

@@ -2,16 +2,17 @@ import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 're
 import useMaterialsList, { UnitOptions } from '../hooks/useMaterialsList'
 import { Table } from '@radix-ui/themes'
 import { useMaterialQuantity } from '../hooks/useMaterialQuantity'
-import { createSearchParamsBailoutProxy } from 'next/dist/client/components/searchparams-bailout-proxy'
 
 interface Props {
   materialComponent:string
   area:number
   materialComponentTotal?: number
   setMaterialComponentTotal: React.Dispatch<number>
+  materialsComponent?: object
+  setMaterialsComponent: React.Dispatch<object>
 }
 
-interface ComponentType { 
+export interface ComponentType { 
   [key:string]: {    
     [key:string]: UnitOptions  
   } 
@@ -29,7 +30,14 @@ interface InputProps {
   param: string
 } 
 
-const MaterialTable:React.FC<Props> = ({materialComponent, area, materialComponentTotal, setMaterialComponentTotal}) => { 
+const MaterialTable:React.FC<Props> = ({
+  materialComponent,
+  area,
+  materialComponentTotal,
+  setMaterialComponentTotal,
+  materialsComponent,
+  setMaterialsComponent
+}) => { 
     // materialComponent
     // tiles
 
@@ -75,7 +83,9 @@ const MaterialTable:React.FC<Props> = ({materialComponent, area, materialCompone
         const numTotal = tempNums.reduce((acc, num )=> acc + num, 0)
         
         setMaterialComponentTotal(numTotal) 
+        setMaterialsComponent(updatedComponentsState)
       }
+
 
       
       ComputeQuantitiesAndCosts()
@@ -148,7 +158,7 @@ const MaterialTable:React.FC<Props> = ({materialComponent, area, materialCompone
     
     useEffect(() => {
       console.log(
-        componentsStateForDisplay?.[materialComponent]['tile'].quantity,
+        componentsStateForDisplay?.[materialComponent]['tile'].quantity, 
       )
      }, [ 
       componentsStateForDisplay ? componentsStateForDisplay[materialComponent]['tile'].quantity : "",
