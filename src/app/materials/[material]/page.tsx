@@ -281,10 +281,8 @@ export default function Page():JSX.Element {
     
     const clearComputation = () => {
         setMaterialDimensions(materialDimensionsInitial)  
-        setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], area:0 }})
-        setAreaReference(0)
-        console.log(materialDimensions) 
-        console.log('cleared') 
+        setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], area:0, width:0, length:0 }})
+        setAreaReference(0) 
     }
     
     return (
