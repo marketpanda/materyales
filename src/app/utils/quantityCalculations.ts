@@ -15,7 +15,6 @@ interface Props {
 } 
 
 const tilesTileQuantityPerSq:Props = (material, materialStrand, calculations) => {
-    console.log('calculating tiles...: ', material, materialStrand)
     
     const area = calculations.paramValue
     const TILE_PER_SQM_60x60 = 2.77
@@ -33,8 +32,44 @@ const tilesGroutQuantityPerSq:Props = (material, materialStrand, calculations) =
     return { quantity: getQuantity }
 } 
 
+const paintsTopcoatQuantityPerSq:Props = (material, materialStrand, calculations) => { 
+    const area = calculations.paramValue
+    const TOPCOAT_PER_SQM = 1 / 16
+    const getQuantity = Math.ceil(area * TOPCOAT_PER_SQM)
+
+    return { quantity: getQuantity }
+}
+
+const paintsPrimerQuantityPerSq:Props = (material, materialStrand, calculations) => {
+    const area = calculations.paramValue
+    const PRIMER_PER_SQM = 1 / 16
+    const getQuantity = Math.ceil(area * PRIMER_PER_SQM)
+
+    return { quantity: getQuantity }
+}
+
+const paintsPaintbrushQuantityPerSq:Props = (material, materialStrand, calculations) => {
+    const area = calculations.paramValue
+    const BRUSH_PER_SQM = 1 / 32
+    const getQuantity = Math.ceil(area * BRUSH_PER_SQM)
+
+    return { quantity: getQuantity }
+}
+
+const paintsRollerQuantityPerSq:Props = (material, materialStrand, calculations) => {
+    const area = calculations.paramValue
+    const ROLLER_PER_SQM = 1 / 50
+    const getQuantity = Math.ceil(area * ROLLER_PER_SQM)
+
+    return { quantity: getQuantity }
+}
+
 export const calculcationFunctions: Record<string, Props> = {
     tilesTile: tilesTileQuantityPerSq,
-    tilesGrout: tilesGroutQuantityPerSq
+    tilesGrout: tilesGroutQuantityPerSq,
+    paintsTopcoat: paintsTopcoatQuantityPerSq,
+    paintsPrimer: paintsPrimerQuantityPerSq,
+    paintsPaintbrush: paintsPaintbrushQuantityPerSq,
+    paintsRoller: paintsRollerQuantityPerSq,
 }
 

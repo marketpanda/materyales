@@ -16,12 +16,7 @@ export interface ComponentType {
   [key:string]: {    
     [key:string]: UnitOptions  
   } 
-} 
-
-// interface ComponentsStateProps {
-//   componentsState: ComponentType,
-//   setComponentsState: React.Dispatch<SetStateAction<ComponentType>>
-// }
+}
 
 type MaterialStrand = [mat:string, matComponents:UnitOptions]
 
@@ -37,23 +32,12 @@ const MaterialTable:React.FC<Props> = ({
   setMaterialComponentTotal,
   materialsComponent,
   setMaterialsComponent
-}) => { 
-    // materialComponent
-    // tiles
+}) => {
 
-    console.log("materialComponentTotal ", materialComponentTotal)
-
-    const getMaterialList = useMaterialsList({ material: materialComponent })
-
-    // const categoryBreakdownMaterials:ComponentType = useMaterialsList({ material: materialComponent })  
+    const getMaterialList = useMaterialsList({ material: materialComponent }) 
     const categoryBreakdownMaterials:ComponentType = getMaterialList  
-    const [componentsState, setComponentsState] = useState<ComponentType>(categoryBreakdownMaterials)
-     // componentsState
-     // tiles: { tile ...} 
-    const [componentsStateForDisplay, setComponentsStateForDisplay] = useState<ComponentType | null>(getMaterialList) 
- 
-    // const componentsStateForDisplay = { [materialComponent]: {...componentsState[materialComponent]} }
-    //{ tiles: { tile: { ... }, grout: { ... }} }
+    const [componentsState, setComponentsState] = useState<ComponentType>(categoryBreakdownMaterials) 
+    const [componentsStateForDisplay, setComponentsStateForDisplay] = useState<ComponentType | null>(getMaterialList)  
 
     useEffect(() => {
       if (!componentsStateForDisplay) return 
@@ -86,8 +70,6 @@ const MaterialTable:React.FC<Props> = ({
         setMaterialsComponent(updatedComponentsState)
       }
 
-
-      
       ComputeQuantitiesAndCosts()
       }, [ materialComponent, area ]
     )
@@ -156,14 +138,7 @@ const MaterialTable:React.FC<Props> = ({
     //   componentsStateForDisplay[materialComponent]['tile'].costPerUnit
     // ])
     
-    useEffect(() => {
-      console.log(
-        componentsStateForDisplay?.[materialComponent]['tile'].quantity, 
-      )
-     }, [ 
-      componentsStateForDisplay ? componentsStateForDisplay[materialComponent]['tile'].quantity : "",
-      componentsStateForDisplay ? componentsStateForDisplay[materialComponent]['tile'].costPerUnit : "", 
-    ]) 
+ 
 
     return (
         <> 
@@ -172,7 +147,7 @@ const MaterialTable:React.FC<Props> = ({
               const { imageIcon } = componentsStateForDisplay[materialComponent][materialInstance]
               return (
                 <>
-                    <Table.Row>
+                    <Table.Row key={n}>
                       <Table.RowHeaderCell px="4">
                         <div className="rounded-full w-12 h-12 overflow-hidden" key={n}> 
                           <img src={ imageIcon } />

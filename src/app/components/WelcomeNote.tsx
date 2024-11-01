@@ -6,8 +6,7 @@ import Link from 'next/link'
 
 const WelcomeNote = () => {  
     return  (
-        <> 
-            
+        <>
             <div>
             <Image src={PatapatViaduct}  
                 alt="Patapat Viaduct" 

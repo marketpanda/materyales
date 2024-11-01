@@ -15,9 +15,6 @@ type ListItemProps = {
 
 const Navbar:React.FC = () => {
 
- 
-
-
   return (
     <NavigationMenu.Root className="fixed bg-white flex w-screen justify-center z-20">
       <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none rounded-[6px] p-1">

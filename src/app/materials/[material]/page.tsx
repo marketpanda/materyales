@@ -279,10 +279,22 @@ export default function Page():JSX.Element {
             });
     }
     
-    const clearComputation = () => {
-        setMaterialDimensions(materialDimensionsInitial)  
-        setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], area:0, width:0, length:0 }})
+    const clearComputation = () => { 
+        setMaterialDimensions(materialDimensionsInitial)
+        setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], area:0, width:0, length:0 }}) 
         setAreaReference(0) 
+        
+        console.log(material)
+        console.log(areaReference)
+        console.log(materialComponentTotal)
+        console.log(materialsComponent)
+
+        // materialComponent={material}
+        // area={areaReference}
+        // materialComponentTotal={materialComponentTotal}
+        // setMaterialComponentTotal={setMaterialComponentTotal}
+        // materialsComponent={materialsComponent}
+        // setMaterialsComponent={setMaterialsComponent}
     }
     
     return (

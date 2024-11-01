@@ -39,25 +39,33 @@ export default function useMaterialsList({material} : { material: string }) {
                 units: ['can', 'pail'],
                 costPerUnit: 600,
                 unitSize: '300x300',
-                imageIcon: 'https://picsum.photos/id/237/200/300'
+                imageIcon: 'https://picsum.photos/id/237/200/300',
+                totalCost: 0,
+                quantity: 0,
             },
             primer: {
                 units: ['can', 'pail'],
                 costPerUnit: 300,
                 unitSize: 'galloon',
-                imageIcon: 'https://picsum.photos/id/237/200/300'
+                imageIcon: 'https://picsum.photos/id/270/200/300',
+                totalCost: 0,
+                quantity: 0,
             },
             paintbrush: {
                 units: ['pcs'],
                 costPerUnit: 50,
                 unitSize: null,
-                imageIcon: 'https://picsum.photos/id/237/200/300'
+                imageIcon: 'https://picsum.photos/id/256/200/300',
+                totalCost: 0,
+                quantity: 0,
             },
             roller: {
                 units: ['pcs'],
                 costPerUnit: 150,
                 unitSize: null,
-                imageIcon: 'https://picsum.photos/id/237/200/300'
+                imageIcon: 'https://picsum.photos/id/240/200/300',
+                totalCost: 0,
+                quantity: 0,
             },
         }
     } 

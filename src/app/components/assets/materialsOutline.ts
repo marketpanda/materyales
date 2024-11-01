@@ -1,14 +1,6 @@
-const getCountTiles = () => {
-    
-}
-
-const getCountGrout = () => {
-
-}
 
 const materialTiles = {
     tiles: {
-
         material: 'tiles',
         quantity: 100,
         quantityDesc: '',
