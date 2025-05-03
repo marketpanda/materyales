@@ -35,6 +35,7 @@ const MaterialTable:React.FC<Props> = ({
 }) => {
 
     const getMaterialList = useMaterialsList({ material: materialComponent }) 
+    console.log('getMaterialList ', getMaterialList)
     const categoryBreakdownMaterials:ComponentType = getMaterialList  
     const [componentsState, setComponentsState] = useState<ComponentType>(categoryBreakdownMaterials) 
     const [componentsStateForDisplay, setComponentsStateForDisplay] = useState<ComponentType | null>(getMaterialList)  
@@ -140,6 +141,7 @@ const MaterialTable:React.FC<Props> = ({
     
  
 
+    console.log(componentsStateForDisplay)
     return (
         <> 
           {

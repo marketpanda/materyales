@@ -13,9 +13,9 @@ export type SummaryBreakdownStrand = {
 export type DimensionKey = 'length' | 'width' | 'area'
 
 export type SbType = {
-  sbTotalMaterials?: SummaryBreakdownStrand | null,
-  sbLabor?: SummaryBreakdownStrand | null, 
-  sbContingency?: SummaryBreakdownStrand | null,
-  sbContractorsProfit?: SummaryBreakdownStrand | null,
-  sbTax?: SummaryBreakdownStrand | null,
+  sbTotalMaterials?: SummaryBreakdownStrand,
+  sbLabor?: SummaryBreakdownStrand, 
+  sbContingency?: SummaryBreakdownStrand,
+  sbContractorsProfit?: SummaryBreakdownStrand,
+  sbTax?: SummaryBreakdownStrand
 }

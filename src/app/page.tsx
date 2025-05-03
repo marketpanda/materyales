@@ -32,7 +32,7 @@ function Home() {
   const [length, setLength] = useState<number | null>(null)
 
   type ShowcaseType = {
-    [key: string]: boolean | undefined | null
+    [key: string]: boolean
   }
   
   const tilesShowcaseInitial:ShowcaseType = {
@@ -45,9 +45,9 @@ function Home() {
    
 
   type DimensionsBasicType = {
-    width?: number | null,
-    length?: number | null,
-    area?: number | null
+    width?: number,
+    length?: number,
+    area?: number
   }
 
   const [dimensions, setDimensions] = useState<DimensionsBasicType>({
@@ -83,8 +83,8 @@ function Home() {
  
   const displayArea = () => {
      if (typeof width === 'number' && typeof length === 'number') {
-      const area: number = width * length; 
-      const cleanDecimals: number = parseFloat(area.toFixed(2))
+      const area = width * length; 
+      const cleanDecimals = parseFloat(area.toFixed(2))
       setArea(cleanDecimals);
     }
   }
@@ -175,7 +175,7 @@ function Home() {
                 <WelcomeNote /> 
                 {
                   allItems?.map((item) => (
-                    <div key={item.id}>{item.title}</div>
+                    <div key={item.id}>{item.title} </div>
                   ))
                 }
               </Box> 

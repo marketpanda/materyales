@@ -53,7 +53,6 @@ interface SummaryBreakDownProps {
 export default function Page():JSX.Element {
     
     const { thisRoute } = useGetLastStringOnRoute() 
-    
     const GenerateHeader = ({ currentRoute }:{ currentRoute: string }) => {
         const materialStrand = materials.find(material => material.name === currentRoute)
         return materialStrand ? materialStrand.title : ""
@@ -69,7 +68,37 @@ export default function Page():JSX.Element {
             length: 0,
             width: 0,
             area: 0
-        }
+        },
+        modularCabinets: {
+            length: 0,
+            width: 0,
+            area: 0
+        },
+        simpleShelves: {
+            length: 0,
+            width: 0,
+            area: 0
+        },
+        ceiling: {
+            length: 0,
+            width: 0,
+            area: 0
+        },
+        roofing: {
+            length: 0,
+            width: 0,
+            area: 0
+        },
+        groundSlab: {
+            length: 0,
+            width: 0,
+            area: 0
+        },
+        suspendedSlab: {
+            length: 0,
+            width: 0,
+            area: 0
+        } 
     }
     
     const [materialDimensions, setMaterialDimensions] = useState<MaterialDimensionsProps | null>(materialDimensionsInitial)
@@ -82,8 +111,6 @@ export default function Page():JSX.Element {
     const [dimensionsForDisplay, setDimensionsForDisplay] = useState({
         [material]:materialDimensionsInitial[material]
     })
-
-    
      
     const [summaryBreakDownDisplay, setSummaryBreakDownDisplay] = useState<SummaryBreakDownProps>({})
 
@@ -91,7 +118,6 @@ export default function Page():JSX.Element {
         let value = parseFloat(e.target.value)  
         e.preventDefault()
 
-        
         if (params === 'area') {
             setMaterialDimensions((prev) => ({ ...prev, [material]: {
                 ...materialDimensions?.[material],
