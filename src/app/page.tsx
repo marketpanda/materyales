@@ -139,21 +139,17 @@ function Home() {
 
   const allItems = useLiveQuery(() => todos.toArray(), []) 
 
-  const addTask = async() => {  
-    try {
-      await todos.add({
-        title: 'workout',
-        completed: true
-      }) 
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    const initialize = async() => await addTask()
-    initialize()
-  }, [])
+  // const addTask = async() => {  
+  //   try {
+  //     await todos.add({
+  //       title: 'workout',
+  //       completed: true
+  //     }) 
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+ 
   
   return (
     <>
@@ -173,17 +169,13 @@ function Home() {
               </Box> 
               <Box className="sm:w-2/3 w-full p-4"> 
                 <WelcomeNote /> 
-                {
-                  allItems?.map((item) => (
-                    <div key={item.id}>{item.title} </div>
-                  ))
-                }
+                 
               </Box> 
             </Flex> 
           </Box>
           <Box className="rounded-md shadow bg-white borderd">
             <div className="m-5"> 
-              Please click in the menu above. At the moment. Only the tile category works
+              Please click in the menu above. 
             </div>
             
           </Box> 
