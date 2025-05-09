@@ -12,8 +12,51 @@ export interface Materials {
         [material: string] : UnitOptions
     }
 }
+
+export interface Tools {
+    [category: string]: {
+        [tool: string]: UnitOptions
+    }
+}
+
+// materials
+// tools
+// equipment
+
+
 export default function useMaterialsList({material} : { material: string }) { 
     const placeholderImage = 'https://picsum.photos/id/237/200/300'
+
+    const adhesive =  {
+        id: 'tiles-adhesive',
+        name: 'Adhesive',
+        imageIcon: placeholderImage,
+        // totalCost: 0,
+        unitCost: '', // variant.costPerUnit
+        variant: '',
+        variants: {
+          '2kg': {
+            unit: 'bag',
+            size: '2 kg',
+            costPerUnit: 23,
+            quantity: 0,
+          },
+          '25kg': {
+            unit: 'bag',
+            size: '25 kg',
+            costPerUnit: 200,
+            quantity: 0,
+          }
+        }
+    }
+    
+    const tools:Tools = {
+
+    }
+    const equipment:Tools = {
+
+    }
+      
     const materialsList:Materials = {
         tiles: {
             tile: { 
@@ -25,17 +68,17 @@ export default function useMaterialsList({material} : { material: string }) {
                 quantity: 0         
             },
             adhesive: { 
-                units: ['pc', 'box'],
-                costPerUnit: 300,
-                unitSize: '300x300',
+                units: ['kg'],
+                costPerUnit: 23,
+                unitSize: '2 kg',
                 imageIcon: placeholderImage,
                 totalCost: 0,
                 quantity: 0         
             },
             grout: {
                 units: ['bag', 'kg'],
-                costPerUnit: 50,
-                unitSize: '1 kg',
+                costPerUnit: 85,
+                unitSize: '2 kg',
                 totalCost: 0,
                 quantity: 0,
                 imageIcon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFGQrmKeUse2_2bxgzoHv0su3g8PSrWoF5yg&s'
@@ -67,8 +110,8 @@ export default function useMaterialsList({material} : { material: string }) {
                 quantity: 0,
             },
             roller: {
-                units: ['inches'],
-                costPerUnit: 420,
+                units: ['pc'],
+                costPerUnit: 55,
                 unitSize: '9',
                 imageIcon: placeholderImage,
                 totalCost: 0,
@@ -230,7 +273,7 @@ export default function useMaterialsList({material} : { material: string }) {
                 imageIcon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFGQrmKeUse2_2bxgzoHv0su3g8PSrWoF5yg&s'
             },
             laminate: {
-                units: ['cum'],
+                units: ['sqm'],
                 costPerUnit: 50,
                 unitSize: '1 kg',
                 totalCost: 0,
