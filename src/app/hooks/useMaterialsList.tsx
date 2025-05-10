@@ -26,30 +26,7 @@ export interface Tools {
 
 export default function useMaterialsList({material} : { material: string }) { 
     const placeholderImage = 'https://picsum.photos/id/237/200/300'
-
-    const adhesive =  {
-        id: 'tiles-adhesive',
-        name: 'Adhesive',
-        imageIcon: placeholderImage,
-        // totalCost: 0,
-        unitCost: '', // variant.costPerUnit
-        variant: '',
-        variants: {
-          '2kg': {
-            unit: 'bag',
-            size: '2 kg',
-            costPerUnit: 23,
-            quantity: 0,
-          },
-          '25kg': {
-            unit: 'bag',
-            size: '25 kg',
-            costPerUnit: 200,
-            quantity: 0,
-          }
-        }
-    }
-    
+ 
     const tools:Tools = {
 
     }

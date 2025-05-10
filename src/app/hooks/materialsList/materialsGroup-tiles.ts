@@ -1,32 +1,4 @@
-export type Variant = {
-    costPerUnit: number
-}
-
-export type VariantOptions = Record<string, Variant>
-
-export type Variants = {
-    id: string,
-    element: string,
-    variants: VariantOptions
-}
-
-export type MaterialElement = {
-    id: string,
-    name: string,
-    variants?: Variants | null,
-    costPerUnit: number,
-    imageIcon?: string | null,
-    totalCost?: number,
-    quantity?: number
-}
-
-export type MaterialMap = Record<string, MaterialElement>
-
-export type MaterialsGroup = {
-    id: string,
-    name: string,
-    materials:MaterialMap
-}
+import { MaterialElement, MaterialsGroup, Variants } from "../types/types"
 
 export const variantsTilesAdhesive:Variants = {
     id: 'vTilesAdhesive',
@@ -41,10 +13,33 @@ export const variantsTilesAdhesive:Variants = {
     } 
 }
 
+export const variantTilesTile:Variants = {
+    id: 'vTilesTile',
+    element: 'tile',
+    variants: {
+        s60x60: {
+            costPerUnit: 500,
+        },
+        s30x30: {
+            costPerUnit: 90,
+        }
+    } 
+}
+
+export const variantTilesGrout:Variants = {
+    id: 'vTilesGrout',
+    element: 'grout',
+    variants: {
+        abc: {
+            costPerUnit: 75,
+        } 
+    } 
+}
+
 export const tilesTile:MaterialElement = {
     id: 'tilesTile',
     name: 'Tiles', 
-    variants: null,
+    variants: variantTilesTile,
     costPerUnit: 0, 
     imageIcon: null,
     totalCost: 0,
@@ -64,7 +59,7 @@ export const tilesAdhesive:MaterialElement = {
 export const tilesGrout:MaterialElement = {
     id: 'tilesGrout',
     name: 'Grout', 
-    variants: null,
+    variants: variantTilesGrout,
     costPerUnit: 0,
     imageIcon: null,
     totalCost: 0,
