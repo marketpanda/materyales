@@ -32,6 +32,15 @@ const tilesGroutQuantityPerSq:Props = (material, materialStrand, calculations) =
     return { quantity: getQuantity }
 } 
 
+const tilesAdhesiveQuantityPerSq:Props = (material, materialStrand, calculations) => { 
+
+    const area = calculations.paramValue
+    const GROUT_PER_SQM = 2.45
+    const getQuantity = Math.ceil(area * GROUT_PER_SQM)
+
+    return { quantity: getQuantity }
+} 
+
 const paintsTopcoatQuantityPerSq:Props = (material, materialStrand, calculations) => { 
     const area = calculations.paramValue
     const TOPCOAT_PER_SQM = 1 / 16
@@ -67,6 +76,7 @@ const paintsRollerQuantityPerSq:Props = (material, materialStrand, calculations)
 export const calculcationFunctions: Record<string, Props> = {
     tilesTile: tilesTileQuantityPerSq,
     tilesGrout: tilesGroutQuantityPerSq,
+    tilesAdhesive: tilesAdhesiveQuantityPerSq,
     paintsTopcoat: paintsTopcoatQuantityPerSq,
     paintsPrimer: paintsPrimerQuantityPerSq,
     paintsPaintbrush: paintsPaintbrushQuantityPerSq,

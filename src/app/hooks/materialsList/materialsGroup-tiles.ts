@@ -1,4 +1,4 @@
-import { MaterialElement, MaterialsGroup, Variants } from "../types/types"
+import { Build, MaterialElement, MaterialsGroup, Variants } from "../types/types"
 
 export const variantsTilesAdhesive:Variants = {
     id: 'vTilesAdhesive',
@@ -40,7 +40,7 @@ export const tilesTile:MaterialElement = {
     id: 'tilesTile',
     name: 'Tiles', 
     variants: variantTilesTile,
-    costPerUnit: 0, 
+    costPerUnit: 450, 
     imageIcon: null,
     totalCost: 0,
     quantity: 0
@@ -50,7 +50,7 @@ export const tilesAdhesive:MaterialElement = {
     id: 'tilesAdhesive',
     name: 'Adhesive', 
     variants: variantsTilesAdhesive,
-    costPerUnit: 0, 
+    costPerUnit: 75, 
     imageIcon: null,
     totalCost: 0,
     quantity: 0
@@ -60,18 +60,54 @@ export const tilesGrout:MaterialElement = {
     id: 'tilesGrout',
     name: 'Grout', 
     variants: variantTilesGrout,
-    costPerUnit: 0,
+    costPerUnit: 55,
     imageIcon: null,
     totalCost: 0,
     quantity: 0
 }
 
-export const materialsGroupTiles:MaterialsGroup = {
-    id: 'groupTiles',
-    name: 'Tiles Materials',
-    materials: {
-        tile: tilesTile,
-        adhesive: tilesAdhesive,
-        grout: tilesGrout,
-    }
+export const tilesTrowel:MaterialElement = {
+    id: 'tilesTrowel',
+    name: 'Trowel', 
+    costPerUnit: 128,
+    imageIcon: null,
+    totalCost: 0,
+    quantity: 0   
 }
+
+export const tilesSpacer:MaterialElement = {
+    id: 'tilesSpacer',
+    name: 'Tiles Spacer',
+    costPerUnit: 84,
+    imageIcon: null,
+    totalCost: 0,
+    quantity: 0  
+}
+
+export const grinder = {
+    id: 'grinder',
+    name: 'Grinder',
+    costPerUnit: 2000,
+    imageIcon: null,
+    totalCost: 0,
+    quantity: 0  
+
+}
+
+
+export const materialsGroupTiles:Build = {
+        materials: {
+            tile: tilesTile,
+            adhesive: tilesAdhesive,
+            grout: tilesGrout,
+        },
+        tools: {
+            trowel: tilesTrowel,
+            spacer: tilesSpacer
+        },
+        equipment: {
+            grinder: grinder    
+        }
+     
+}
+ 

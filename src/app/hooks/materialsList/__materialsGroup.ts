@@ -1,7 +1,6 @@
-import { EquipmentGroup, MaterialsGroup, ToolsGroup } from "../types/types";
+import { EquipmentMap, MaterialsGroup, ToolMap } from "../types/types";
 import { materialsGroupPaints } from "./materialsGroup-paints";
 import { materialsGroupTiles } from "./materialsGroup-tiles";
-
 
 export type BuildCategory = 
     'tiles' |
@@ -11,22 +10,24 @@ export type BuildCategory =
     'groundSlab' |
     'suspendedSlab'
 
-export type BuildComposition = {
-    materials: MaterialsGroup,
-    tools?: ToolsGroup,
-    equipment?: EquipmentGroup
-}
+// export type BuildComposition = {
+//     build: MaterialsGroup 
+// }
 
-export type MaterialsGroupCollection  = Partial<Record<BuildCategory, BuildComposition>>
+export type MaterialsGroupCollection  = Partial<Record<BuildCategory, MaterialsGroup>>
  
 export const materialsGroup: MaterialsGroupCollection = {
     tiles: {
-        materials: materialsGroupTiles,
+        id: 'tiles',
+        name: 'Tiles',
+        build: materialsGroupTiles,
         // tools: '',
         // equipment: ''
     },
     painting: {
-        materials: materialsGroupPaints,
+        id: 'paints',
+        name: 'Paints',
+        build: materialsGroupPaints,
         // tools: '',
         // equipment: '' 
     }

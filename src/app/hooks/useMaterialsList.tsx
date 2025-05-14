@@ -1,3 +1,6 @@
+import { BuildCategory, materialsGroup } from "./materialsList/__materialsGroup"
+import {  BuildPick } from "./types/types"
+
 export interface UnitOptions {
     units?: string[]
     quantity?: number
@@ -23,13 +26,13 @@ export interface Tools {
 // tools
 // equipment
 
-
-export default function useMaterialsList({material} : { material: string }) { 
+export default function useMaterialsList({ material } : { material: BuildCategory }): BuildPick { 
     const placeholderImage = 'https://picsum.photos/id/237/200/300'
  
     const tools:Tools = {
 
     }
+
     const equipment:Tools = {
 
     }
@@ -285,7 +288,11 @@ export default function useMaterialsList({material} : { material: string }) {
             } 
         }
     } 
- 
-    return  { [material]: materialsList[material] } 
+
+    const getMaterialsGroup = materialsGroup[material as BuildCategory] 
+    console.log('getMaterialsGroup ', getMaterialsGroup) 
+  
+    // return  { [material]: materialsList[material] } 
+    return getMaterialsGroup as BuildPick
     
 }

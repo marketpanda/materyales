@@ -1,4 +1,4 @@
-import { MaterialElement, MaterialsGroup, Variants } from "../types/types"
+import { Build, MaterialElement, MaterialsGroup, Variants } from "../types/types"
 
 export const variantPaintsPrimer:Variants = {
     id: 'vPaintsPrimer',
@@ -48,11 +48,17 @@ export const paintsTopcoat:MaterialElement = {
     quantity: 0
 }
 
-export const materialsGroupPaints:MaterialsGroup = {
-    id: 'groupTiles',
-    name: 'Tiles Materials',
-    materials: {
-        primer: paintsPrimer,
-        topcoat: paintsTopcoat, 
-    }
+export const materialsGroupPaints:Build = {
+    
+        materials: {
+            primer: paintsPrimer,
+            topcoat: paintsTopcoat, 
+        },
+        // tools: {
+        //     ...
+        // },
+        // equipment: {
+        //     ...    
+        // }
+     
 }
