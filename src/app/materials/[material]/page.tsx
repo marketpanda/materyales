@@ -18,6 +18,7 @@ import { Flip, toast, ToastContainer } from "react-toastify";
 
 import 'react-toastify/dist/ReactToastify.css'
 import { db } from "@/app/lib/db";
+import { BuildCategory } from "@/app/hooks/materialsList/__materialsGroup";
 
 
 export interface Dimensions {
@@ -103,7 +104,7 @@ export default function Page():JSX.Element {
     
     const [materialDimensions, setMaterialDimensions] = useState<MaterialDimensionsProps | null>(materialDimensionsInitial)
     
-    const [material, setMaterial] = useState<string>(thisRoute)
+    const [material, setMaterial] = useState<BuildCategory| string >(thisRoute)
 
     //pass down prop to component to enable interactivity of button to a user
     const [areaReference, setAreaReference] = useState<number>(0) 

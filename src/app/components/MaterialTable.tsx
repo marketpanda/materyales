@@ -6,7 +6,7 @@ import { Build, BuildPick, MaterialMap } from '../hooks/types/types'
 import { BuildCategory } from '../hooks/materialsList/__materialsGroup'
 
 interface Props {
-  materialComponent:BuildCategory
+  materialComponent:BuildCategory | string
   area:number
   materialComponentTotal?: number
   setMaterialComponentTotal: React.Dispatch<number>

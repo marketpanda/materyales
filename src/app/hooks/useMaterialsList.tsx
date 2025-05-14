@@ -26,7 +26,7 @@ export interface Tools {
 // tools
 // equipment
 
-export default function useMaterialsList({ material } : { material: BuildCategory }): BuildPick { 
+export default function useMaterialsList({ material } : { material: BuildCategory | string }): BuildPick { 
     const placeholderImage = 'https://picsum.photos/id/237/200/300'
  
     const tools:Tools = {
