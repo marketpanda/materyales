@@ -32,7 +32,7 @@ export const paintsPrimer:MaterialElement = {
     id: 'paintsPrimer',
     name: 'Primer', 
     variants: variantPaintsPrimer,
-    costPerUnit: 0, 
+    costPerUnit: 32, 
     imageIcon: null,
     totalCost: 0,
     quantity: 0
@@ -42,23 +42,22 @@ export const paintsTopcoat:MaterialElement = {
     id: 'paintsTopcoat',
     name: 'Topcoat', 
     variants: variantPaintsTopcoat,
-    costPerUnit: 0,
+    costPerUnit: 500,
     imageIcon: null,
     totalCost: 0,
     quantity: 0
 }
 
 export const materialsGroupPaints:Build = {
-    
-        materials: {
-            primer: paintsPrimer,
-            topcoat: paintsTopcoat, 
-        },
-        // tools: {
-        //     ...
-        // },
-        // equipment: {
-        //     ...    
-        // }
+    materials: {
+        primer: paintsPrimer,
+        topcoat: paintsTopcoat, 
+    },
+    // tools: {
+    //     ...
+    // },
+    // equipment: {
+    //     ...    
+    // }
      
 }

@@ -4,7 +4,7 @@ import { materialsGroupTiles } from "./materialsGroup-tiles";
 
 export type BuildCategory = 
     'tiles' |
-    'painting' |
+    'paints' |
     'ceiling' |
     'roofing' |
     'groundSlab' |
@@ -24,7 +24,7 @@ export const materialsGroup: MaterialsGroupCollection = {
         // tools: '',
         // equipment: ''
     },
-    painting: {
+    paints: {
         id: 'paints',
         name: 'Paints',
         build: materialsGroupPaints,

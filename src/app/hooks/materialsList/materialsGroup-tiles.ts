@@ -91,23 +91,21 @@ export const grinder = {
     imageIcon: null,
     totalCost: 0,
     quantity: 0  
-
 }
 
 
 export const materialsGroupTiles:Build = {
-        materials: {
-            tile: tilesTile,
-            adhesive: tilesAdhesive,
-            grout: tilesGrout,
-        },
-        tools: {
-            trowel: tilesTrowel,
-            spacer: tilesSpacer
-        },
-        equipment: {
-            grinder: grinder    
-        }
-     
+    materials: {
+        tile: tilesTile,
+        adhesive: tilesAdhesive,
+        grout: tilesGrout,
+    },
+    tools: {
+        trowel: tilesTrowel,
+        spacer: tilesSpacer
+    },
+    equipment: {
+        grinder: grinder    
+    }
 }
  

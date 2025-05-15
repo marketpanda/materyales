@@ -22,13 +22,9 @@ export interface Tools {
     }
 }
 
-// materials
-// tools
-// equipment
-
 export default function useMaterialsList({ material } : { material: BuildCategory | string }): BuildPick { 
     const placeholderImage = 'https://picsum.photos/id/237/200/300'
- 
+    console.log('material ', material)
     const tools:Tools = {
 
     }

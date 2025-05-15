@@ -75,11 +75,12 @@ const MaterialTable:React.FC<Props> = ({
         }
         
         setComponentsStateForDisplay(updatedComponentsState) 
+        console.log('updatedComponentsState ', updatedComponentsState)
         
-        Object.values(componentsStateForDisplay).map(item => tempNums.push(Number(item.totalCost)))
+        Object.values(updatedComponentsState).map(item => tempNums.push(Number(item.totalCost)))
         const numTotal = tempNums.reduce((acc, num )=> acc + num, 0)
         
-        
+        console.log('numTotal ', numTotal)
         setMaterialComponentTotal(numTotal) 
         setMaterialsComponent(updatedComponentsState)
       }
