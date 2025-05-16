@@ -42,7 +42,7 @@ export const paintsTopcoat:MaterialElement = {
     id: 'paintsTopcoat',
     name: 'Topcoat', 
     variants: variantPaintsTopcoat,
-    costPerUnit: 500,
+    costPerUnit: 189,
     imageIcon: null,
     totalCost: 0,
     quantity: 0

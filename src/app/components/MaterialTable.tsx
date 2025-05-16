@@ -36,17 +36,13 @@ const MaterialTable:React.FC<Props> = ({
 
     const getBuildList = useMaterialsList({ material: materialComponent })
     
-    console.log('getBuildList ', getBuildList)
     const categoryBreakdownMaterials = getBuildList?.build?.materials
-    console.log('categoryBreakdownMaterials ', categoryBreakdownMaterials)
     
     // real values under the hood
     const [componentsState, setComponentsState] = useState<MaterialMap | undefined>(categoryBreakdownMaterials) 
     
     // we use componentsStateForDisplay for display
     const [componentsStateForDisplay, setComponentsStateForDisplay] = useState<MaterialMap | undefined>(componentsState)  
-    console.log('componentsState ', componentsState)
-    console.log('componentStateForDisplay ', componentsStateForDisplay)
     
     useEffect(() => {
       if (!componentsStateForDisplay) return 
@@ -57,8 +53,6 @@ const MaterialTable:React.FC<Props> = ({
       const ComputeQuantitiesAndCosts = async () => {
         const updatedComponentsState = { ...componentsStateForDisplay }
         for (const [theMaterial, materialData] of Object.entries(componentsStateForDisplay || {})) {
-           
-           
     
           // Assuming useMaterialQuantity is a function that can be called directly or using a custom hook outside of the loop 
           const getQuantity = useMaterialQuantity({ material: materialData.id, materialStrand: materialData.name, area: area })
@@ -71,16 +65,13 @@ const MaterialTable:React.FC<Props> = ({
             quantity: quantity,
             totalCost: totalCost
           } 
-          
         }
         
         setComponentsStateForDisplay(updatedComponentsState) 
-        console.log('updatedComponentsState ', updatedComponentsState)
         
         Object.values(updatedComponentsState).map(item => tempNums.push(Number(item.totalCost)))
         const numTotal = tempNums.reduce((acc, num )=> acc + num, 0)
         
-        console.log('numTotal ', numTotal)
         setMaterialComponentTotal(numTotal) 
         setMaterialsComponent(updatedComponentsState)
       }

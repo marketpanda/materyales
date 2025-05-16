@@ -24,26 +24,31 @@ const tilesTileQuantityPerSq:Props = (material, materialStrand, calculations) =>
 }
 
 const tilesGroutQuantityPerSq:Props = (material, materialStrand, calculations) => { 
+    const tileLengthandWidth = 1200 //assume 60x60cm tile
+    const jointWidth = 3
+    const thickness = 12 // thickness of tile
+    const averageGroutDensity = 1.7
+    const numberOfTiles = calculations.paramValue // rounded up, this is 2.78 from 1sqm of 60x60cm tile
 
-    const area = calculations.paramValue
-    const GROUT_PER_SQM = 1.77
-    const getQuantity = Math.ceil(area * GROUT_PER_SQM)
-
+    const getQuantity =( (tileLengthandWidth * jointWidth * thickness * numberOfTiles) / 1000000) * averageGroutDensity
+ 
     return { quantity: getQuantity }
 } 
 
 const tilesAdhesiveQuantityPerSq:Props = (material, materialStrand, calculations) => { 
 
     const area = calculations.paramValue
-    const GROUT_PER_SQM = 2.45
-    const getQuantity = Math.ceil(area * GROUT_PER_SQM)
+    const thickness10mmNotch =  8 // 5mm x 1.6kg / L
+    const thickness6mmNotch =  4.8 // 3mm x 1.6kg / L 
+    const getQuantity = Math.ceil(area * thickness10mmNotch)
 
     return { quantity: getQuantity }
 } 
 
 const paintsTopcoatQuantityPerSq:Props = (material, materialStrand, calculations) => { 
     const area = calculations.paramValue
-    const TOPCOAT_PER_SQM = 1 / 16
+    const TOPCOAT_PER_SQM = .148148
+    // 4 liters / 27 sqm
     const getQuantity = Math.ceil(area * TOPCOAT_PER_SQM)
 
     return { quantity: getQuantity }
