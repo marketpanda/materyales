@@ -14,7 +14,7 @@ import { db } from "./lib/db";
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
+import Clarity from '@microsoft/clarity';
 
 const queryClient = new QueryClient()
 
@@ -28,6 +28,10 @@ export default function App() {
  
 
 function Home() {
+  const projectId = process.env.NEXT_PUBLIC_MS_CLARITY!
+  Clarity.init(projectId);
+
+ 
   const [width, setWidth] = useState<number | null>(null)
   const [length, setLength] = useState<number | null>(null)
 
