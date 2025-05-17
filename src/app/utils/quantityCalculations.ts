@@ -47,8 +47,8 @@ const tilesAdhesiveQuantityPerSq:Props = (material, materialStrand, calculations
 
 const paintsTopcoatQuantityPerSq:Props = (material, materialStrand, calculations) => { 
     const area = calculations.paramValue
-    const TOPCOAT_PER_SQM = .148148
-    // 4 liters / 27 sqm
+    const TOPCOAT_PER_SQM = 1 / 25
+    //  1 gallon or 3.78 liters / 25 sqm
     const getQuantity = Math.ceil(area * TOPCOAT_PER_SQM)
 
     return { quantity: getQuantity }
@@ -56,7 +56,8 @@ const paintsTopcoatQuantityPerSq:Props = (material, materialStrand, calculations
 
 const paintsPrimerQuantityPerSq:Props = (material, materialStrand, calculations) => {
     const area = calculations.paramValue
-    const PRIMER_PER_SQM = 1 / 16
+    const PRIMER_PER_SQM = 1 / 27
+    //  1 gallon or 3.78 liters / 27 sqm
     const getQuantity = Math.ceil(area * PRIMER_PER_SQM)
 
     return { quantity: getQuantity }

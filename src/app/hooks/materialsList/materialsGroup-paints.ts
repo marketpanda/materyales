@@ -6,7 +6,7 @@ export const variantPaintsPrimer:Variants = {
     variants: {
         b701: {
             name: 'B701',
-            costPerUnit: 500,
+            costPerUnit: 640,
         },
         dv1350: { 
             costPerUnit: 700,
@@ -19,10 +19,10 @@ export const variantPaintsTopcoat:Variants = {
     element: 'topcoat',
     variants: {
         waterBasedPaint: {
-            costPerUnit: 400,
+            costPerUnit: 700,
         },
         qde: {
-            costPerUnit: 300
+            costPerUnit: 700
         }
     } 
 }
@@ -32,7 +32,7 @@ export const paintsPrimer:MaterialElement = {
     id: 'paintsPrimer',
     name: 'Primer', 
     variants: variantPaintsPrimer,
-    costPerUnit: 32, 
+    costPerUnit: 640, 
     imageIcon: null,
     totalCost: 0,
     quantity: 0
@@ -42,7 +42,7 @@ export const paintsTopcoat:MaterialElement = {
     id: 'paintsTopcoat',
     name: 'Topcoat', 
     variants: variantPaintsTopcoat,
-    costPerUnit: 189,
+    costPerUnit: 700,
     imageIcon: null,
     totalCost: 0,
     quantity: 0
