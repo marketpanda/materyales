@@ -19,6 +19,7 @@ export type MaterialElement = {
     name: string,
     variants?: Variants | null,
     costPerUnit: number,
+    UOM: string,
     imageIcon?: string | null,
     totalCost?: number,
     quantity?: number

@@ -41,6 +41,7 @@ export const tilesTile:MaterialElement = {
     name: 'Tiles', 
     variants: variantTilesTile,
     costPerUnit: 450, 
+    UOM: 'pcs',
     imageIcon: null,
     totalCost: 0,
     quantity: 0
@@ -51,6 +52,7 @@ export const tilesAdhesive:MaterialElement = {
     name: 'Adhesive', 
     variants: variantsTilesAdhesive,
     costPerUnit: 75, 
+    UOM: 'kg',
     imageIcon: null,
     totalCost: 0,
     quantity: 0
@@ -61,6 +63,7 @@ export const tilesGrout:MaterialElement = {
     name: 'Grout', 
     variants: variantTilesGrout,
     costPerUnit: 55,
+    UOM: 'kg',
     imageIcon: null,
     totalCost: 0,
     quantity: 0
@@ -70,6 +73,7 @@ export const tilesTrowel:MaterialElement = {
     id: 'tilesTrowel',
     name: 'Trowel', 
     costPerUnit: 128,
+    UOM: 'kg',
     imageIcon: null,
     totalCost: 0,
     quantity: 0   
@@ -79,6 +83,7 @@ export const tilesSpacer:MaterialElement = {
     id: 'tilesSpacer',
     name: 'Tiles Spacer',
     costPerUnit: 84,
+    UOM: 'pcs',
     imageIcon: null,
     totalCost: 0,
     quantity: 0  

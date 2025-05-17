@@ -7,6 +7,7 @@ export const variantPaintsPrimer:Variants = {
         b701: {
             name: 'B701',
             costPerUnit: 640,
+             
         },
         dv1350: { 
             costPerUnit: 700,
@@ -33,6 +34,7 @@ export const paintsPrimer:MaterialElement = {
     name: 'Primer', 
     variants: variantPaintsPrimer,
     costPerUnit: 640, 
+    UOM: 'gallons',
     imageIcon: null,
     totalCost: 0,
     quantity: 0
@@ -43,6 +45,7 @@ export const paintsTopcoat:MaterialElement = {
     name: 'Topcoat', 
     variants: variantPaintsTopcoat,
     costPerUnit: 700,
+    UOM: 'gallons',
     imageIcon: null,
     totalCost: 0,
     quantity: 0

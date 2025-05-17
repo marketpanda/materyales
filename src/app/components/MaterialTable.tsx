@@ -44,6 +44,7 @@ const MaterialTable:React.FC<Props> = ({
     // we use componentsStateForDisplay for display
     const [componentsStateForDisplay, setComponentsStateForDisplay] = useState<MaterialMap | undefined>(componentsState)  
     
+
     useEffect(() => {
       if (!componentsStateForDisplay) return 
       if (!categoryBreakdownMaterials) return 
@@ -96,11 +97,11 @@ const MaterialTable:React.FC<Props> = ({
     return (
         <> 
           {
-            componentsStateForDisplay && Object.values(componentsStateForDisplay).map((materialInstance, n) => {
-              console.log('materialInstance ', materialInstance)
-              const { name, quantity, costPerUnit, totalCost, imageIcon } = materialInstance
+            componentsStateForDisplay && Object.values(componentsStateForDisplay).map((materialInstance, n) => { 
+              
+              const { name, quantity, costPerUnit, UOM, totalCost, imageIcon } = materialInstance
               const imageRef = imageIcon ?? 'https://picsum.photos/id/237/200/300'
-              console.log('imageRef ', imageRef)
+              
               return (
                 <>
                     <Table.Row key={n}>
@@ -113,11 +114,15 @@ const MaterialTable:React.FC<Props> = ({
                         <div className="flex flex-col gap-2"> { name }</div>
                       </Table.Cell>
                       <Table.Cell>
-                        <input 
-                          value={ quantity } 
-                          className="w-20 outline-none bg-purple-100 p-2 font-semibold rounded text-l text-right" 
-                          // onChange={(e) => handleChangeValue(e, { mat: materialInstance, param: 'quantity' })}
+                        <div className='flex flex-row items-center gap-2'>
+
+                          <input 
+                            value={ quantity } 
+                            className="w-20 outline-none bg-purple-100 p-2 font-semibold rounded text-l text-right" 
+                            // onChange={(e) => handleChangeValue(e, { mat: materialInstance, param: 'quantity' })}
                           />
+                          <div>{ UOM }</div>
+                        </div>
                       </Table.Cell>
                       <Table.Cell>
                         <input 
