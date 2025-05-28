@@ -157,7 +157,7 @@ function Home() {
   
   return (
     <>
-      {/* <Navbar />  */}
+      <Navbar /> 
       <main className="flex min-h-screen flex-col items-center gap-2 z-10 bg-gray-100 border">
         <div className="w-full sm:w-[640px] flex flex-col gap-2"> 
         

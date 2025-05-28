@@ -4,6 +4,7 @@ import { Table } from '@radix-ui/themes'
 import { useMaterialQuantity } from '../hooks/useMaterialQuantity'
 import { Build, BuildPick, MaterialMap } from '../hooks/types/types'
 import { BuildCategory } from '../hooks/materialsList/__materialsGroup'
+import { Sorts } from '../materials/[material]/page'
 
 interface Props {
   materialComponent:BuildCategory | string
@@ -12,6 +13,10 @@ interface Props {
   setMaterialComponentTotal: React.Dispatch<number>
   materialsComponent?: object
   setMaterialsComponent: React.Dispatch<object>
+  sortKey: Sorts
+  setSortKey: React.Dispatch<Sorts>
+  sortDirection: string
+  setSortDirection: React.Dispatch<string>
 }
 
 export interface ComponentType { 
@@ -25,14 +30,22 @@ interface InputProps {
   param: string
 } 
 
+
+
 const MaterialTable:React.FC<Props> = ({
   materialComponent,
   area,
   materialComponentTotal,
   setMaterialComponentTotal,
   materialsComponent,
-  setMaterialsComponent
+  setMaterialsComponent,
+  sortKey,
+  setSortKey,
+  sortDirection,
+  setSortDirection
 }) => {
+
+
 
     const getBuildList = useMaterialsList({ material: materialComponent })
     
@@ -43,6 +56,49 @@ const MaterialTable:React.FC<Props> = ({
     
     // we use componentsStateForDisplay for display
     const [componentsStateForDisplay, setComponentsStateForDisplay] = useState<MaterialMap | undefined>(componentsState)  
+    
+    useEffect(() => {
+      if (!componentsStateForDisplay) return 
+      if (!categoryBreakdownMaterials) return 
+        
+      let newSortedList = [...Object.values(componentsStateForDisplay)]
+      
+
+      switch (sortKey) {
+        case Sorts.MaterialName:
+          newSortedList.sort((a, b) =>
+            sortDirection === 'asc'
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name))
+          break;
+        case Sorts.CostPerUnit:
+          newSortedList.sort((a, b) =>
+            sortDirection === 'asc'
+            ? a.costPerUnit - b.costPerUnit
+            : b.costPerUnit - a.costPerUnit)
+          break;
+          case Sorts.Quantity:
+            newSortedList.sort((a, b) =>
+              sortDirection === 'asc'
+              ? (a.quantity ?? 0) - (b.quantity ?? 0)
+              : (b.quantity ?? 0) - (a.quantity ?? 0))
+          break;
+        case Sorts.TotalCost:
+          newSortedList.sort((a, b) =>
+            sortDirection === 'asc'
+            ? (a.totalCost ?? 0) - (b.totalCost ?? 0)
+            : (b.totalCost ?? 0) - (a.totalCost ?? 0))
+          break;
+        case Sorts.NoSort:
+        default:
+          return;
+        
+      }
+       
+    
+      setComponentsStateForDisplay(Object.fromEntries(newSortedList.map(item => [item.id, item])))
+    }, [sortKey, setSortKey, sortDirection])
+
     
 
     useEffect(() => {
@@ -94,11 +150,13 @@ const MaterialTable:React.FC<Props> = ({
       // } 
       
     }     
+
+   
     return (
         <> 
           {
             componentsStateForDisplay && Object.values(componentsStateForDisplay).map((materialInstance, n) => { 
-              
+              console.log("componentsStateForDisplay ", componentsStateForDisplay)
               const { name, quantity, costPerUnit, UOM, totalCost, imageIcon } = materialInstance
               const imageRef = imageIcon ?? 'https://picsum.photos/id/237/200/300'
               

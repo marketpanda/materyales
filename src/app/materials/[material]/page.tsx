@@ -19,6 +19,7 @@ import { Flip, toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 import { db } from "@/app/lib/db";
 import { BuildCategory } from "@/app/hooks/materialsList/__materialsGroup";
+ 
 
 
 export interface Dimensions {
@@ -50,6 +51,15 @@ interface SummaryBreakDownProps {
     summaryBreakdownSbContractorsProfit?: number,
     summaryBreakdownSbTax?: number,
 }
+
+export enum Sorts {
+    NoSort = 'nosort',
+    MaterialName = 'material',
+    CostPerUnit = 'costPerUnit',
+    Quantity = 'quantity',
+    TotalCost = 'totalCost'
+}
+ 
 
 export default function Page():JSX.Element {
     
@@ -282,6 +292,8 @@ export default function Page():JSX.Element {
 
     const { materialsCompute } = db
 
+    const [sortKey, setSortKey] = useState<Sorts>(Sorts.NoSort)
+
 
     // save to indexdb
     const saveComputation = async() => { 
@@ -312,11 +324,7 @@ export default function Page():JSX.Element {
         setMaterialDimensions(materialDimensionsInitial)
         setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], area:0, width:0, length:0 }}) 
         setAreaReference(0) 
-        
-        console.log(material)
-        console.log(areaReference)
-        console.log(materialComponentTotal)
-        console.log(materialsComponent)
+       
 
         // materialComponent={material}
         // area={areaReference}
@@ -325,6 +333,19 @@ export default function Page():JSX.Element {
         // materialsComponent={materialsComponent}
         // setMaterialsComponent={setMaterialsComponent}
     }
+
+    const [sortDirection, setSortDirection] = useState('asc')
+
+    const handleSortClick = (key:Sorts  ) => {
+        if (sortKey === key) {
+            setSortDirection(prev => (prev === 'asc' ? 'desc' : 'asc'))
+        } else {
+            setSortKey(key)
+            setSortDirection('asc')
+        }
+    }
+
+    
     
     return (
         <> 
@@ -357,22 +378,37 @@ export default function Page():JSX.Element {
                 <Table.Header>
                     <Table.Row> 
                         <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>Material</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>Quantity</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>Cost per Unit</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell className="hidden md:table-cell">
-                            Total Cost
+                        <Table.ColumnHeaderCell>
+                            <div className="cursor-pointer hover:underline"
+                                onClick={() => handleSortClick(Sorts.MaterialName)}>Material</div>
                         </Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell>
+                            <div className="cursor-pointer hover:underline"
+                                onClick={() => handleSortClick(Sorts.Quantity)}>Quantity</div>
+                        </Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell>
+                            <div className="cursor-pointer hover:underline"
+                                onClick={() => handleSortClick(Sorts.CostPerUnit)}>Cost per Unit</div>
+                        </Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell>
+                            <div className="cursor-pointer hover:underline"
+                                onClick={() => handleSortClick(Sorts.TotalCost)}> Total Cost</div>
+                        </Table.ColumnHeaderCell>
+                        
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
                     <MaterialTable
+                        sortKey={sortKey}
+                        setSortKey={setSortKey}
                         materialComponent={material}
                         area={areaReference}
                         materialComponentTotal={materialComponentTotal}
                         setMaterialComponentTotal={setMaterialComponentTotal}
                         materialsComponent={materialsComponent}
                         setMaterialsComponent={setMaterialsComponent}
+                        sortDirection={sortDirection}
+                        setSortDirection={setSortDirection}
                     />
                     <>
                     
