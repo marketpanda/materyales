@@ -7,7 +7,7 @@ import ComponentButtons from "../../components/ComponentButtons";
 import { materials } from "@/common/materials"; 
 import useMaterialsList, { UnitOptions } from "@/app/hooks/useMaterialsList";
 import MaterialTable, { ComponentType } from "@/app/components/MaterialTable"; 
-import { SbType } from "@/app/types/components";
+import { SbType, Sorts } from "@/app/types/components";
 import useMaterialComponentsSummaryBreakdown from "@/app/hooks/useMaterialComponentsSummaryBreakdown";
 import { useGetLastStringOnRoute } from "@/app/hooks/useGetLastStringOnRoute"; 
 import CurrencyFormatter from "@/app/utils/CurrencyFormatter";
@@ -52,14 +52,7 @@ interface SummaryBreakDownProps {
     summaryBreakdownSbTax?: number,
 }
 
-export enum Sorts {
-    NoSort = 'nosort',
-    MaterialName = 'material',
-    CostPerUnit = 'costPerUnit',
-    Quantity = 'quantity',
-    TotalCost = 'totalCost'
-}
- 
+
 
 export default function Page():JSX.Element {
     

@@ -19,3 +19,13 @@ export type SbType = {
   sbContractorsProfit?: SummaryBreakdownStrand,
   sbTax?: SummaryBreakdownStrand
 }
+
+
+export enum Sorts {
+    NoSort = 'nosort',
+    MaterialName = 'material',
+    CostPerUnit = 'costPerUnit',
+    Quantity = 'quantity',
+    TotalCost = 'totalCost'
+}
+ 

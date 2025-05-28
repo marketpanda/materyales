@@ -4,8 +4,8 @@ import { Table } from '@radix-ui/themes'
 import { useMaterialQuantity } from '../hooks/useMaterialQuantity'
 import { Build, BuildPick, MaterialMap } from '../hooks/types/types'
 import { BuildCategory } from '../hooks/materialsList/__materialsGroup'
-import { Sorts } from '../materials/[material]/page'
-
+import { Sorts } from '../types/components'
+ 
 interface Props {
   materialComponent:BuildCategory | string
   area:number
