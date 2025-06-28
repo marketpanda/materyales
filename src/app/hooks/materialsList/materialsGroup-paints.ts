@@ -1,4 +1,4 @@
-import { Build, MaterialElement, MaterialsGroup, Variants } from "../types/types"
+import { Build, MaterialElement, Variants } from "../types/types"
 
 export const variantPaintsPrimer:Variants = {
     id: 'vPaintsPrimer',
@@ -7,9 +7,14 @@ export const variantPaintsPrimer:Variants = {
         b701: {
             name: 'B701',
             costPerUnit: 640,
-             
+        },
+        b701pail: {
+            name: 'B701 Pail',
+            costPerUnit: 3100,
+            UOM: 'pail',            
         },
         dv1350: { 
+            name: 'Davies 1350',
             costPerUnit: 700,
         }
     } 
@@ -20,10 +25,10 @@ export const variantPaintsTopcoat:Variants = {
     element: 'topcoat',
     variants: {
         waterBasedPaint: {
-            costPerUnit: 700,
+            costPerUnit: 680,
         },
         qde: {
-            costPerUnit: 700
+            costPerUnit: 720
         }
     } 
 }
@@ -56,11 +61,5 @@ export const materialsGroupPaints:Build = {
         primer: paintsPrimer,
         topcoat: paintsTopcoat, 
     },
-    // tools: {
-    //     ...
-    // },
-    // equipment: {
-    //     ...    
-    // }
      
 }

@@ -6,6 +6,5 @@ export default function useMaterialComponentsSummaryBreakdown(total:number) {
     const sbContractorsProfit = total * .125
     const sbTax = total * .125
 
-    return  { sbTotalMaterials, sbLabor,  sbContingency, sbContractorsProfit, sbTax } 
-    
+    return  { sbTotalMaterials, sbLabor,  sbContingency, sbContractorsProfit, sbTax }    
 }

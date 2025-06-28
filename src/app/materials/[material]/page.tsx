@@ -19,8 +19,6 @@ import { Flip, toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 import { db } from "@/app/lib/db";
 import { BuildCategory } from "@/app/hooks/materialsList/__materialsGroup";
- 
-
 
 export interface Dimensions {
     length?: number,
@@ -51,8 +49,6 @@ interface SummaryBreakDownProps {
     summaryBreakdownSbContractorsProfit?: number,
     summaryBreakdownSbTax?: number,
 }
-
-
 
 export default function Page():JSX.Element {
     
@@ -107,8 +103,8 @@ export default function Page():JSX.Element {
     
     const [materialDimensions, setMaterialDimensions] = useState<MaterialDimensionsProps | null>(materialDimensionsInitial)
     
-    const [material, setMaterial] = useState<BuildCategory| string >(thisRoute)
-
+    const [material, setMaterial] = useState<BuildCategory>(thisRoute as BuildCategory)
+    
     //pass down prop to component to enable interactivity of button to a user
     const [areaReference, setAreaReference] = useState<number>(0) 
 
@@ -135,8 +131,7 @@ export default function Page():JSX.Element {
     } 
     
     const handleDirectAreaChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseFloat(e.target.value) 
-         
+        const value = parseFloat(e.target.value)  
         handleParamsChange(e, 'area', true) 
        
         // setDimensionsForDisplay({[material]:materialDimensionsInitial[material]}) 
@@ -205,22 +200,6 @@ export default function Page():JSX.Element {
     }
 
     const [summaryBreakdownState, setSummaryBreakdownState] = useState<SbType>(summaryBreakdown)
-
-    // useEffect(() => {
-
-    //     const timeoudId = setTimeout(() => {  
-    //         setDimensionsForDisplay((prev) => ({
-    //             ...prev, [material]:  {
-    //                 ...materialDimensions[material], length: 0, width: 0
-    //             }
-    //         }))
-
-    //     }, 500) 
-    //     return () => {
-    //         clearTimeout(timeoudId)
-    //     }
-
-    // }, [materialDimensions[material].area]) 
 
     const toggleIncludeBreakdown = (breakdownComponent:keyof SbType) => { 
         
@@ -316,15 +295,7 @@ export default function Page():JSX.Element {
     const clearComputation = () => { 
         setMaterialDimensions(materialDimensionsInitial)
         setDimensionsForDisplay({ [material]: { ...dimensionsForDisplay[material], area:0, width:0, length:0 }}) 
-        setAreaReference(0) 
-       
-
-        // materialComponent={material}
-        // area={areaReference}
-        // materialComponentTotal={materialComponentTotal}
-        // setMaterialComponentTotal={setMaterialComponentTotal}
-        // materialsComponent={materialsComponent}
-        // setMaterialsComponent={setMaterialsComponent}
+        setAreaReference(0)  
     }
 
     const [sortDirection, setSortDirection] = useState('asc')
@@ -385,7 +356,7 @@ export default function Page():JSX.Element {
                         </Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell>
                             <div className="cursor-pointer hover:underline"
-                                onClick={() => handleSortClick(Sorts.TotalCost)}> Total Cost</div>
+                                onClick={() => handleSortClick(Sorts.TotalCost)}>Total Cost</div>
                         </Table.ColumnHeaderCell>
                         
                     </Table.Row>

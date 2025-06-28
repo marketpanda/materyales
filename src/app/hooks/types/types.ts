@@ -3,7 +3,9 @@ export type Variant = {
     name?: string,
     costPerUnit: number,
     brand?: string,
-    specs?: Record<string, any> | null
+    factor?: number,
+    UOM?: string,
+    specs?: Record<string, any>
 }
 
 export type VariantOptions = Record<string, Variant>
@@ -17,18 +19,19 @@ export type Variants = {
 export type MaterialElement = {
     id: string,
     name: string,
-    variants?: Variants | null,
+    variants?: Variants,
     costPerUnit: number,
     UOM: string,
     imageIcon?: string | null,
     totalCost?: number,
     quantity?: number
+    currentVariant?:Variant
 }
 
 export type Tool = {
     id: string,
     name: string,
-    variants?: Variants | null,
+    variants?: Variants,
     costPerUnit: number,
     imageIcon?: string | null,
     totalCost?: number,
@@ -38,7 +41,7 @@ export type Tool = {
 export type Equipment = {
     id: string,
     name: string,
-    variants?: Variants | null,
+    variants?: Variants,
     costPerUnit: number,
     imageIcon?: string | null,
     totalCost?: number,

@@ -6,9 +6,11 @@ export const variantsTilesAdhesive:Variants = {
     variants: {
         kg2: {
             costPerUnit: 55,
+            name: '2 Kg'
         },
         kg25: {
             costPerUnit: 425,
+            name: '25 Kg'
         }
     } 
 }
@@ -19,9 +21,11 @@ export const variantTilesTile:Variants = {
     variants: {
         s60x60: {
             costPerUnit: 500,
+            name: '60x60cm'
         },
         s30x30: {
             costPerUnit: 90,
+            name: '30x30cm'
         }
     } 
 }
@@ -32,7 +36,8 @@ export const variantTilesGrout:Variants = {
     variants: {
         abc: {
             costPerUnit: 75,
-        } 
+            name: 'ABC'
+        }
     } 
 }
 
