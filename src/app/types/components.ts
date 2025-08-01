@@ -12,14 +12,19 @@ export type SummaryBreakdownStrand = {
 
 export type DimensionKey = 'length' | 'width' | 'area'
 
-export type SbType = {
-  sbTotalMaterials?: SummaryBreakdownStrand,
-  sbLabor?: SummaryBreakdownStrand, 
-  sbContingency?: SummaryBreakdownStrand,
-  sbContractorsProfit?: SummaryBreakdownStrand,
-  sbTax?: SummaryBreakdownStrand
-}
+export const BreakdownComponents = {
+  TotalMaterials: "sbTotalMaterials",
+  Labor: "sbLabor",
+  Contingency: "sbContingency",
+  ContractorsProfit: "sbContractorsProfit",
+  Tax: "sbTax"
+} as const
 
+export type BreakdownComponent = typeof BreakdownComponents[keyof typeof BreakdownComponents]
+
+export type SbType = {
+  [K in BreakdownComponent]?: SummaryBreakdownStrand
+}
 
 export enum Sorts {
     NoSort = 'nosort',

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import useMaterialsList, { UnitOptions } from '../hooks/useMaterialsList'
 import { Table } from '@radix-ui/themes'
-import * as Select from '@radix-ui/react-select'
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons'
 import { useMaterialQuantity } from '../hooks/useMaterialQuantity'
 import { MaterialMap } from '../hooks/types/types'
 import { BuildCategory } from '../hooks/materialsList/__materialsGroup'
 import { Sorts } from '../types/components'
+import { SelectDropDown } from './utils/SelectDropDown'
+import { object } from 'zod'
  
 interface Props {
   materialComponent:BuildCategory 
@@ -27,11 +27,6 @@ export interface ComponentType {
   } 
 }
  
-interface InputProps {
-  mat: string
-  param: string
-} 
-
 const MaterialTable:React.FC<Props> = ({
   materialComponent,
   area,
@@ -125,99 +120,78 @@ const MaterialTable:React.FC<Props> = ({
         setMaterialsComponent(updatedComponentsState)
       }
 
-      ComputeQuantitiesAndCosts()
+      ComputeQuantitiesAndCosts() 
+      console.log("materialsComponent ", materialsComponent)
+
       }, [ materialComponent, area ]
     )
 
-    const [variant, setVariant] = useState<string>('')
-    
-    const variantsInitial = componentsStateForDisplay ?
-    Object.fromEntries(Object.entries(componentsStateForDisplay).map(([key, value]) => [
-      key, null
-    ])) : null
-    
-    const [variantsSelected, setVariantsSelected] = useState<{[materialId: string]: string}>({})
+    useEffect(() => {
+      console.log("componentsStateForDisplay ", componentsStateForDisplay)
+    }, [componentsStateForDisplay])
+ 
+    const [variantsSelected, setVariantsSelected] = useState<Record<string, string>>({})
 
     console.log("variantsSelected ", variantsSelected) 
-    
-    interface SelectProps {
-      options: any[]
-      value: any
-      onChange: (value:string) => void
-      placeholder?: string
-    }
 
+    useEffect(() => {
+      console.log('variantsSelected ', variantsSelected)
+    }, [variantsSelected])
+    
     const assignVariant = (materialId : string, newVariant: string) => {
       setVariantsSelected(prev => ({
         ...prev,
         [materialId]: newVariant
       })) 
-    }
-    const SelectDropDown:React.FC<SelectProps> = ({
-      options,
-      value,
-      onChange
-    }) => {
+
+      console.log('materialId ', materialId)
+      console.log('newVariant ', newVariant)
+      if (!componentsStateForDisplay) return
       
-      return (
-        <Select.Root value={value} onValueChange={onChange}>
-          <Select.Trigger className='inline-flex items-center justify-between px-3 py-2 bg-white border border-gray-300 rounded w-[100px] hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'>
-            <Select.Value />
-            <Select.Icon>
-              <ChevronDownIcon />
-            </Select.Icon>
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Content className='bg-white border border-gray-300 rounded shadow-md z-50'>
-              <Select.ScrollUpButton className='flex items-center justify-center p-1 text-gray-500'>
-                <ChevronUpIcon />
-              </Select.ScrollUpButton>
-              <Select.Viewport className='p-1'>
-                {
-                  options.map((option) => ( 
-                    <Select.Item
-                      key={option.id}
-                      value={option.id}
-                      className='cursor-pointer px-3 py-2 rounded hover:bg-gray-100 focus:bg-gray-200 flex items-center justify-between'
-                    >
-                      <Select.ItemText>{option.name}</Select.ItemText>
-                      <Select.ItemIndicator>
-                        <CheckIcon />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                  ))
-                }
-              </Select.Viewport>
-              <Select.ScrollDownButton className='flex items-center justify-center p-1 text-gray-500'>
-                <ChevronDownIcon fontSize={1} />
-              </Select.ScrollDownButton>
-            </Select.Content>
-          </Select.Portal>
-        </Select.Root>
-      )
+      const updateState = { ...componentsStateForDisplay }
+
+      const strand = Object.entries(componentsStateForDisplay).find(([K, V]) => V.id === materialId)
+
+      if (!strand) return
+      
+      // Object.entries generates [K, V], we extract the K
+      const material = updateState[strand[0]]
+      material.currentVariant = material.variants?.variants?.[newVariant]
+    
+
+      console.log('material ', material)
+      // console.log('newVariant ', newVariant)
+      console.log('strand ', strand)
+ 
+
+      console.log('updateState ', updateState)
+
+      setComponentsStateForDisplay(updateState)
+     
     }
-   
+
+    
     return (
         <> 
           {
             componentsStateForDisplay && Object.values(componentsStateForDisplay).map((materialInstance, n) => {  
               const { name, quantity, costPerUnit, UOM, totalCost, imageIcon,  variants } = materialInstance
               const imageRef = imageIcon ?? 'https://picsum.photos/id/237/200/300'
-              const rollVariants  = variants ? Object.entries(variants?.variants).map(([id, data]) => ({ id, parentName:name, ...data, element: variants.element })) : null
-             
+              const rollVariants  = variants ? Object.entries(variants?.variants).map(([id, data]) => ({ id, parentName:name, ...data, element: variants.element })) : null             
               
               return (
                 <>       
                     <Table.Row key={n}>
                       <Table.RowHeaderCell px="4">
-                        <div className="rounded-full w-12 h-12 overflow-hidden" key={n}> 
+                        <div className="rounded-full w-12 h-12 overflow-hidden cursor-pointer" key={n}> 
                           <img src={ imageRef } />
                         </div>
                       </Table.RowHeaderCell>
                       <Table.Cell>
                         <div className="flex flex-col gap-2"> { name }</div>
-                        {
-                          rollVariants && rollVariants.length > 1 && (
+                        { 
+                          rollVariants && rollVariants.length > 1 &&  
+                          (
                             <SelectDropDown
                               options={rollVariants}
                               value={variantsSelected ? variantsSelected[materialInstance.id] : ''}

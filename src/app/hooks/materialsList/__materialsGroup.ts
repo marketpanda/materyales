@@ -10,9 +10,6 @@ export type BuildCategory =
     'groundSlab' |
     'suspendedSlab'
 
-// export type BuildComposition = {
-//     build: MaterialsGroup 
-// }
 
 export type MaterialsGroupCollection  = Partial<Record<BuildCategory, MaterialsGroup>>
  
