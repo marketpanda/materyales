@@ -24,7 +24,6 @@ export interface Tools {
 
 export default function useMaterialsList({ material } : { material: BuildCategory | string }): BuildPick { 
     const placeholderImage = 'https://picsum.photos/id/237/200/300'
-    console.log('material ', material)
     const tools:Tools = {
 
     }
@@ -33,9 +32,7 @@ export default function useMaterialsList({ material } : { material: BuildCategor
 
     }
 
-    const getMaterialsGroup = materialsGroup[material as BuildCategory] 
-    console.log('getMaterialsGroup ', getMaterialsGroup) 
+    const getMaterialsGroup = materialsGroup[material as BuildCategory]
   
     return getMaterialsGroup as BuildPick
-    
 }

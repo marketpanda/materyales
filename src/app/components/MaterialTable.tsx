@@ -6,7 +6,7 @@ import { MaterialMap } from '../hooks/types/types'
 import { BuildCategory } from '../hooks/materialsList/__materialsGroup'
 import { Sorts } from '../types/components'
 import { SelectDropDown } from './utils/SelectDropDown'
-import { object } from 'zod'
+
  
 interface Props {
   materialComponent:BuildCategory 
@@ -88,18 +88,26 @@ const MaterialTable:React.FC<Props> = ({
       setComponentsStateForDisplay(Object.fromEntries(newSortedList.map(item => [item.id, item])))
     }, [sortKey, setSortKey, sortDirection])
 
+    const [variantsSelected, setVariantsSelected] = useState<Record<string, string>>({})
+    
     useEffect(() => {
       if (!componentsStateForDisplay) return 
       if (!categoryBreakdownMaterials) return 
         
       const tempNums:number[] = []
 
-      const ComputeQuantitiesAndCosts = async () => {
+      const computeQuantitiesAndCosts = async () => {
         const updatedComponentsState = { ...componentsStateForDisplay }
         for (const [theMaterial, materialData] of Object.entries(componentsStateForDisplay || {})) {
     
           // Assuming useMaterialQuantity is a function that can be called directly or using a custom hook outside of the loop 
-          const getQuantity = useMaterialQuantity({ material: materialData.id, materialStrand: materialData.name, area: area })
+          console.log(materialData)
+          const getQuantity = useMaterialQuantity({ 
+            material: materialData.id,
+            materialStrand: materialData.name,
+            area: area,
+            currentVariant: materialData.currentVariant })
+
           const { quantity } = getQuantity() 
           const { costPerUnit } = materialData
            
@@ -120,19 +128,20 @@ const MaterialTable:React.FC<Props> = ({
         setMaterialsComponent(updatedComponentsState)
       }
 
-      ComputeQuantitiesAndCosts() 
-      console.log("materialsComponent ", materialsComponent)
+      computeQuantitiesAndCosts() 
 
-      }, [ materialComponent, area ]
+      }, [ materialComponent, area, variantsSelected]
     )
 
     useEffect(() => {
       console.log("componentsStateForDisplay ", componentsStateForDisplay)
     }, [componentsStateForDisplay])
+    
+    useEffect(() => {
+      console.log("componentsState ", componentsState)
+    }, [componentsState])
  
-    const [variantsSelected, setVariantsSelected] = useState<Record<string, string>>({})
-
-    console.log("variantsSelected ", variantsSelected) 
+    
 
     useEffect(() => {
       console.log('variantsSelected ', variantsSelected)
@@ -144,8 +153,6 @@ const MaterialTable:React.FC<Props> = ({
         [materialId]: newVariant
       })) 
 
-      console.log('materialId ', materialId)
-      console.log('newVariant ', newVariant)
       if (!componentsStateForDisplay) return
       
       const updateState = { ...componentsStateForDisplay }
@@ -157,16 +164,11 @@ const MaterialTable:React.FC<Props> = ({
       // Object.entries generates [K, V], we extract the K
       const material = updateState[strand[0]]
       material.currentVariant = material.variants?.variants?.[newVariant]
+      if (material.currentVariant) material.currentVariant.id = newVariant
     
 
-      console.log('material ', material)
-      // console.log('newVariant ', newVariant)
-      console.log('strand ', strand)
- 
-
-      console.log('updateState ', updateState)
-
       setComponentsStateForDisplay(updateState)
+      setComponentsState(updateState)
      
     }
 
@@ -225,13 +227,6 @@ const MaterialTable:React.FC<Props> = ({
                           disabled />
                       </Table.Cell>
                     </Table.Row> 
-                    {/* <Table.Row>
-                      <Table.Cell colSpan={6}>
-                        <div className='flex flex-col opacity-50 w-[300px]' key={n}>  
-                          <div><pre className='text-sm'>{JSON.stringify(materialInstance, null, 2)}</pre></div> 
-                        </div>
-                      </Table.Cell>
-                    </Table.Row> */}
                 </> 
               )
             }) 

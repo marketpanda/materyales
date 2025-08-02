@@ -1,3 +1,5 @@
+import { Variant } from "../hooks/types/types"
+
 interface Calculations {
     param: string,
     paramVariant?: string, // e.g. for tile 60x60, 30x30 since this will require different computation
@@ -8,16 +10,38 @@ interface Props {
     (
         material: string,
         materialStrand: string,
-        calculations: Calculations
+        calculations: Calculations,
+        currentVariant?:Variant
     ) : {
         quantity: number
     }
 } 
 
-const tilesTileQuantityPerSq:Props = (material, materialStrand, calculations) => {
+const tilesTileQuantityPerSq:Props = (material, materialStrand, calculations, currentVariant) => {
+    if (!currentVariant) console.log('no user selected variant')
+    if (currentVariant) console.log('user selected variant', currentVariant)
     
+    //default, has no currentVariant
+    let TILE_PER_SQM_60x60 = 2.77
+
+    if (currentVariant) {
+        const { id } = currentVariant
+        console.log('id ', id)
+        switch (id) {
+            case 's30x30':
+                TILE_PER_SQM_60x60 = 11.11 
+                 break
+            case 's60x60':
+                TILE_PER_SQM_60x60 = 2.77 
+                 break
+            default:
+                TILE_PER_SQM_60x60 = 2.77
+        }
+    }
+
+    console.log('TILE_PER_SQM_60x60 ', TILE_PER_SQM_60x60)
     const area = calculations.paramValue
-    const TILE_PER_SQM_60x60 = 2.77
+    
     const getQuantity = Math.ceil(area * TILE_PER_SQM_60x60)
     
     return { quantity: getQuantity }
@@ -35,12 +59,29 @@ const tilesGroutQuantityPerSq:Props = (material, materialStrand, calculations) =
     return { quantity: getQuantity }
 } 
 
-const tilesAdhesiveQuantityPerSq:Props = (material, materialStrand, calculations) => { 
+const tilesAdhesiveQuantityPerSq:Props = (material, materialStrand, calculations, currentVariant) => { 
+    
+    //default, has no currentVariant
+    let THICKNESS10MMNOTCH = 4.888
+
+    if (currentVariant) {
+        const { id } = currentVariant
+        console.log('id ', id)
+        switch (id) {
+            case 'kg25':
+                THICKNESS10MMNOTCH = 50
+                break
+                
+            case 'kg2':
+            default:
+                THICKNESS10MMNOTCH = 4.888 
+        }
+    }
 
     const area = calculations.paramValue
     const thickness10mmNotch =  8 // 5mm x 1.6kg / L
     const thickness6mmNotch =  4.8 // 3mm x 1.6kg / L 
-    const getQuantity = Math.ceil(area * thickness10mmNotch)
+    const getQuantity = Math.ceil(area * THICKNESS10MMNOTCH)
 
     return { quantity: getQuantity }
 } 

@@ -147,6 +147,7 @@ export default function Page():JSX.Element {
         if (!Number(len) || !Number(wid)) return
         return (len && wid) ?  len * wid : 0
     }
+    
     useEffect(() => {
 
         const timeoudId = setTimeout(() => {
@@ -179,7 +180,10 @@ export default function Page():JSX.Element {
     }, [materialDimensions?.[material].length, materialDimensions?.[material].width]) 
 
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+    
+    const [materialsComponent, setMaterialsComponent] = useState({})
     const runEstimate = useCallback((e:React.FormEvent<HTMLElement>) => { 
+        console.log('materialsComponent ', materialsComponent)
         e.preventDefault()
         if (timeoutRef.current) clearTimeout(timeoutRef.current)
 
@@ -189,7 +193,7 @@ export default function Page():JSX.Element {
                 setAreaReference(num)
             }
         }, 500) 
-    }, [material, materialDimensions, areaReference])
+    }, [material, materialDimensions, areaReference, materialsComponent])
 
     const summaryBreakdownDefault = { include: true, value: 0 }
     const summaryBreakdown = {
@@ -258,7 +262,6 @@ export default function Page():JSX.Element {
             return acc
         }, 0) 
  
-    const [materialsComponent, setMaterialsComponent] = useState({})
 
     const { materialsCompute } = db
 
